@@ -5,7 +5,7 @@ ad_page_contract {
     Examples of the basic dt_ procs
 
     @author  ron@arsdigita.com
-    @created 2000/12/01
+    @creation-date 2000/12/01
     @cvs-id  $Id$
 } -properties {
     dt_examples:multirow

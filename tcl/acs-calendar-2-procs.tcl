@@ -6,7 +6,7 @@ ad_library {
     Library for calendar display widgets
 
     @author  ron@arsdigita.com
-    @created 2000-11-21
+    @creation-date 2000-11-21
     @cvs-id  $Id$
 }
 

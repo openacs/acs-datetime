@@ -5,7 +5,7 @@ ad_page_contract {
     Examples of various calendar widgets
 
     @author  ron@arsdigita.com
-    @created 2000-12-08
+    @creation-date 2000-12-08
     @cvs-id  $Id$
 } {
     {view ""}

@@ -5,7 +5,7 @@ ad_library {
     Tcl library for the ACS Date-Time service package
 
     @author  ron@arsdigita.com
-    @created 2000-11-21
+    @creation-date 2000-11-21
     @cvs-id  $Id$
 }
 
