@@ -88,10 +88,12 @@ ad_proc dt_widget_week {
     <td>
     <table  class=\"table-display\" cellpadding=0 cellspacing=0 border=0 width=90%>"
 
-    set days_of_week {Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
-    foreach day $days_of_week {
+    
+    set days_of_week [list Sunday "[_ acs-datetime.Sunday]" Monday "[_ acs-datetime.Monday]" Tuesday "[_ acs-datetime.Tuesday]" Wednesday "[_ acs-datetime.Wednesday]" Thursday "[_ acs-datetime.Thursday]" Friday "[_ acs-datetime.Friday]" Saturday "[_ acs-datetime.Saturday]"]
 
-        set lower_day [string tolower $day]
+    foreach {eng_day day} $days_of_week {
+
+        set lower_day [string tolower $eng_day]
         set julian [set ${lower_day}_julian]
         set date [set ${lower_day}_date]
         set pretty_date [util_AnsiDatetoPrettyDate $date]
@@ -408,7 +410,7 @@ ad_proc -public dt_widget_list {
 } {
     # Check for zero size
     if {[ns_set size $calendar_details] == 0} {
-        return "<i>No Items</i>"
+        return "<i>[_ acs-datetime.No_Items]</i>"
     }
 
     # The title
@@ -426,7 +428,7 @@ ad_proc -public dt_widget_list {
     }
 
     if {![empty_string_p $start_date] && ![empty_string_p $end_date]} {
-        set title "Items from [util_AnsiDatetoPrettyDate $start_date] to [util_AnsiDatetoPrettyDate $end_date]"
+        set title "[_ acs-datetime.Items_from] [util_AnsiDatetoPrettyDate $start_date] [_ acs-datetime.to] [util_AnsiDatetoPrettyDate $end_date]"
     }
 
     set return_html "<b>$title</b><p>"
@@ -441,14 +443,14 @@ ad_proc -public dt_widget_list {
     # Create the header
     append return_html "
     <table class=\"table-display\" border=0 cellspacing=0 cellpadding=2>
-    <tr class=\"table-header\"><th>Day of Week</th><th><a href=\"$start_date_url\">Date</a></th><th>Start Time</th><th>End Time</th>"
+    <tr class=\"table-header\"><th>[_ acs-datetime.Day_of_Week]</th><th><a href=\"$start_date_url\">[_ acs-datetime.Date]</a></th><th>[_ acs-datetime.Start_Time]</th><th>[_ acs-datetime.End_Time]</th>"
 
     if {$real_order_by != "item_type"} {
-        append return_html "<th><a href=\"$item_type_url\">Type</a></th>"
+        append return_html "<th><a href=\"$item_type_url\">[_ acs-datetime.Type]</a></th>"
     }
 
 
-    append return_html "<th>Title</th></tr>\n"
+    append return_html "<th>[_ acs-datetime.Title]</th></tr>\n"
 
     # initialize the item_type so we can do intermediate titles
     set old_item_type ""
@@ -474,7 +476,7 @@ ad_proc -public dt_widget_list {
         # Do we need a title?
         if {$real_order_by == "item_type" && $item_type != "$old_item_type"} {
             if {[empty_string_p $item_type]} {
-                set item_type_for_title "(No Item Type)"
+                set item_type_for_title "([_ acs-datetime.No_Item_Type])"
             } else {
                 set item_type_for_title $item_type
             }

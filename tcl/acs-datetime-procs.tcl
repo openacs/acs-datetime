@@ -49,13 +49,15 @@ ad_proc dt_format {
 ad_proc dt_month_names {} {
     Returns the calendar month names as a Tcl list (January, February, ...)
 } {
-    set month_names [list]
+    #set month_names [list]
     
-    for {set i 1} {$i <= 12} {incr i} {
-	lappend month_names [clock format [clock scan "2000-$i-1"] -format "%B"]
-    }
+    #for {set i 1} {$i <= 12} {incr i} {
+	#lappend month_names [clock format [clock scan "2000-$i-1"] -format "%B"]
+    #}
 
-    return $month_names
+    #return $month_names
+
+    return [list [_ acs-datetime.January] [_ acs-datetime.February] [_ acs-datetime.March] [_ acs-datetime.April] [_ acs-datetime.May] [_ acs-datetime.June] [_ acs-datetime.July] [_ acs-datetime.August] [_ acs-datetime.September] [_ acs-datetime.October] [_ acs-datetime.November] [_ acs-datetime.December]]
 }
 
 ad_proc dt_month_abbrev {} {

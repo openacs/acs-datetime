@@ -42,6 +42,11 @@ ad_proc dt_widget_month {
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details. 
 } {
+    if {[string equal $days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"]} {
+	set days_of_week [list [_ acs-datetime.Sunday] [_ acs-datetime.Monday] [_ acs-datetime.Tuesday] [_ acs-datetime.Wednesday] [_ acs-datetime.Thursday] [_ acs-datetime.Friday] [_ acs-datetime.Saturday]]
+    }
+
+
     dt_get_info $date
 
     set today_date [dt_sysdate]    
@@ -226,6 +231,10 @@ ad_proc dt_widget_month_small {
 } {
     Returns a small calendar for a specific month. Defaults to this month.
 } {
+    if {[string equal $days_of_week "S M T W T F S"]} {
+	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
+    }
+
     return [dt_widget_month \
 	    -calendar_details $calendar_details \
 	    -date $date \
@@ -270,6 +279,10 @@ ad_proc dt_widget_month_centered {
     Returns a calendar for a specific month, with details supplied by
     Julian date. Defaults to this month.
 } {
+    if {[string equal $days_of_week "S M T W T F S"]} {
+	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
+    }
+
     set output ""
 
     dt_get_info $date
@@ -319,6 +332,10 @@ ad_proc dt_widget_year {
     date.  Defaults to this month.  Data in calendar_details will be
     ignored.
 } { 
+    if {[string equal $days_of_week "S M T W T F S"]} {
+	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
+    }
+
     if { $width < 1 || $width > 12 } {
 	return "Width must be between 1 and 12"
     }
@@ -372,6 +389,10 @@ ad_proc dt_widget_calendar_year {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
 } {
+    if {[string equal $days_of_week "S M T W T F S"]} {
+	set days_of_week "[_ acs-datetime.lt_S_M_T_W_T_F_S________]"
+    }
+
     dt_get_info $date
 
     return [dt_widget_year \
@@ -428,7 +449,15 @@ ad_proc -private dt_navbar_view {
     
     # ben: taking out year for now, since it doesn't work
     foreach viewname {list day week month} {
-        set text [string toupper $viewname 0]
+	set text [string toupper $viewname 0]
+	ns_log bug "STC: $text"
+	switch -exact -- $text {
+	    List {set text "[_ acs-datetime.List]"}
+	    Day {set text "[_ acs-datetime.Day]"}
+	    Week {set text "[_ acs-datetime.Week]"}
+	    Month {set text "[_ acs-datetime.Month]"}
+	}
+
         if { $viewname == $view } {
             # current view
             append result "<td class=\"selected\">
@@ -663,7 +692,8 @@ ad_proc dt_widget_calendar_navigation {
 	<tr>
 	"
 
-	set days_of_week [list S M T W T F S]
+	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
+
 
 	foreach day_of_week $days_of_week {
 	    append output "<td align=right><font size=-1><b>$day_of_week</b></td>\n"
@@ -750,17 +780,17 @@ ad_proc dt_widget_calendar_navigation {
     <font size=-2>"
 
     if { $view == "day" && [dt_sysdate] == $date } {
-        append output "<b>Today</b>"
+        append output "<b>[_ acs-datetime.Today]</b>"
     } else {
         append output "<a href=\"$today_url\">
-    <b>Today</b></a> "
+    <b>[_ acs-datetime.Today]</b></a> "
     }
     
     append output "
-    is [dt_ansi_to_pretty]</font></td></tr>
+    [_ acs-datetime.is] [dt_ansi_to_pretty]</font></td></tr>
     <tr><td align=center><br>
     <form method=get action=$base_url>
-    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>Date as YYYYMMDD</font>
+    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>[_ acs-datetime.Date_as] YYYYMMDD</font>
     <INPUT TYPE=hidden name=view value=day>
     "
 
