@@ -118,12 +118,37 @@ ad_proc dt_widget_day {
     # Select some basic stuff
     db_1row select_day_info {}
 
-    # Loop through the hours of the day
-    set return_html "<table border=0 cellpadding=2 width=$calendar_width><tr bgcolor=black><td>
-<table cellpadding=2 border=0 width=100%>\n"
+    set return_html ""
 
     if {$show_nav} {
-        append return_html "<tr bgcolor=lightblue><th colspan=2><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr>\n"
+        append return_html "<table border=0 cellpadding=0 width=$calendar_width><tr bgcolor=#dddddd><th><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr></table><p>\n"
+    }
+
+    # Loop through the hours of the day
+    append return_html "<table border=0 cellpadding=1 width=$calendar_width><tr bgcolor=black><td>
+    <table cellpadding=1 border=0 width=100%>\n"
+
+    # The items that have no hour
+    set hour ""
+    set start_time ""
+    set display_hour "No Time"
+    append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;[subst $hour_template]</font></td>"
+    if {[ns_set find $calendar_details ""] != -1} {
+        append return_html "<td bgcolor=white><font size=-1>"
+    } else {
+        append return_html "<td bgcolor=#cccccc><font size=-1>"
+    }
+    
+    # Go through events
+    while {1} {
+        set index [ns_set find $calendar_details ""]
+        if {$index == -1} {
+            break
+        }
+        
+        append return_html "[ns_set value $calendar_details $index]<br>\n"
+        
+        ns_set delete $calendar_details ""
     }
 
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
@@ -162,7 +187,7 @@ ad_proc dt_widget_day {
         }
 
         set display_hour [subst $hour_template]
-        append return_html "<tr bgcolor=#cccccc><td width=60><font size=-1>$display_hour</font></td>"
+        append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;$display_hour</font></td>"
         
         if {[ns_set find $calendar_details $index_hour] != -1} {
             append return_html "<td bgcolor=white><font size=-1>"
