@@ -19,7 +19,7 @@ widgets:</p>
 
 <blockquote>
 <form>
-<table width=95%>
+<table width="95%">
 
 <tr bgcolor=#eeeeee> <th>Procedure</th> <th>Widget</th> </tr>
 

@@ -8,7 +8,7 @@
 functions:</p>
 
 <blockquote>
-<table width=95%>
+<table width="95%">
 
 <tr bgcolor=#eeeeee align=left> <th>Procedure</th> <th>Result</th> </tr>
 
