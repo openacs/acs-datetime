@@ -152,8 +152,8 @@ ad_proc dt_widget_day {
         -start_hour {0}
         -end_hour {23}
         -show_nav 1
-        -prev_nav_template {<a href="?date=$yesterday">&lt;</a>}
-        -next_nav_template {<a href="?date=$tomorrow">&gt;</a>}
+        -prev_nav_template {<a href="?date=[ns_urlencode $yesterday]">&lt;</a>}
+        -next_nav_template {<a href="?date=[ns_urlencode $tomorrow]">&gt;</a>}
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
 	-header_text_color "white" 
@@ -206,7 +206,6 @@ ad_proc dt_widget_day {
             
             set item_val [ns_set value $calendar_details_2 $index]
             ns_set delete $calendar_details_2 $index
-
             # Count the num of events starting at this hour
             set n_starting_events($hour) [expr $n_starting_events($hour) + 1]
 
@@ -216,7 +215,7 @@ ad_proc dt_widget_day {
             # Count the num of events at the hours of operations
             for {set i 0} {$i <= $hours_diff} {incr i} {
                 set the_hour [expr $hour + $i]
-                set n_events($the_hour) [expr $n_events($the_hour) + 1]
+                set n_events($the_hour) [expr $n_events([expr $the_hour - $i]) + 1]
             }
         }
     }
@@ -230,7 +229,7 @@ ad_proc dt_widget_day {
         }
     }
     
-    # Select some basic stuff
+    # Select some basic stuff, sets day_of_the_week, yesterday, tomorrow vars
     db_1row select_day_info {}
 
     set return_html ""
