@@ -130,6 +130,7 @@ ad_proc dt_widget_day {
 
     # The items that have no hour
     set hour ""
+    set next_hour ""
     set start_time ""
     set display_hour "No Time"
     append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;[subst $hour_template]</font></td>"
@@ -152,6 +153,8 @@ ad_proc dt_widget_day {
     }
 
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
+
+        set next_hour [expr $hour + 1]
 
         if {$hour < 10} {
             set index_hour "0$hour"
