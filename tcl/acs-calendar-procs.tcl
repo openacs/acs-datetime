@@ -529,7 +529,8 @@ ad_proc -private dt_navbar_month {
     Returns the monthly navbar
 } {
     set now        [clock scan $date]
-    set curr_month [clock format $now -format "%B"]
+    set curr_month_en_US [clock format $now -format "%B"]
+    set curr_month_localized [_ acs-datetime.${curr_month_en_US}]
     set prev_month [clock format [clock scan "1 month ago" -base $now] -format "%Y-%m-%d"]
     set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]
 
@@ -539,7 +540,7 @@ ad_proc -private dt_navbar_month {
     <tr><td nowrap valign=middle>
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_month]\">
     <img border=0 src=[dt_left_arrow]></a>
-    <font size=-1><b>$curr_month</b></font>
+    <font size=-1><b>$curr_month_localized</b></font>
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\">
     <img border=0 src=[dt_right_arrow]></a>
     </td>
