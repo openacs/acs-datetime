@@ -55,27 +55,45 @@ ad_proc dt_widget_week {
 
     set current_date $date
 
-    # Get information for the week
-    db_1row select_week_info {}
-    
+    set date_list [dt_ansi_to_list $current_date]
+
+    set year [dt_trim_leading_zeros [lindex $date_list 0]]
+    set month [dt_trim_leading_zeros [lindex $date_list 1]]
+    set day [dt_trim_leading_zeros [lindex $date_list 2]]
+
+    set current_date_julian [dt_ansi_to_julian $year $month $day]
+
+    # 1 = Sun ... 7 = Sat
+    set current_date_weekday_no [expr [clock format [clock scan $date] -format %w] + 1]
+
+    # What day does the week start on?
+    # 0 = Sunday, 6 = Saturday
+    set first_day_of_week [lc_get firstdayofweek]
+
+    set first_day_of_week_julian [expr $current_date_julian - (($current_date_weekday_no + 6 - $first_day_of_week) % 7)]
+
+    set last_week [dt_julian_to_ansi [expr $current_date_julian - 7]]
+    set last_week_pretty [lc_time_fmt $last_week "%q"]
+    set next_week [dt_julian_to_ansi [expr $current_date_julian + 7]]
+    set next_week_pretty [lc_time_fmt $next_week "%q"]
+
     # Initialize the ns_set
-    if [empty_string_p $calendar_details] {
+    if { [empty_string_p $calendar_details] } {
 	set calendar_details [ns_set create calendar_details]
     }
 
-    # Loop through the days of the week
-    set julian $sunday_julian
-    set return_html "<table CELLPADDING=0 CELLSPACING=0 BORDER=0 width=95%>\n"
+    set julian $first_day_of_week_julian
+    set return_html "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"95%\">\n"
     
     # Navigation Bar
     append return_html "<tr><td>
-    <table cellpadding=3 cellspacing=0 border=0 width=90% class=\"table-display\">
-    <tr class=\"table-header\" bgcolor=lavender>
+    <table cellpadding=\"3\" cellspacing=\"0\" border=\"0\" width=\"90%\" class=\"table-display\">
+    <tr class=\"table-header\" bgcolor=\"lavender\">
     <td align=center>
     [subst $prev_week_template]
-    <FONT face=\"Arial,Helvetica\" SIZE=-1>
+    <font face=\"Arial,Helvetica\" size=\"-1\">
     <B>
-    [util_AnsiDatetoPrettyDate $sunday_date] - [util_AnsiDatetoPrettyDate $saturday_date]
+    [lc_time_fmt [dt_julian_to_ansi $first_day_of_week_julian] "%Q"] - [lc_time_fmt [dt_julian_to_ansi [expr $first_day_of_week_julian + 6]] "%Q"]
     </B>
     </FONT>
     [subst $next_week_template]
@@ -88,15 +106,10 @@ ad_proc dt_widget_week {
     <td>
     <table  class=\"table-display\" cellpadding=0 cellspacing=0 border=0 width=90%>"
 
-    
-    set days_of_week [list Sunday "[_ acs-datetime.Sunday]" Monday "[_ acs-datetime.Monday]" Tuesday "[_ acs-datetime.Tuesday]" Wednesday "[_ acs-datetime.Wednesday]" Thursday "[_ acs-datetime.Thursday]" Friday "[_ acs-datetime.Friday]" Saturday "[_ acs-datetime.Saturday]"]
-
-    foreach {eng_day day} $days_of_week {
-
-        set lower_day [string tolower $eng_day]
-        set julian [set ${lower_day}_julian]
-        set date [set ${lower_day}_date]
-        set pretty_date [util_AnsiDatetoPrettyDate $date]
+    for { set julian $first_day_of_week_julian } { $julian < [expr $first_day_of_week_julian + 7] } { incr julian } {
+        set date [dt_julian_to_ansi $julian]
+        set pretty_date [string totitle [lc_time_fmt $date "%q"]]
+        set day [string totitle [lc_time_fmt $date "%A"]]
         set day_html [subst $day_template]
 
         if {$date == $today_date} {
@@ -136,7 +149,6 @@ ad_proc dt_widget_week {
 
 
         append return_html "</td></tr>\n"
-        incr julian
     }
 
     append return_html "</table></td></tr></table>"
@@ -184,12 +196,25 @@ ad_proc dt_widget_day {
 	set calendar_details [ns_set create calendar_details]
     }
 
+    for { set hour 0 } { $hour < 24 } { incr hour } { 
+        if { ($hour < $start_hour || $hour > $end_hour) && [ns_set find $calendar_details [format "%02d" $hour]] != -1 } {
+            if { $hour < $start_hour } {
+                set start_hour $hour
+            } elseif { $hour > $end_hour } {
+                set end_hour $hour
+            }
+        }
+    }
+
     # Collect some statistics about the events (for overlap)
     for {set hour $start_hour} {$hour <= 23} {incr hour} {
         set n_events($hour) 0
         set n_starting_events($hour) 0
     }
-        
+
+    # Count number of overlapping events each hour
+
+    # Make a copy of the calendar_details set that we can work on for a minute, discard afterwards.
     set calendar_details_2 [ns_set copy $calendar_details]
 
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
@@ -233,6 +258,8 @@ ad_proc dt_widget_day {
     
     # Select some basic stuff, sets day_of_the_week, yesterday, tomorrow vars
     db_1row select_day_info {}
+    
+    set day_of_the_week [string totitle [lc_time_fmt $current_date "%Q"]]
 
     set return_html ""
 
@@ -247,7 +274,7 @@ ad_proc dt_widget_day {
     append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr><td><table cellpadding=1 cellspacing=0 border=0 width=100%>
 "
 
-    # The items that have no hour
+    # The items that have no hour (all day events)
     set hour ""
     set next_hour ""
     set start_time ""
@@ -274,7 +301,8 @@ ad_proc dt_widget_day {
 
     append return_html "</font>
     </td></tr>"
-    
+
+    # Normal hour-by-hour display
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
         
         set next_hour [expr $hour + 1]
@@ -284,33 +312,8 @@ ad_proc dt_widget_day {
         } else {
             set index_hour $hour
         }
-
-        # display stuff
-        if {$hour >= 12} {
-            set ampm_hour [expr $hour - 12]
-            set pm 1
-        } else {
-            set ampm_hour $hour
-            set pm 0
-        }
-
-        if {$ampm_hour == 0} {
-            set ampm_hour 12
-        }
-
-        if {$ampm_hour < 10} {
-            set display_hour "$ampm_hour"
-        } else {
-            set display_hour "$ampm_hour"
-        }
-
-        append display_hour ":00 "
-
-        if {$pm} {
-            append display_hour "pm"
-        } else {
-            append display_hour "am"
-        }
+        
+        set display_hour [string tolower [string trimleft [lc_time_fmt "0000-00-00 ${hour}:00:00" "%X"] 0]]
 
 	if { $odd_row_p } {
 	    set class "z_light"
@@ -420,15 +423,15 @@ ad_proc -public dt_widget_list {
     }
 
     if {[empty_string_p $start_date] && ![empty_string_p $end_date]} {
-        set title "Items until [util_AnsiDatetoPrettyDate $end_date]"
+        set title "Items until [lc_time_fmt $end_date "%Q"]"
     }
 
     if {![empty_string_p $start_date] && [empty_string_p $end_date]} {
-        set title "Items starting [util_AnsiDatetoPrettyDate $start_date]"
+        set title "Items starting [lc_time_fmt $start_date "%Q"]"
     }
 
     if {![empty_string_p $start_date] && ![empty_string_p $end_date]} {
-        set title "[_ acs-datetime.Items_from] [util_AnsiDatetoPrettyDate $start_date] [_ acs-datetime.to] [util_AnsiDatetoPrettyDate $end_date]"
+        set title "[_ acs-datetime.Items_from] [lc_time_fmt $start_date "%Q"] [_ acs-datetime.to] [lc_time_fmt $end_date "%Q"]"
     }
 
     set return_html "<b>$title</b><p>"

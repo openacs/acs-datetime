@@ -43,9 +43,8 @@ ad_proc dt_widget_month {
     HTML formatting) that represents the details. 
 } {
     if {[string equal $days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"]} {
-	set days_of_week [list [_ acs-datetime.Sunday] [_ acs-datetime.Monday] [_ acs-datetime.Tuesday] [_ acs-datetime.Wednesday] [_ acs-datetime.Thursday] [_ acs-datetime.Friday] [_ acs-datetime.Saturday]]
+	set days_of_week [nsv_get locale "[lang::conn::locale],day"]
     }
-
 
     dt_get_info $date
 
@@ -58,7 +57,7 @@ ad_proc dt_widget_month {
     set day_of_week $first_day_of_month
     set julian_date $first_julian_date
 
-    set month_heading [format "%s %s" $month $year]
+    set month_heading [string totitle [lc_time_fmt $date "%B %Y"]]
     set next_month_url ""
     set prev_month_url ""
 
@@ -75,7 +74,7 @@ ad_proc dt_widget_month {
     # We offer an option to put the links to next and previous months
     # in the title bar
 
-    if { $prev_next_links_in_title == 0 } {
+    if { !$prev_next_links_in_title } {
 	set title "
 	<td colspan=7 align=center>
 	<font size=$header_text_size color=$header_text_color><b>$month_heading</b></font>
@@ -102,7 +101,12 @@ ad_proc dt_widget_month {
     <tr bgcolor=$header_bgcolor> $title </tr>
     <tr bgcolor=$day_header_bgcolor class=\"table-header\">\n"
 
-    foreach day_of_week $days_of_week {
+    set days_of_week {}
+    foreach day [nsv_get locale [lang::conn::locale],day] {
+        lappend days_of_week [string totitle $day]
+    }
+    for { set i 0 } { $i < 7 } { incr i } {
+        set day_of_week [lindex $days_of_week [expr ($i + $first_day_of_week) % 7 ]]
 	append output "
 	<td width=14% align=center class=\"no-border\">
 	<font face=\"Verdana,Arial,Helvetica\" size=$day_header_size color=$day_text_color>
@@ -433,6 +437,7 @@ ad_proc -private dt_right_arrow {} {
 }
 
 ad_proc -private dt_navbar_view {
+    {-link_current_view:boolean}
     view
     base_url
     date
@@ -457,8 +462,10 @@ ad_proc -private dt_navbar_view {
 	    Week {set text "[_ acs-datetime.Week]"}
 	    Month {set text "[_ acs-datetime.Month]"}
 	}
+        
+        set url "${base_url}view=$viewname&date=$date"
 
-        if { $viewname == $view } {
+        if { !$link_current_view_p && [string equal $viewname $view] } {
             # current view
             append result "<td class=\"selected\">
     <font size=-1><b>$text</b></font>
@@ -466,7 +473,7 @@ ad_proc -private dt_navbar_view {
     "
         } else {
             append result "<td class=\"no-border\">
-    <a href=\"$base_url" "view=$viewname&date=$date\">
+    <a href=\"$url\">
     <font size=-1><b>$text</b></font></a>
     </td>
     "
@@ -529,20 +536,23 @@ ad_proc -private dt_navbar_month {
     Returns the monthly navbar
 } {
     set now        [clock scan $date]
-    set curr_month_en_US [clock format $now -format "%B"]
-    set curr_month_localized [_ acs-datetime.${curr_month_en_US}]
+
+
+    set curr_month_localized [string totitle [lc_time_fmt [clock_to_ansi $now] "%B %Y"]]
+
     set prev_month [clock format [clock scan "1 month ago" -base $now] -format "%Y-%m-%d"]
     set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]
+
+    set prev_month_localized [string totitle [lc_time_fmt $prev_month "%B %Y"]]
+    set next_month_localized [string totitle [lc_time_fmt $next_month "%B %Y"]]
 
     append results "
     <tr><td class=\"bottom-border\" nowrap align=center colspan=5>
     <table cellspacing=0 cellpadding=1 border=0>
     <tr><td nowrap valign=middle>
-    <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_month]\">
-    <img border=0 src=[dt_left_arrow]></a>
+    <a href=\"${base_url}view=$view&date=[ns_urlencode $prev_month]\" title=\"$prev_month_localized\"><img border=0 src=[dt_left_arrow]></a>
     <font size=-1><b>$curr_month_localized</b></font>
-    <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\">
-    <img border=0 src=[dt_right_arrow]></a>
+    <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\" title=\"$next_month_localized\"><img border=0 src=[dt_right_arrow]></a>
     </td>
     </tr>\n"
 
@@ -551,7 +561,8 @@ ad_proc -private dt_navbar_month {
 
 
 ad_proc dt_widget_calendar_navigation { 
-    {} 
+    {-today_bgcolor "#e9e99c"} 
+    -link_current_view:boolean
     {base_url ""} 
     {view "week"} 
     {date ""} 
@@ -604,20 +615,25 @@ ad_proc dt_widget_calendar_navigation {
     set output "
     <center><table class=\"table-display\" border=1 cellpadding=1 cellspacing=0 width=160>
 
-    [dt_navbar_view $view $base_url $date]
+    [dt_navbar_view -link_current_view=$link_current_view_p $view $base_url $date]
 
     [dt_navbar_year $view $base_url $date]\n"
 
     if [string equal $view month] {
 	# month view
+
 	append output "
 	<tr>
 	<td class=\"no-borders\" colspan=5>
 	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
 	<tr>
 	"
+        
+	set months_list [list]
+        foreach month_name [nsv_get locale [lang::conn::locale],mon] {
+            lappend months_list [string totitle $month_name]
+        }
 
-	set months_list [dt_month_names]
 	set now         [clock scan $date]
 	set curr_month  [expr [dt_trim_leading_zeros [clock format $now -format "%m"]]-1]
 
@@ -681,6 +697,8 @@ ad_proc dt_widget_calendar_navigation {
 	append output "</tr>"
 
     } else {
+        
+        # day or week view
 
 	append output "
 	[dt_navbar_month $view $base_url $date]
@@ -693,11 +711,14 @@ ad_proc dt_widget_calendar_navigation {
 	<tr>
 	"
 
-	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
+        set first_day_of_week [nsv_get locale [lang::conn::locale],firstdayofweek]
 
-
-	foreach day_of_week $days_of_week {
-	    append output "<td align=right><font size=-1><b>$day_of_week</b></td>\n"
+	set days_of_week {}
+        foreach day [nsv_get locale [lang::conn::locale],abday] {
+            lappend days_of_week [string toupper [string range $day 0 0]]
+        }
+	for { set i 0 } { $i < 7 } { incr i } {
+	    append output "<td align=right><font size=-1><b>[lindex $days_of_week [expr ($i + $first_day_of_week) % 7 ]]</b></td>\n"
 	}
 	append output "</tr><tr><td colspan=7><hr></td></tr>"
 
@@ -705,6 +726,8 @@ ad_proc dt_widget_calendar_navigation {
 	set julian_date $first_julian_date
 	set day_number  $first_day
 
+        set julian_date_todays_date [dt_ansi_to_julian_single_arg [dt_sysdate]]
+        
 	while {1} {
 
 	    if {$julian_date < $first_julian_date_of_month} {
@@ -732,20 +755,26 @@ ad_proc dt_widget_calendar_navigation {
 		append output "<tr>\n"
 	    }
 
+            if { $julian_date == $julian_date_todays_date } {
+                set bgcolor " bgcolor=\"${today_bgcolor}\""
+            } else {
+                set bgcolor {}
+            }
+
 	    if {$before_month_p || $after_month_p} {
 		append output "
-		<td align=right>
+		<td align=\"right\"${bgcolor}>
 		<a href=\"$base_url" "view=$view&date=[ns_urlencode $ansi_date]\">
 		<font color=gray>$day_number</font></a>
 		</td>"
 	    } elseif {$julian_date == $julian_date_today} {
 		append output "
-		<td align=right>
+		<td align=\"right\"${bgcolor}>
 		<b>$day_number</b>
 		</td>"
 	    } else {
 		append output "
-		<td align=right>
+		<td align=\"right\"${bgcolor}>
 		<a href=\"$base_url" "view=$view&date=[ns_urlencode $ansi_date]\">
 		<font color=blue>$day_number</font></a>
 		</td>"
@@ -788,10 +817,10 @@ ad_proc dt_widget_calendar_navigation {
     }
     
     append output "
-    [_ acs-datetime.is] [dt_ansi_to_pretty]</font></td></tr>
+    [_ acs-datetime.is] [lc_time_fmt [dt_sysdate] "%q"]</font></td></tr>
     <tr><td align=center><br>
     <form method=get action=$base_url>
-    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>[_ acs-datetime.Date_as] YYYYMMDD</font>
+    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>[_ acs-datetime.Date_as_YYYYMMDD]</font>
     <INPUT TYPE=hidden name=view value=day>
     "
 
@@ -821,7 +850,7 @@ ad_proc -private dt_get_info {
     Returns the following (example for the_date = 2000-12-08):
 
     julian_date_today           2451887
-    month                       December
+    month                       December (localized)
     year                        2000
     first_julian_date           2451875
     first_julian_date_of_month  2451880
@@ -835,8 +864,8 @@ ad_proc -private dt_get_info {
     prev_month                  2000-11-08
     beginning_of_year           2000-01-01
     days_in_last_month          30
-    next_month_name             January
-    prev_month_name             November
+    next_month_name             January (localized)
+    prev_month_name             November (localized)
 
     Input:
 
@@ -862,7 +891,7 @@ ad_proc -private dt_get_info {
     ns_set put $dt_info_set julian_date_today \
         [dt_ansi_to_julian $year $month $day]
     ns_set put $dt_info_set month \
-        [clock format [clock scan $the_date] -format %B]
+        [lc_time_fmt $the_date "%B"]
     ns_set put $dt_info_set year \
         [clock format [clock scan $the_date] -format %Y]
     ns_set put $dt_info_set first_julian_date_of_month \
@@ -885,19 +914,23 @@ ad_proc -private dt_get_info {
         [dt_next_month_name $year $month]
     ns_set put $dt_info_set prev_month_name \
         [dt_prev_month_name $year $month]
+    ns_set put $dt_info_set first_day_of_week \
+        [nsv_get locale [lang::conn::locale],firstdayofweek]
 
-    # We need the variables from the ns_set
+    # We need the variables from the ns_set here
     ad_ns_set_to_tcl_vars $dt_info_set
 
     ns_set put $dt_info_set first_julian_date \
-        [expr $first_julian_date_of_month + 1 - $first_day_of_month]
+        [expr $first_julian_date_of_month - (($first_day_of_month + 6 - $first_day_of_week) % 7)]
+
     ns_set put $dt_info_set first_day \
-        [expr $days_in_last_month + 2 - $first_day_of_month]
+        [expr $days_in_last_month - (($first_day_of_month + 6 - $first_day_of_week) %7) + 1]
+
     ns_set put $dt_info_set last_julian_date_in_month \
         [expr $first_julian_date_of_month + $num_days_in_month - 1]
 
     set days_in_next_month \
-        [expr (7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7]
+        [expr (7-(($num_days_in_month + $first_day_of_month - $first_day_of_week - 1) % 7)) % 7]
 
     ns_set put $dt_info_set last_julian_date \
         [expr $first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month]

@@ -49,27 +49,26 @@ ad_proc dt_format {
 ad_proc dt_month_names {} {
     Returns the calendar month names as a Tcl list (January, February, ...)
 } {
-    #set month_names [list]
-    
-    #for {set i 1} {$i <= 12} {incr i} {
-	#lappend month_names [clock format [clock scan "2000-$i-1"] -format "%B"]
-    #}
-
-    #return $month_names
-
-    return [list [_ acs-datetime.January] [_ acs-datetime.February] [_ acs-datetime.March] [_ acs-datetime.April] [_ acs-datetime.May] [_ acs-datetime.June] [_ acs-datetime.July] [_ acs-datetime.August] [_ acs-datetime.September] [_ acs-datetime.October] [_ acs-datetime.November] [_ acs-datetime.December]]
+    return [nsv_get locale [lang::conn::locale],mon]
 }
 
 ad_proc dt_month_abbrev {} {
     Returns the calendar month names as a Tcl list (Jan, Feb, ...)
 } {
-    set month_names [list]
-    
-    for {set i 1} {$i <= 12} {incr i} {
-	lappend month_names [clock format [clock scan "2000-$i-1"] -format "%b"]
-    }
+    return [nsv_get locale [lang::conn::locale],abmon]
+}
 
-    return $month_names
+ad_proc dt_ansi_to_julian_single_arg {
+    ansi
+    {era ""}
+} {
+    set date_list [dt_ansi_to_list $ansi]
+
+    set year [dt_trim_leading_zeros [lindex $date_list 0]]
+    set month [dt_trim_leading_zeros [lindex $date_list 1]]
+    set day [dt_trim_leading_zeros [lindex $date_list 2]]
+    
+    return [dt_ansi_to_julian $year $month $day $era]
 }
 
 ad_proc dt_ansi_to_julian {
@@ -276,7 +275,7 @@ ad_proc dt_next_month_name {
       set month [expr $month + 1]
     }
 
-    return [clock format [clock scan $year-$month-01] -format %B]
+    return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
 }
 
 ad_proc dt_prev_month_name {
@@ -292,7 +291,7 @@ ad_proc dt_prev_month_name {
       set month [expr $month - 1]
     }
 
-    return [clock format [clock scan $year-$month-01] -format %B]
+    return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
 }
 
 ad_proc -public dt_widget_datetime { 
