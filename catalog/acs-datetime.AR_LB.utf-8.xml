@@ -3,11 +3,11 @@
 
   <msg key="Date">تاريخ</msg>
   <msg key="Date_as">تأريخ كـَ</msg>
-  <msg key="Date_as_YYYYMMDD">تأريخ كـَ سسسسسششيي</msg>
+  <msg key="Date_as_YYYYMMDD">تأريخ كـَ س س س س ش ش ي ي</msg>
   <msg key="Day">يوم</msg>
   <msg key="Day_of_Week">يوم من الإسبوع</msg>
-  <msg key="is">يكون</msg>
-  <msg key="Items_from">مواد من</msg>
+  <msg key="is">هو</msg>
+  <msg key="Items_from">مواد منذ</msg>
   <msg key="List">القائمة</msg>
   <msg key="Month">شهر</msg>
   <msg key="to">إلى</msg>
