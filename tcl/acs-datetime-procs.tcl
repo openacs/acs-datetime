@@ -283,11 +283,11 @@ ad_proc dt_prev_month_name {
 } {
     Returns the ANSI date for the previous month
 } {
-    if {$month == 12} {
-      set year [expr $year + 1]
-      set month 01
+    if {$month == 1} {
+      set year [expr $year - 1]
+      set month 12
     } else {
-      set month [expr $month + 1]
+      set month [expr $month - 1]
     }
 
     return [clock format [clock scan $year-$month-01] -format %B]
