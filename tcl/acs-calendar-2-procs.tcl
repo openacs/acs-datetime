@@ -96,7 +96,8 @@ ad_proc dt_widget_day {
 	-day_bgcolor "#DDDDDD" 
 	-today_bgcolor "#DDDDDD" 
 	-day_text_color "white" 
-	-empty_bgcolor "white"  
+	-empty_bgcolor "white"
+        -overlap_p 0
     }
 } {
     Returns a calendar for a specific day, with details supplied by
@@ -125,19 +126,17 @@ ad_proc dt_widget_day {
     }
 
     # Loop through the hours of the day
-    append return_html "<table border=0 cellpadding=1 width=$calendar_width><tr bgcolor=black><td>
-    <table cellpadding=1 border=0 width=100%>\n"
+    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr bgcolor=#999999><td>
+    <table cellpadding=1 cellspacing=1 border=0 width=100%>\n"
 
     # The items that have no hour
     set hour ""
     set next_hour ""
     set start_time ""
     set display_hour "No Time"
-    append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;[subst $hour_template]</font></td>"
+    append return_html "<tr bgcolor=#cccccc><td width=70 bgcolor=white><font size=-1>&nbsp;[subst $hour_template]</font></td>"
     if {[ns_set find $calendar_details ""] != -1} {
-        append return_html "<td bgcolor=white><font size=-1>"
-    } else {
-        append return_html "<td bgcolor=#cccccc><font size=-1>"
+        append return_html "<td bgcolor=white>"
     }
     
     # Go through events
@@ -192,12 +191,6 @@ ad_proc dt_widget_day {
         set display_hour [subst $hour_template]
         append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;$display_hour</font></td>"
         
-        if {[ns_set find $calendar_details $index_hour] != -1} {
-            append return_html "<td bgcolor=white><font size=-1>"
-        } else {
-            append return_html "<td bgcolor=#cccccc><font size=-1>"
-        }
-
         # Go through events
         while {1} {
             set index [ns_set find $calendar_details $index_hour]
@@ -205,12 +198,18 @@ ad_proc dt_widget_day {
                 break
             }
 
-            append return_html "[ns_set value $calendar_details $index]<br>\n"
+            if {$overlap_p} {
+                set end_time [expr $hour + 2]
+                set start_time $hour
+                append return_html "<td valign=top bgcolor=white rowspan=[expr $end_time - $start_time + 1]><font size=-1>[ns_set value $calendar_details $index]</font></td>"
+            } else {
+                append return_html "[ns_set value $calendar_details $index]<br>\n"
+            }
 
             ns_set delete $calendar_details $index
         }
 
-        append return_html "</font></td></tr>\n"
+        append return_html "</tr>\n"
     }
 
     append return_html "</table></td></tr></table>"
