@@ -390,7 +390,7 @@ ad_proc dt_widget_calendar_year {
     passed in date.  Defaults to this year. 
 } {
     if {[string equal $days_of_week "S M T W T F S"]} {
-	set days_of_week "[_ acs-datetime.lt_S_M_T_W_T_F_S________]"
+	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
     }
 
     dt_get_info $date
