@@ -141,14 +141,14 @@ ad_proc dt_widget_day {
     
     # Go through events
     while {1} {
-        set index [ns_set find $calendar_details ""]
+        set index [ns_set find $calendar_details "X"]
         if {$index == -1} {
             break
         }
         
         append return_html "[ns_set value $calendar_details $index]<br>\n"
         
-        ns_set delete $calendar_details ""
+        ns_set delete $calendar_details $index
     }
 
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
