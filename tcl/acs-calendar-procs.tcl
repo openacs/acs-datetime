@@ -416,27 +416,26 @@ ad_proc -private dt_navbar_view {
     # properly
 
     append result "
-    <tr align=center>    
-     [ad_decode $view "list" "<td bgcolor=ffd700>" "<td>"]    
-    <a href=\"$base_url" "view=list&date=$date\">
-    <font size=-1 color=blue>List</font></a>
+    <tr align=center>"
+    
+    foreach viewname {list day week month year} {
+        set text [string toupper $viewname 0]
+        if { $viewname == $view } {
+            # current view
+            append result "<td bgcolor=ffd700>
+    <font size=-1>$text</font>
     </td>
-     [ad_decode $view "day" "<td bgcolor=ffd700>" "<td>"]    
-    <a href=\"$base_url" "view=day&date=$date\">
-    <font size=-1 color=blue>Day</font></a>
+    "
+        } else {
+            append result "<td>
+    <a href=\"$base_url" "view=$viewname&date=$date\">
+    <font size=-1 color=blue>$text</font></a>
     </td>
-     [ad_decode $view "week" "<td bgcolor=ffd700>" "<td>"]
-    <a href=\"$base_url" "view=week&date=$date\">
-    <font size=-1 color=blue>Week</font></a>
-    </td>
-     [ad_decode $view "month" "<td bgcolor=ffd700>" "<td>"]    
-    <a href=\"$base_url" "view=month&date=$date\">
-    <font size=-1 color=blue>Month</font></a>
-    </td>
-     [ad_decode $view "year" "<td bgcolor=ffd700>" "<td>"]
-    <a href=\"$base_url" "view=year&date=$date\">
-    <font size=-1 color=blue>Year</a>
-    </td>
+    "
+        }
+    }
+
+    append result "
     </tr>
     "
 
