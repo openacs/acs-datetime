@@ -13,7 +13,8 @@ ad_proc dt_widget_month {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday" 
+	-days_of_week "deprecated"
+        -weekday_format "long"
 	-large_calendar_p 1 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -42,10 +43,6 @@ ad_proc dt_widget_month {
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details. 
 } {
-    if {[string equal $days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday"]} {
-	set days_of_week [nsv_get locale "[lang::conn::locale],day"]
-    }
-
     dt_get_info $date
 
     set today_date [dt_sysdate]    
@@ -101,16 +98,11 @@ ad_proc dt_widget_month {
     <tr bgcolor=$header_bgcolor> $title </tr>
     <tr bgcolor=$day_header_bgcolor class=\"table-header\">\n"
 
-    set days_of_week {}
-    foreach day [nsv_get locale [lang::conn::locale],day] {
-        lappend days_of_week [string totitle $day]
-    }
-    for { set i 0 } { $i < 7 } { incr i } {
-        set day_of_week [lindex $days_of_week [expr ($i + $first_day_of_week) % 7 ]]
+    foreach weekday [dt_get_days_of_week -weekday_format $weekday_format] {
 	append output "
 	<td width=14% align=center class=\"no-border\">
 	<font face=\"Verdana,Arial,Helvetica\" size=$day_header_size color=$day_text_color>
-	<b>$day_of_week</b>
+	<b>$weekday</b>
 	</font>
 	</td>\n"
     }
@@ -216,7 +208,8 @@ ad_proc dt_widget_month_small {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week "deprecated" 
+        -weekday_format "1"
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -234,15 +227,14 @@ ad_proc dt_widget_month_small {
     }
 } {
     Returns a small calendar for a specific month. Defaults to this month.
-} {
-    if {[string equal $days_of_week "S M T W T F S"]} {
-	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
-    }
 
+    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
+    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
+} {
     return [dt_widget_month \
 	    -calendar_details $calendar_details \
 	    -date $date \
-	    -days_of_week $days_of_week \
+	    -weekday_format $weekday_format \
 	    -large_calendar_p $large_calendar_p \
 	    -master_bgcolor $master_bgcolor \
 	    -header_bgcolor $header_bgcolor \
@@ -263,7 +255,8 @@ ad_proc dt_widget_month_centered {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week "deprecated"
+        -weekday_format "1"
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -282,12 +275,11 @@ ad_proc dt_widget_month_centered {
 } {
     Returns a calendar for a specific month, with details supplied by
     Julian date. Defaults to this month.
-} {
-    if {[string equal $days_of_week "S M T W T F S"]} {
-	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
-    }
 
-    set output ""
+    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
+    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
+} {
+    set output {}
 
     dt_get_info $date
 
@@ -296,14 +288,14 @@ ad_proc dt_widget_month_centered {
     <tr valign=top>
     <td>
 
-    [dt_widget_month_small -calendar_details $calendar_details -date $prev_month -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]</td>
+    [dt_widget_month_small -calendar_details $calendar_details -date $prev_month -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]</td>
 
     <td>
-    [dt_widget_month_small -calendar_details $calendar_details -date $date -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
+    [dt_widget_month_small -calendar_details $calendar_details -date $date -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
     </td>
 
     <td>
-    [dt_widget_month_small -calendar_details $calendar_details -date $next_month -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
+    [dt_widget_month_small -calendar_details $calendar_details -date $next_month -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
     </td>
     </tr>
     </table>\n"
@@ -315,7 +307,8 @@ ad_proc dt_widget_year {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week "deprecated"
+        -weekday_format "1"
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -335,11 +328,10 @@ ad_proc dt_widget_year {
     Returns a year of small calendars given the starting month as a
     date.  Defaults to this month.  Data in calendar_details will be
     ignored.
-} { 
-    if {[string equal $days_of_week "S M T W T F S"]} {
-	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
-    }
 
+    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
+    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
+} { 
     if { $width < 1 || $width > 12 } {
 	return "Width must be between 1 and 12"
     }
@@ -352,7 +344,7 @@ ad_proc dt_widget_year {
 	
 	append output "
 	<td>
-	[dt_widget_month_small -calendar_details $calendar_details -date $date -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size	-day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor -next_month_template $next_month_template -prev_month_template $prev_month_template ]
+	[dt_widget_month_small -calendar_details $calendar_details -date $date -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size	-day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor -next_month_template $next_month_template -prev_month_template $prev_month_template ]
 	</td>\n"
 
 	incr current_width
@@ -372,7 +364,8 @@ ad_proc dt_widget_calendar_year {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week "deprecated" 
+        -weekday_format "1"
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -392,17 +385,16 @@ ad_proc dt_widget_calendar_year {
 } {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
-} {
-    if {[string equal $days_of_week "S M T W T F S"]} {
-	set days_of_week "[_ acs-datetime.S_M_T_W_T_F_S]"
-    }
 
+    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
+    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
+} {
     dt_get_info $date
 
     return [dt_widget_year \
 	    -calendar_details $calendar_details \
 	    -date $beginning_of_year \
-	    -days_of_week $days_of_week \
+	    -weekday_format $weekday_format \
 	    -large_calendar_p $large_calendar_p \
 	    -master_bgcolor $master_bgcolor \
 	    -header_bgcolor $header_bgcolor \
@@ -559,9 +551,51 @@ ad_proc -private dt_navbar_month {
     return $results
 }
 
+ad_proc dt_get_days_of_week {
+    {-weekday_format "1"}
+} {
+    Get the localized names of the days of week, starting with the
+    correct day according to the locale (e.g., Sunday in the US, Monday in
+    Europe).
+    
+    @param weekday_format: '1' for one-character abbreviations, 'ab' for 3-character abbreviations, 
+    and 'long' for full weekday names.
+    @return A list of localized weekday names starting with the first day of week according to the connection's locale.
+} {
+    set first_day_of_week [lc_get firstdayofweek]
+    
+    # Let's first get the localized weekday names from the localization-procs
+    switch -exact $weekday_format {
+        1 {
+            set localized_weekdays [list]
+            foreach day [lc_get abday] {
+                lappend localized_weekdays [string range $day 0 0]
+            }
+        }
+        ab {
+            set localized_weekdays [lc_get abday]
+        }
+        long {
+            set localized_weekdays [lc_get day]
+        }
+        default {
+            error "dt_get_days_of_week only knows about formats 1, ab, and long. We were given the format '$weekday_format'."
+        }
+    }
+    
+    # And now let's put them in the right order according to what day the week starts
+    set days_of_week [list]
+    for { set i 0 } { $i < 7 } { incr i } {
+        lappend days_of_week [string totitle [lindex $localized_weekdays [expr ($i + $first_day_of_week) % 7 ]]]
+    }
+
+    return $days_of_week
+}
+
 
 ad_proc dt_widget_calendar_navigation { 
     {-today_bgcolor "#e9e99c"} 
+    {-weekday_format "1"}
     -link_current_view:boolean
     {base_url ""} 
     {view "week"} 
@@ -580,7 +614,6 @@ ad_proc dt_widget_calendar_navigation {
 
     The date must be formatted YYYY-MM-DD.
 } { 
-
     # valid views are "list" "day" "week" "month" "year"
 
     if {![exists_and_not_null base_url]} {
@@ -711,14 +744,8 @@ ad_proc dt_widget_calendar_navigation {
 	<tr>
 	"
 
-        set first_day_of_week [nsv_get locale [lang::conn::locale],firstdayofweek]
-
-	set days_of_week {}
-        foreach day [nsv_get locale [lang::conn::locale],abday] {
-            lappend days_of_week [string toupper [string range $day 0 0]]
-        }
-	for { set i 0 } { $i < 7 } { incr i } {
-	    append output "<td align=right><font size=-1><b>[lindex $days_of_week [expr ($i + $first_day_of_week) % 7 ]]</b></td>\n"
+	foreach weekday [dt_get_days_of_week -weekday_format 1] {
+	    append output "<td align=right><font size=-1><b>$weekday</b></td>\n"
 	}
 	append output "</tr><tr><td colspan=7><hr></td></tr>"
 

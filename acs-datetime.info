@@ -25,12 +25,15 @@
 
         <files>
             <file type="package_spec" path="acs-datetime.info"/>
+            <file path="catalog/acs-datetime.da_DK.ISO-8859-1.xml"/>
+            <file path="catalog/acs-datetime.en_US.ISO-8859-1.xml"/>
             <file type="query_file" db_type="oracle" path="tcl/acs-calendar-2-procs-oracle.xql"/>
             <file type="query_file" db_type="postgresql" path="tcl/acs-calendar-2-procs-postgresql.xql"/>
             <file type="tcl_procs" path="tcl/acs-calendar-2-procs.tcl"/>
             <file type="tcl_procs" path="tcl/acs-calendar-procs.tcl"/>
             <file type="tcl_procs" path="tcl/acs-datetime-procs.tcl"/>
             <file type="query_file" path="tcl/acs-datetime-procs.xql"/>
+            <file type="tcl_procs" path="tcl/test/acs-calendar-procs.tcl"/>
             <file type="documentation" path="www/doc/coversheet.html"/>
             <file type="documentation" path="www/doc/design.html"/>
             <file type="documentation" path="www/doc/examples/calendar-navigation.adp"/>
