@@ -735,8 +735,17 @@ ad_proc dt_widget_calendar_navigation {
     <tr><td align=center bgcolor=lavender colspan=5>
     <table cellspacing=0 cellpadding=1 border=0 bgcolor=lavender>
     <td><td>
-    <font size=-1><a href=\"$today_url\"><font color=blue>
-    <b>Today</b></font></a> is [dt_ansi_to_pretty]</font><br>
+    <font size=-1>"
+
+    if { $view == "day" && [dt_sysdate] == $date } {
+        append output "<b>Today</b>"
+    } else {
+        append output "<a href=\"$today_url\"><font color=blue>
+    <b>Today</b></font></a> "
+    }
+    
+    append output "
+    is [dt_ansi_to_pretty]</font><br>
     <form method=get action=$base_url>
     Go to: <INPUT TYPE=text name=date size=10> <INPUT type=submit value=go>
     <INPUT TYPE=hidden name=view value=day>
