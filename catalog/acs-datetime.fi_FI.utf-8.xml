@@ -8,6 +8,9 @@
   <msg key="Day_of_Week">Viikonpäivä</msg>
   <msg key="is">on</msg>
   <msg key="Items_from">Tapahtumat välillä</msg>
+  <msg key="List">Lista</msg>
+  <msg key="Month">Kuukausi</msg>
   <msg key="to">-</msg>
   <msg key="Today">Tänään</msg>
+  <msg key="Week">Viikko</msg>
 </message_catalog>

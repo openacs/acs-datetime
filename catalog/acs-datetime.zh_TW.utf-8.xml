@@ -8,6 +8,9 @@
   <msg key="Day_of_Week">Day_of_Week</msg>
   <msg key="is">是</msg>
   <msg key="Items_from">品項來自</msg>
+  <msg key="List">序列</msg>
+  <msg key="Month">月</msg>
   <msg key="to">到</msg>
   <msg key="Today">今日</msg>
+  <msg key="Week">週</msg>
 </message_catalog>

@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <message_catalog package_key="acs-datetime" package_version="4.0" locale="gl_ES" charset="ISO-8859-1">
 
-  <msg key="All_day">Todo o día</msg>
-  <msg key="back_one_day">retroceder un día</msg>
   <msg key="Date">Data</msg>
   <msg key="Date_as">Data en</msg>
   <msg key="Date_as_YYYYMMDD">Data en AAAAMMDD</msg>
   <msg key="Day">Día</msg>
   <msg key="Day_of_Week">Día da Semana</msg>
-  <msg key="days_of_week">Domingo Segunda Terceira Cuarta Quinta Sexta Sábado
-</msg>
-  <msg key="forward_one_day">avanzar un día</msg>
   <msg key="is">é</msg>
   <msg key="Items_from">Ítems de</msg>
-  <msg key="Items_until">Itens até @pretty_end_date@</msg>
   <msg key="List">Lista</msg>
-  <msg key="lt_Width_must_be_">Largura debe ser entre 1 e 12</msg>
   <msg key="Month">Mes</msg>
-  <msg key="short_days_of_week">D S T C Q S S</msg>
   <msg key="to">para</msg>
   <msg key="Today">Hoxe</msg>
   <msg key="Week">Semana</msg>

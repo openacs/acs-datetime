@@ -8,6 +8,9 @@
   <msg key="Day_of_Week">Ukedag</msg>
   <msg key="is">er</msg>
   <msg key="Items_from">Innhhold fra</msg>
+  <msg key="List">Liste</msg>
+  <msg key="Month">Måned</msg>
   <msg key="to">til</msg>
   <msg key="Today">Idag</msg>
+  <msg key="Week">Uke</msg>
 </message_catalog>

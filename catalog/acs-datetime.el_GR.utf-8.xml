@@ -6,5 +6,8 @@
   <msg key="Day">Ημέρα</msg>
   <msg key="Day_of_Week">Ημέρα της Ευδομάδας</msg>
   <msg key="is">είναι</msg>
+  <msg key="List">Λίστα</msg>
+  <msg key="Month">Μήνας</msg>
   <msg key="Today">Σήμερα</msg>
+  <msg key="Week">Ευδομάδα</msg>
 </message_catalog>

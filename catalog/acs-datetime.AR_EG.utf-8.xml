@@ -8,6 +8,9 @@
   <msg key="Day_of_Week">يوم من الإسبوع</msg>
   <msg key="is">يكون</msg>
   <msg key="Items_from">مواد من</msg>
+  <msg key="List">القائمة</msg>
+  <msg key="Month">شهر</msg>
   <msg key="to">إلى</msg>
   <msg key="Today">اليوم</msg>
+  <msg key="Week">اسبوع</msg>
 </message_catalog>

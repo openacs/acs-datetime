@@ -4,5 +4,7 @@
   <msg key="Date">Tarih</msg>
   <msg key="Day">Gün</msg>
   <msg key="Day_of_Week">Haftanın Günü</msg>
+  <msg key="Month">Ay</msg>
   <msg key="Today">Bugün</msg>
+  <msg key="Week">Hafta</msg>
 </message_catalog>

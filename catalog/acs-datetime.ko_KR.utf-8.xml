@@ -8,6 +8,9 @@
   <msg key="Day_of_Week">요일</msg>
   <msg key="is">은(는)</msg>
   <msg key="Items_from">로(으로)부터의 항목</msg>
+  <msg key="List">목록</msg>
+  <msg key="Month">월</msg>
   <msg key="to">까지</msg>
   <msg key="Today">오늘</msg>
+  <msg key="Week">일주일</msg>
 </message_catalog>

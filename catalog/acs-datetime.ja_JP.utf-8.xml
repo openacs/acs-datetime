@@ -8,6 +8,9 @@
   <msg key="Day_of_Week">曜日</msg>
   <msg key="is">is</msg>
   <msg key="Items_from">アイテム from</msg>
+  <msg key="List">一覧</msg>
+  <msg key="Month">月</msg>
   <msg key="to">to</msg>
   <msg key="Today">本日</msg>
+  <msg key="Week">週</msg>
 </message_catalog>

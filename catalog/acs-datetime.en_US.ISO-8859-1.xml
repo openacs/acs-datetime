@@ -23,6 +23,10 @@
 -- Daniël Mantione</description>
 
   <msg key="lt_Width_must_be_">Width must be between 1 and 12</msg>
+  <description key="lt_Width_must_be_">Does anybody know the context?
+
+--Anja Wicht</description>
+
   <msg key="Month">Month</msg>
   <msg key="short_days_of_week">S M T W T F S</msg>
   <msg key="to">to</msg>

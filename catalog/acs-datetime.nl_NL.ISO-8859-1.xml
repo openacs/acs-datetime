@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <message_catalog package_key="acs-datetime" package_version="4.0" locale="nl_NL" charset="ISO-8859-1">
 
-  <msg key="All_day">Alle dagen</msg>
-  <msg key="back_one_day">één dag terug</msg>
   <msg key="Date">Datum</msg>
   <msg key="Date_as">Datum als</msg>
   <msg key="Date_as_YYYYMMDD">Datum als JJJJMMDD</msg>
   <msg key="Day">Dag</msg>
-  <msg key="Day_of_Week">weekdag</msg>
-  <msg key="days_of_week">zondag maandag dinsdag woensdag donderdag vrijdag zaterdag</msg>
-  <msg key="forward_one_day">één dag vooruit</msg>
+  <msg key="Day_of_Week">Weekdag</msg>
   <msg key="is">is</msg>
-  <msg key="Items_from">Elementen uit</msg>
-  <msg key="Items_until">Elementen totaan @pretty_end_date@</msg>
-  <msg key="List">lijst</msg>
-  <msg key="lt_Width_must_be_">Breedte moet tussen 1 en 12 liggen</msg>
+  <msg key="Items_from">Items van</msg>
+  <msg key="List">Lijst</msg>
   <msg key="Month">Maand</msg>
-  <msg key="short_days_of_week">Z M D W D V Z</msg>
   <msg key="to">tot</msg>
   <msg key="Today">Vandaag</msg>
   <msg key="Week">Week</msg>
