@@ -171,6 +171,53 @@ ad_proc dt_widget_day {
 	set calendar_details [ns_set create calendar_details]
     }
 
+    # Collect some statistics about the events (for overlap)
+    for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
+        set n_events($hour) 0
+        set n_starting_events($hour) 0
+    }
+        
+    set calendar_details_2 [ns_set copy $calendar_details]
+
+    for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
+        if {$hour < 10} {
+            set index_hour "0$hour"
+        } else {
+            set index_hour $hour
+        }
+
+        # Go through events
+        while {1} {
+            set index [ns_set find $calendar_details_2 $index_hour]
+            if {$index == -1} {
+                break
+            }
+            
+            set item_val [ns_set value $calendar_details_2 $index]
+            ns_set delete $calendar_details_2 $index
+
+            # Count the num of events starting at this hour
+            set n_starting_events($hour) [expr $n_starting_events($hour) + 1]
+
+            # Diff the hours 
+            set hours_diff [dt_hour_diff -start_time [lindex $item_val 0] -end_time [lindex $item_val 1]]
+
+            # Count the num of events at the hours of operations
+            for {set i 0} {$i <= $hours_diff} {incr i} {
+                set the_hour [expr $hour + $i]
+                set n_events($the_hour) [expr $n_events($the_hour) + 1]
+            }
+        }
+    }
+
+    # the MAX num of events
+    set max_n_events 0
+    for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
+        if {$max_n_events < $n_events($hour)} {
+            set max_n_events $n_events($hour)
+        }
+    }
+    
     # Select some basic stuff
     db_1row select_day_info {}
 
@@ -183,7 +230,7 @@ ad_proc dt_widget_day {
     }
 
     # Loop through the hours of the day
-    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr bgcolor=#999999><td>
+    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr bgcolor=#666666><td>
     <table cellpadding=1 cellspacing=1 border=0 width=100%>\n"
 
     # The items that have no hour
@@ -192,7 +239,7 @@ ad_proc dt_widget_day {
     set start_time ""
     set display_hour "No Time"
     append return_html "<tr bgcolor=#cccccc><td width=70 bgcolor=white><font size=-1>&nbsp;[subst $hour_template]</font></td>"
-    append return_html "<td bgcolor=white><font size=-1>"
+    append return_html "<td bgcolor=white colspan=\"$max_n_events\"><font size=-1>"
     
     # Go through events
     while {1} {
@@ -252,6 +299,8 @@ ad_proc dt_widget_day {
         set display_hour [subst $hour_template]
         append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;$display_hour</font></td>"
         
+        set n_processed_events 0
+        
         # Go through events
         while {1} {
             set index [ns_set find $calendar_details $index_hour]
@@ -259,27 +308,34 @@ ad_proc dt_widget_day {
                 break
             }
 
+            incr n_processed_events
+
             if {$overlap_p} {
                 set one_item_val [ns_set value $calendar_details $index]
                 
-                # One ugly hack
-                set end_time_lst [split [lindex $one_item_val 1] ":"]
-
-                if {[string range [lindex $end_time_lst 1] 0 1] == "00"} {
-                    set end_time [expr [string trimleft [lindex $end_time_lst 0] 0] - 1]
-                } else {
-                    set end_time [lindex $end_time_lst 0]
-                }
-
-                ns_log Notice "$end_time_lst / $end_time / $start_time"
+                set hour_diff [dt_hour_diff -start_time [lindex $one_item_val 0] -end_time [lindex $one_item_val 1]]
 
                 set start_time $hour
-                append return_html "<td valign=top bgcolor=white rowspan=[expr $end_time - $start_time + 1]><font size=-1>[lindex $one_item_val 2]</font></td>"
+
+                # Calculate the colspan
+                if {$n_processed_events == $n_starting_events($hour)} {
+                    # This is the last one, make it as wide as possible
+                    set colspan [expr "$max_n_events - $n_events($hour) + 1"]
+                } {
+                    # Just make it one
+                    set colspan 1
+                } 
+
+                append return_html "<td valign=top bgcolor=white rowspan=[expr $hour_diff + 1] colspan=$colspan><font size=-1>[lindex $one_item_val 2]</font></td>"
             } else {
                 append return_html "[ns_set value $calendar_details $index]<br>\n"
             }
 
             ns_set delete $calendar_details $index
+        }
+
+        if {$n_processed_events == 0} {
+            append return_html "<td colspan=\"[expr "$max_n_events - $n_events($hour)"]\" bgcolor=#cccccc>&nbsp;</td>"
         }
 
         append return_html "</tr>\n"
@@ -327,5 +383,26 @@ ad_proc dt_no_time_p {
         return 1
     } else {
         return 0
+    }
+}
+
+ad_proc dt_hour_diff {
+    {-start_time:required}
+    {-end_time:required}
+} {
+    24-hour times input (23:00,02:00).
+    This gives us the num of hours of difference,
+    taking into account that if something goes until 5:01, it is one
+    more hour long than if it goes until 5:00
+} {
+    set start_hour [string trimleft [string range $start_time 0 1] 0]
+    set end_hour [string trimleft [string range $end_time 0 1] 0]
+    set end_minutes [string range $end_time 3 4]
+
+    # Special case when the hour is exact
+    if {[string compare $end_minutes "00"] == 0} {
+        return [expr "$end_hour - $start_hour - 1"]
+    } else {
+        return [expr "$end_hour - $start_hour"]
     }
 }
