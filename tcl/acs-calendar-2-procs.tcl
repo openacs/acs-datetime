@@ -3,7 +3,6 @@ ad_proc dt_widget_week {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday" 
 	-large_calendar_p 1 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -30,6 +29,11 @@ ad_proc dt_widget_week {
     set) put data in an ns_set calendar_details.  The key is the
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details. 
+
+    The variables in the templates are:
+    - day_template: julian,day,date,pretty_date
+    - next_week_template:
+    - prev_week_template:
 } {
 
     if {[empty_string_p $date]} {
@@ -48,14 +52,21 @@ ad_proc dt_widget_week {
 
     # Loop through the days of the week
     set julian $sunday_julian
-    set return_html "<table cellpadding=2 border=1 width=$calendar_width>\n"
-
+    set return_html "<table border=0 cellpadding=1 cellspacing=0 width=$calendar_width>
+    <tr bgcolor=black><td>
+    <table cellpadding=2 cellspacing=0 border=0 width=100%>\n"
+    
+    set days_of_week {Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
     foreach day $days_of_week {
 
+        set lower_day [string tolower $day]
+        set julian [set ${lower_day}_julian]
+        set date [set ${lower_day}_date]
+        set pretty_date [util_AnsiDatetoPrettyDate $date]
         set day_html [subst $day_template]
 
         append return_html "<tr bgcolor=#cccccc><td>$day_html</td></tr>
-        <tr><td>&nbsp;"
+        <tr bgcolor=white><td>&nbsp;"
         
         # Go through events
         while {1} {
@@ -73,7 +84,7 @@ ad_proc dt_widget_week {
         incr julian
     }
 
-    append return_html "</table>"
+    append return_html "</table></td></tr></table>"
     
     return $return_html
 }

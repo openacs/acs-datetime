@@ -8,11 +8,33 @@
 select   to_char(to_date(:current_date, 'yyyy-mm-dd'), 'D') 
 as day_of_the_week,
 to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday')) 
-as sunday_of_the_week,
+as sunday_date,
 to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday'),'J') 
 as sunday_julian,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd'), 'Saturday')) 
-as saturday_of_the_week
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 1) 
+as monday_date,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 1,'J') 
+as monday_julian,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 2) 
+as tuesday_date,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 2,'J') 
+as tuesday_julian,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 3) 
+as wednesday_date,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 3,'J') 
+as wednesday_julian,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 4) 
+as thursday_date,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 4,'J') 
+as thursday_julian,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 5) 
+as friday_date,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 5,'J') 
+as friday_julian,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6) 
+as saturday_date,
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6,'J') 
+as saturday_julian
 from     dual
 </querytext>
 </fullquery>
