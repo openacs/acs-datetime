@@ -44,6 +44,8 @@ ad_proc dt_widget_month {
 } {
     dt_get_info $date
 
+    set today_date [dt_sysdate]    
+
     if [empty_string_p $calendar_details] {
 	set calendar_details [ns_set create calendar_details]
     }
@@ -106,16 +108,12 @@ ad_proc dt_widget_month {
 
     append output "</tr><tr>\n"
 
-    # This is not necessary (ben)
-#      if { $fill_all_days == 0 } {
-#  	for { set n 1} { $n < $first_day_of_month } { incr n } {
-#  	    append output "<td bgcolor=$empty_bgcolor align=right valign=top></td>\n"
-#  	}
-#      }
-
     set day_of_week 1
     set julian_date $first_julian_date
     set day_number $first_day
+
+    set today_ansi_list [dt_ansi_to_list $today_date]
+    set today_julian_date [dt_ansi_to_julian [lindex $today_ansi_list 0] [lindex $today_ansi_list 1] [lindex $today_ansi_list 2]]
 
     while {1} {
 
@@ -152,7 +150,13 @@ ad_proc dt_widget_month {
 		append output "[subst $day_number_template]&nbsp;"
 	    }
 	} else {
-	    append output "<td bgcolor=$day_bgcolor align=left valign=top>[subst $day_number_template]&nbsp;"
+            if {$julian_date == $today_julian_date} {
+                set the_bgcolor $today_bgcolor
+            } else {
+                set the_bgcolor $day_bgcolor
+            }
+
+	    append output "<td bgcolor=$the_bgcolor align=left valign=top>[subst $day_number_template]&nbsp;"
 	}
 
 	if { (!$skip_day) && $large_calendar_p == 1 } {
