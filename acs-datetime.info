@@ -9,7 +9,7 @@
     
     <version name="4.0" url="http://openacs.org/apms/acs-datetime-4.0.apm">
         <owner url="http://openacs.org">OpenACS</owner>
-        <summary>Service package to support date and time functions</summary>
+        <summary>An API for date and time functions</summary>
         <release-date>2003-11-10</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
         <description format="text/html">Note: this version of the package requires acs-event(s) for a helper function. This requirement may go away in the future. </description>
