@@ -2,7 +2,7 @@
 
 <master src="master">
 
-<property name="title">@title@</property>
+<property name="title">@title;noquote@</property>
 
 <p>The following table offers examples of the various date and time
 functions:</p>

@@ -2,7 +2,7 @@
 
 <master src="master">
 
-<property name="title">@title@</property>
+<property name="title">@title;noquote@</property>
 
 
 <p>These are the various widgets to generate calendar views.  Note
