@@ -231,7 +231,7 @@ ad_proc dt_widget_day {
     }
 
     # Loop through the hours of the day
-    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr bgcolor=#666666><td>
+    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr><td class=\"tableborder\">
     <table cellpadding=1 cellspacing=1 border=0 width=100%>\n"
 
     # The items that have no hour
@@ -239,8 +239,8 @@ ad_proc dt_widget_day {
     set next_hour ""
     set start_time ""
     set display_hour "No Time"
-    append return_html "<tr bgcolor=#cccccc><td width=70 bgcolor=white><font size=-1>&nbsp;[subst $hour_template]</font></td>"
-    append return_html "<td bgcolor=white colspan=\"$max_n_events\"><font size=-1>"
+    append return_html "<tr class=\"greyfiller\"><td width=70 bgcolor=white><font size=-1>&nbsp;[subst $hour_template]</font></td>"
+    append return_html "<td class=\"white\" colspan=\"$max_n_events\"><font size=-1>"
     
     # Go through events
     while {1} {
@@ -298,7 +298,7 @@ ad_proc dt_widget_day {
         }
 
         set display_hour [subst $hour_template]
-        append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;$display_hour</font></td>"
+        append return_html "<tr class=\"white\"><td width=70><font size=-1>&nbsp;$display_hour</font></td>"
         
         set n_processed_events 0
         
@@ -338,7 +338,7 @@ ad_proc dt_widget_day {
                     set colspan 1
                 } 
 
-                append return_html "<td valign=top bgcolor=white rowspan=[expr $hour_diff + 1] colspan=$colspan><font size=-1>[lindex $one_item_val 2]</font></td>"
+                append return_html "<td valign=top class=\"white\" rowspan=[expr $hour_diff + 1] colspan=$colspan><font size=-1>[lindex $one_item_val 2]</font></td>"
             } else {
                 append return_html "[ns_set value $calendar_details $index]<br>\n"
             }
@@ -348,7 +348,7 @@ ad_proc dt_widget_day {
 
         if {$n_processed_events == 0 || ($n_events($hour) < $max_n_events && $must_complete_p)} {
             for {set i 0} {$i < [expr "$max_n_events - $n_events($hour)"]} {incr i} {
-                append return_html "<td colspan=\"1\" bgcolor=#cccccc>&nbsp;</td>"
+                append return_html "<td colspan=\"1\" class=\"greyfiller\">&nbsp;</td>"
             }
         }
 
