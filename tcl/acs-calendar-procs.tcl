@@ -420,7 +420,8 @@ ad_proc -private dt_navbar_view {
     append result "
     <tr align=center>"
     
-    foreach viewname {list day week month year} {
+    # ben: taking out year for now, since it doesn't work
+    foreach viewname {list day week month} {
         set text [string toupper $viewname 0]
         if { $viewname == $view } {
             # current view
@@ -528,6 +529,7 @@ ad_proc dt_widget_calendar_navigation {
     in that url's environment: the view and the date.
 
     Valid views are list, day, week, month, and year.  
+    (ben) for now I am disabling year, which doesn't work.
 
     The date must be formatted YYYY-MM-DD.
 } { 

@@ -382,14 +382,102 @@ ad_proc -public dt_widget_list {
     {-url_template {?order_by=$order_by}}
 } {
     create a listing widget for lists
+
+    (ben) I would like to ask forgiveness from the coding gods for this proc.
+    Right now this is a big hack to make the schedule look a lot like the SloanSpace v1.0
+    display. Once we have thought this through a bit more, I will generalize this proc. I promise.
+    Please forgive me.
 } {
-    set return_html "<ul>\n"
-    for {set i 0} {$i < [ns_set size $calendar_details]} {incr i} {
-        set item [ns_set value $calendar_details $i]
-        append return_html "<li> $item\n"
+    # Check for zero size
+    if {[ns_set size $calendar_details] == 0} {
+        return "<i>No Items</i>"
     }
 
-    append return_html "</ul>"
+    # The title
+    if {[empty_string_p $start_date] && [empty_string_p $end_date]} {
+        set title "All Items"
+    }
+
+    if {[empty_string_p $start_date] && ![empty_string_p $end_date]} {
+        set title "Items until [util_AnsiDatetoPrettyDate $end_date]"
+    }
+
+    if {![empty_string_p $start_date] && [empty_string_p $end_date]} {
+        set title "Items starting [util_AnsiDatetoPrettyDate $start_date]"
+    }
+
+    if {![empty_string_p $start_date] && ![empty_string_p $end_date]} {
+        set title "Items from [util_AnsiDatetoPrettyDate $start_date] to [util_AnsiDatetoPrettyDate $end_date]"
+    }
+
+    set return_html "<b>$title</b><p>"
+
+    # Prepare the templates
+    set real_order_by $order_by
+    set order_by "item_type"
+    set item_type_url [subst $url_template]
+    set order_by "start_date"
+    set start_date_url [subst $url_template]
+
+    # Create the header
+    append return_html "
+    <table border=0 cellspacing=0 cellpadding=1>
+    <tr bgcolor=black><td bgcolor>
+    <table border=0 cellspacing=1 cellpadding=2>
+    <tr bgcolor=#aaaaaa><th>Day of Week</th><th><a href=\"$start_date_url\">Date</a></th><th>Start Time</th><th>End Time</th>"
+
+    if {$real_order_by != "item_type"} {
+        append return_html "<th><a href=\"$item_type_url\">Type</a></th>"
+    }
+
+
+    append return_html "<th>Title</th></tr>\n"
+
+    # initialize the item_type so we can do intermediate titles
+    set old_item_type ""
+
+    set flip 0
+
+    # Loop through the events, and add them
+    for {set i 0} {$i < [ns_set size $calendar_details]} {incr i} {
+        set item [ns_set value $calendar_details $i]
+        set date [lindex $item 0]
+        set start_time [lindex $item 1]
+        set end_time [lindex $item 2]
+        set weekday [lindex $item 3]
+        set item_type [lindex $item 4]
+        set item_details [lindex $item 5]
+
+        # Do we need a title?
+        ns_log Notice "BMA-check : $real_order_by , $item_type, $old_item_type"
+        if {$real_order_by == "item_type" && $item_type != "$old_item_type"} {
+            if {[empty_string_p $item_type]} {
+                set item_type "(No Item Type)"
+            }
+            append return_html "<tr bgcolor=#bbbbbb><td colspan=5><b>$item_type</b></td></tr>\n"
+            set flip 0
+        }
+
+        set old_item_type $item_type
+
+        if {[expr $flip % 2] == 0} {
+            set bgcolor white
+        } else {
+            set bgcolor #dddddd
+        }
+        
+        append return_html "
+        <tr bgcolor=$bgcolor><td>$weekday</td><td>$date</td><td>$start_time</td><td>$end_time</td>"
+        
+        if {$real_order_by != "item_type"} {
+            append return_html "<td>$item_type</td>"
+        }
+
+        append return_html "<td>$item_details</td></tr>\n"
+        incr flip
+    }
+
+    append return_html "</table></td></tr></table>\n"
 
     return $return_html
 }
