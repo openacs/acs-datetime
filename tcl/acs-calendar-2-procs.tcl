@@ -99,6 +99,8 @@ ad_proc dt_widget_day {
         -start_hour {0}
         -end_hour {23}
         -show_nav 1
+        -prev_nav_template {<a href="?date=$yesterday">&lt;</a>}
+        -next_nav_template {<a href="?date=$tomorrow">&gt;</a>}
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
 	-header_text_color "white" 
@@ -133,7 +135,9 @@ ad_proc dt_widget_day {
     set return_html ""
 
     if {$show_nav} {
-        append return_html "<table border=0 cellpadding=0 width=$calendar_width><tr bgcolor=#dddddd><th><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr></table><p>\n"
+        set prev_nav [subst $prev_nav_template]
+        set next_nav [subst $next_nav_template]
+        append return_html "<table border=0 cellpadding=0 width=$calendar_width><tr bgcolor=#dddddd><th> $prev_nav &nbsp; &nbsp; $day_of_the_week $next_nav &nbsp; &nbsp; </th></tr></table><p>\n"
     }
 
     # Loop through the hours of the day
