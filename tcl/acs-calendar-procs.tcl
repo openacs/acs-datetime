@@ -13,8 +13,7 @@ ad_proc dt_widget_month {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "deprecated"
-        -weekday_format "long"
+	-days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday" 
 	-large_calendar_p 1 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -54,7 +53,7 @@ ad_proc dt_widget_month {
     set day_of_week $first_day_of_month
     set julian_date $first_julian_date
 
-    set month_heading [string totitle [lc_time_fmt $date "%B %Y"]]
+    set month_heading [format "%s %s" $month $year]
     set next_month_url ""
     set prev_month_url ""
 
@@ -71,7 +70,7 @@ ad_proc dt_widget_month {
     # We offer an option to put the links to next and previous months
     # in the title bar
 
-    if { !$prev_next_links_in_title } {
+    if { $prev_next_links_in_title == 0 } {
 	set title "
 	<td colspan=7 align=center>
 	<font size=$header_text_size color=$header_text_color><b>$month_heading</b></font>
@@ -98,11 +97,11 @@ ad_proc dt_widget_month {
     <tr bgcolor=$header_bgcolor> $title </tr>
     <tr bgcolor=$day_header_bgcolor class=\"table-header\">\n"
 
-    foreach weekday [dt_get_days_of_week -weekday_format $weekday_format] {
+    foreach day_of_week $days_of_week {
 	append output "
 	<td width=14% align=center class=\"no-border\">
 	<font face=\"Verdana,Arial,Helvetica\" size=$day_header_size color=$day_text_color>
-	<b>$weekday</b>
+	<b>$day_of_week</b>
 	</font>
 	</td>\n"
     }
@@ -208,8 +207,7 @@ ad_proc dt_widget_month_small {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "deprecated" 
-        -weekday_format "1"
+	-days_of_week "S M T W T F S" 
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -227,14 +225,11 @@ ad_proc dt_widget_month_small {
     }
 } {
     Returns a small calendar for a specific month. Defaults to this month.
-
-    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
-    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
 } {
     return [dt_widget_month \
 	    -calendar_details $calendar_details \
 	    -date $date \
-	    -weekday_format $weekday_format \
+	    -days_of_week $days_of_week \
 	    -large_calendar_p $large_calendar_p \
 	    -master_bgcolor $master_bgcolor \
 	    -header_bgcolor $header_bgcolor \
@@ -255,8 +250,7 @@ ad_proc dt_widget_month_centered {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "deprecated"
-        -weekday_format "1"
+	-days_of_week "S M T W T F S" 
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -275,11 +269,8 @@ ad_proc dt_widget_month_centered {
 } {
     Returns a calendar for a specific month, with details supplied by
     Julian date. Defaults to this month.
-
-    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
-    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
 } {
-    set output {}
+    set output ""
 
     dt_get_info $date
 
@@ -288,14 +279,14 @@ ad_proc dt_widget_month_centered {
     <tr valign=top>
     <td>
 
-    [dt_widget_month_small -calendar_details $calendar_details -date $prev_month -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]</td>
+    [dt_widget_month_small -calendar_details $calendar_details -date $prev_month -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]</td>
 
     <td>
-    [dt_widget_month_small -calendar_details $calendar_details -date $date -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
+    [dt_widget_month_small -calendar_details $calendar_details -date $date -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
     </td>
 
     <td>
-    [dt_widget_month_small -calendar_details $calendar_details -date $next_month -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
+    [dt_widget_month_small -calendar_details $calendar_details -date $next_month -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]
     </td>
     </tr>
     </table>\n"
@@ -307,8 +298,7 @@ ad_proc dt_widget_year {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "deprecated"
-        -weekday_format "1"
+	-days_of_week "S M T W T F S" 
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -328,9 +318,6 @@ ad_proc dt_widget_year {
     Returns a year of small calendars given the starting month as a
     date.  Defaults to this month.  Data in calendar_details will be
     ignored.
-
-    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
-    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
 } { 
     if { $width < 1 || $width > 12 } {
 	return "Width must be between 1 and 12"
@@ -344,7 +331,7 @@ ad_proc dt_widget_year {
 	
 	append output "
 	<td>
-	[dt_widget_month_small -calendar_details $calendar_details -date $date -weekday_format $weekday_format -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size	-day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor -next_month_template $next_month_template -prev_month_template $prev_month_template ]
+	[dt_widget_month_small -calendar_details $calendar_details -date $date -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size	-day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor -next_month_template $next_month_template -prev_month_template $prev_month_template ]
 	</td>\n"
 
 	incr current_width
@@ -364,8 +351,7 @@ ad_proc dt_widget_calendar_year {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "deprecated" 
-        -weekday_format "1"
+	-days_of_week "S M T W T F S" 
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -385,16 +371,13 @@ ad_proc dt_widget_calendar_year {
 } {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
-
-    @param weekday_format This can be either '1' for 1-character abbreviations, 'ab' for 
-    standard 3-letter abbreviations, and 'long' for the full names of weekdays.
 } {
     dt_get_info $date
 
     return [dt_widget_year \
 	    -calendar_details $calendar_details \
 	    -date $beginning_of_year \
-	    -weekday_format $weekday_format \
+	    -days_of_week $days_of_week \
 	    -large_calendar_p $large_calendar_p \
 	    -master_bgcolor $master_bgcolor \
 	    -header_bgcolor $header_bgcolor \
@@ -419,17 +402,16 @@ ad_proc dt_widget_calendar_year {
 ad_proc -private dt_left_arrow {} {
     Returns the image location for a left navigation arrow
 } {
-    return "/doc/acs-datetime/pics/left.gif"
+    return "/shared/images/left.gif"
 }
 
 ad_proc -private dt_right_arrow {} {
     Returns the image location for a right navigation arrow
 } {
-    return "/doc/acs-datetime/pics/right.gif"
+    return "/shared/images/right.gif"
 }
 
 ad_proc -private dt_navbar_view {
-    {-link_current_view:boolean}
     view
     base_url
     date
@@ -446,18 +428,8 @@ ad_proc -private dt_navbar_view {
     
     # ben: taking out year for now, since it doesn't work
     foreach viewname {list day week month} {
-	set text [string toupper $viewname 0]
-	ns_log bug "STC: $text"
-	switch -exact -- $text {
-	    List {set text "[_ acs-datetime.List]"}
-	    Day {set text "[_ acs-datetime.Day]"}
-	    Week {set text "[_ acs-datetime.Week]"}
-	    Month {set text "[_ acs-datetime.Month]"}
-	}
-        
-        set url "${base_url}view=$viewname&date=$date"
-
-        if { !$link_current_view_p && [string equal $viewname $view] } {
+        set text [string toupper $viewname 0]
+        if { $viewname == $view } {
             # current view
             append result "<td class=\"selected\">
     <font size=-1><b>$text</b></font>
@@ -465,7 +437,7 @@ ad_proc -private dt_navbar_view {
     "
         } else {
             append result "<td class=\"no-border\">
-    <a href=\"$url\">
+    <a href=\"$base_url" "view=$viewname&date=$date\">
     <font size=-1><b>$text</b></font></a>
     </td>
     "
@@ -497,20 +469,54 @@ ad_proc -private dt_navbar_year {
     set now [clock scan $date]
 
     # Compute formatted strings for curr, prev, and next
-    set prev_year [clock format [clock scan "1 year ago" -base $now] -format "%Y-%m-%d"]
-    set next_year [clock format [clock scan "1 year" -base $now] -format "%Y-%m-%d"]
+
+    # Check that links to prev/next year don't lead to illegal dates that would bomb
+    if {[catch {set prev_year [clock format [clock scan "1 year ago" -base $now] -format "%Y-%m-%d"]} err]} {
+	set prev_year_legal_p 0
+    } else {
+	if {[catch {clock scan $prev_year}]} {
+	    set prev_year_legal_p 0
+	} else {
+	    set prev_year_legal_p 1
+	}
+    }
+
+    if {[catch {set next_year [clock format [clock scan "1 year" -base $now] -format "%Y-%m-%d"]} err]} {
+	set next_year_legal_p 0
+    } else {
+	if {[catch {clock scan $next_year}]} {
+	    set next_year_legal_p 0
+	} else {
+	    set next_year_legal_p 1
+	}
+    }
+
     set curr_year [clock format $now -format "%Y"]
 
     append result "
     <tr>
     <td nowrap align=center colspan=5 class=\"no-border\">
     <table cellspacing=0 cellpadding=1 border=0>
-    <tr><td nowrap valign=middle>
+    <tr><td nowrap valign=middle>"
+
+    # Serve arrow link to prev year if it leads to legal date
+    if {$prev_year_legal_p != 0} {
+	append result "
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_year]\">
-    <img border=0 src=[dt_left_arrow]></a>
-    <b>$curr_year</b>
+    <img border=0 src=[dt_left_arrow]></a>"
+    }
+
+    append result "
+    <b>$curr_year</b>"
+    
+    # Serve arrow to next year if it leads to a legal date
+    if {$next_year_legal_p != 0} {
+	append result "
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_year]\">
-    <img border=0 src=[dt_right_arrow]></a>
+    <img border=0 src=[dt_right_arrow]></a>"
+    }
+
+    append result "
     </td>
     </tr>
     </table>
@@ -528,75 +534,61 @@ ad_proc -private dt_navbar_month {
     Returns the monthly navbar
 } {
     set now        [clock scan $date]
+    set curr_month [clock format $now -format "%B"]
 
+    # Check that the arrows to prev/next months don't go to illegal dates and bomb
+    if {[catch {set prev_month [clock format [clock scan "1 month ago" -base $now] -format "%Y-%m-%d"]} err ]} {
+	set prev_month_legal_p 0
+    } else {
+	if {[catch {clock scan $prev_month}]} {
+	    set prev_month_legal_p 0
+	} else {
+	    set prev_month_legal_p 1
+	}
+    }
 
-    set curr_month_localized [string totitle [lc_time_fmt [clock_to_ansi $now] "%B %Y"]]
-
-    set prev_month [clock format [clock scan "1 month ago" -base $now] -format "%Y-%m-%d"]
-    set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]
-
-    set prev_month_localized [string totitle [lc_time_fmt $prev_month "%B %Y"]]
-    set next_month_localized [string totitle [lc_time_fmt $next_month "%B %Y"]]
+    if {[catch {set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]} err]} {
+	set next_month_legal_p 0
+    } else {
+	if {[catch {clock scan $next_month}]} {
+	    set next_month_legal_p 0
+	} else {
+	    set next_month_legal_p 1
+	}
+    }
 
     append results "
     <tr><td class=\"bottom-border\" nowrap align=center colspan=5>
     <table cellspacing=0 cellpadding=1 border=0>
-    <tr><td nowrap valign=middle>
-    <a href=\"${base_url}view=$view&date=[ns_urlencode $prev_month]\" title=\"$prev_month_localized\"><img border=0 src=[dt_left_arrow]></a>
-    <font size=-1><b>$curr_month_localized</b></font>
-    <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\" title=\"$next_month_localized\"><img border=0 src=[dt_right_arrow]></a>
+    <tr><td nowrap valign=middle>"
+
+    # Output link to previous month only if it's legal
+    if {$prev_month_legal_p != 0} {
+	append results "
+    <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_month]\">
+    <img border=0 src=[dt_left_arrow]></a>"
+    }
+    
+    append results "
+    <font size=-1><b>$curr_month</b></font>"
+
+    # Output link to next month only if it's a legal month
+    if {$next_month_legal_p != 0} {
+	append results "
+    <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\">
+    <img border=0 src=[dt_right_arrow]></a>"
+    }
+    
+    append results "
     </td>
     </tr>\n"
-
+	
     return $results
-}
-
-ad_proc dt_get_days_of_week {
-    {-weekday_format "1"}
-} {
-    Get the localized names of the days of week, starting with the
-    correct day according to the locale (e.g., Sunday in the US, Monday in
-    Europe).
-    
-    @param weekday_format: '1' for one-character abbreviations, 'ab' for 3-character abbreviations, 
-    and 'long' for full weekday names.
-    @return A list of localized weekday names starting with the first day of week according to the connection's locale.
-} {
-    set first_day_of_week [lc_get firstdayofweek]
-    
-    # Let's first get the localized weekday names from the localization-procs
-    switch -exact $weekday_format {
-        1 {
-            set localized_weekdays [list]
-            foreach day [lc_get abday] {
-                lappend localized_weekdays [string range $day 0 0]
-            }
-        }
-        ab {
-            set localized_weekdays [lc_get abday]
-        }
-        long {
-            set localized_weekdays [lc_get day]
-        }
-        default {
-            error "dt_get_days_of_week only knows about formats 1, ab, and long. We were given the format '$weekday_format'."
-        }
-    }
-    
-    # And now let's put them in the right order according to what day the week starts
-    set days_of_week [list]
-    for { set i 0 } { $i < 7 } { incr i } {
-        lappend days_of_week [string totitle [lindex $localized_weekdays [expr ($i + $first_day_of_week) % 7 ]]]
-    }
-
-    return $days_of_week
 }
 
 
 ad_proc dt_widget_calendar_navigation { 
-    {-today_bgcolor "#e9e99c"} 
-    {-weekday_format "1"}
-    -link_current_view:boolean
+    {} 
     {base_url ""} 
     {view "week"} 
     {date ""} 
@@ -614,6 +606,7 @@ ad_proc dt_widget_calendar_navigation {
 
     The date must be formatted YYYY-MM-DD.
 } { 
+
     # valid views are "list" "day" "week" "month" "year"
 
     if {![exists_and_not_null base_url]} {
@@ -648,25 +641,20 @@ ad_proc dt_widget_calendar_navigation {
     set output "
     <center><table class=\"table-display\" border=1 cellpadding=1 cellspacing=0 width=160>
 
-    [dt_navbar_view -link_current_view=$link_current_view_p $view $base_url $date]
+    [dt_navbar_view $view $base_url $date]
 
     [dt_navbar_year $view $base_url $date]\n"
 
     if [string equal $view month] {
 	# month view
-
 	append output "
 	<tr>
 	<td class=\"no-borders\" colspan=5>
 	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
 	<tr>
 	"
-        
-	set months_list [list]
-        foreach month_name [nsv_get locale [lang::conn::locale],mon] {
-            lappend months_list [string totitle $month_name]
-        }
 
+	set months_list [dt_month_names]
 	set now         [clock scan $date]
 	set curr_month  [expr [dt_trim_leading_zeros [clock format $now -format "%m"]]-1]
 
@@ -730,8 +718,6 @@ ad_proc dt_widget_calendar_navigation {
 	append output "</tr>"
 
     } else {
-        
-        # day or week view
 
 	append output "
 	[dt_navbar_month $view $base_url $date]
@@ -744,8 +730,10 @@ ad_proc dt_widget_calendar_navigation {
 	<tr>
 	"
 
-	foreach weekday [dt_get_days_of_week -weekday_format 1] {
-	    append output "<td align=right><font size=-1><b>$weekday</b></td>\n"
+	set days_of_week [list S M T W T F S]
+
+	foreach day_of_week $days_of_week {
+	    append output "<td align=right><font size=-1><b>$day_of_week</b></td>\n"
 	}
 	append output "</tr><tr><td colspan=7><hr></td></tr>"
 
@@ -753,8 +741,6 @@ ad_proc dt_widget_calendar_navigation {
 	set julian_date $first_julian_date
 	set day_number  $first_day
 
-        set julian_date_todays_date [dt_ansi_to_julian_single_arg [dt_sysdate]]
-        
 	while {1} {
 
 	    if {$julian_date < $first_julian_date_of_month} {
@@ -782,26 +768,20 @@ ad_proc dt_widget_calendar_navigation {
 		append output "<tr>\n"
 	    }
 
-            if { $julian_date == $julian_date_todays_date } {
-                set bgcolor " bgcolor=\"${today_bgcolor}\""
-            } else {
-                set bgcolor {}
-            }
-
 	    if {$before_month_p || $after_month_p} {
 		append output "
-		<td align=\"right\"${bgcolor}>
+		<td align=right>
 		<a href=\"$base_url" "view=$view&date=[ns_urlencode $ansi_date]\">
 		<font color=gray>$day_number</font></a>
 		</td>"
 	    } elseif {$julian_date == $julian_date_today} {
 		append output "
-		<td align=\"right\"${bgcolor}>
+		<td align=right>
 		<b>$day_number</b>
 		</td>"
 	    } else {
 		append output "
-		<td align=\"right\"${bgcolor}>
+		<td align=right>
 		<a href=\"$base_url" "view=$view&date=[ns_urlencode $ansi_date]\">
 		<font color=blue>$day_number</font></a>
 		</td>"
@@ -837,17 +817,17 @@ ad_proc dt_widget_calendar_navigation {
     <font size=-2>"
 
     if { $view == "day" && [dt_sysdate] == $date } {
-        append output "<b>[_ acs-datetime.Today]</b>"
+        append output "<b>Today</b>"
     } else {
         append output "<a href=\"$today_url\">
-    <b>[_ acs-datetime.Today]</b></a> "
+    <b>Today</b></a> "
     }
     
     append output "
-    [_ acs-datetime.is] [lc_time_fmt [dt_sysdate] "%q"]</font></td></tr>
+    is [dt_ansi_to_pretty]</font></td></tr>
     <tr><td align=center><br>
     <form method=get action=$base_url>
-    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>[_ acs-datetime.Date_as_YYYYMMDD]</font>
+    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/shared/images/go.gif\" alt=\"Go\" border=0><br><font size=-2>Date as YYYYMMDD</font>
     <INPUT TYPE=hidden name=view value=day>
     "
 
@@ -877,7 +857,7 @@ ad_proc -private dt_get_info {
     Returns the following (example for the_date = 2000-12-08):
 
     julian_date_today           2451887
-    month                       December (localized)
+    month                       December
     year                        2000
     first_julian_date           2451875
     first_julian_date_of_month  2451880
@@ -891,8 +871,8 @@ ad_proc -private dt_get_info {
     prev_month                  2000-11-08
     beginning_of_year           2000-01-01
     days_in_last_month          30
-    next_month_name             January (localized)
-    prev_month_name             November (localized)
+    next_month_name             January
+    prev_month_name             November
 
     Input:
 
@@ -918,7 +898,7 @@ ad_proc -private dt_get_info {
     ns_set put $dt_info_set julian_date_today \
         [dt_ansi_to_julian $year $month $day]
     ns_set put $dt_info_set month \
-        [lc_time_fmt $the_date "%B"]
+        [clock format [clock scan $the_date] -format %B]
     ns_set put $dt_info_set year \
         [clock format [clock scan $the_date] -format %Y]
     ns_set put $dt_info_set first_julian_date_of_month \
@@ -941,23 +921,19 @@ ad_proc -private dt_get_info {
         [dt_next_month_name $year $month]
     ns_set put $dt_info_set prev_month_name \
         [dt_prev_month_name $year $month]
-    ns_set put $dt_info_set first_day_of_week \
-        [nsv_get locale [lang::conn::locale],firstdayofweek]
 
-    # We need the variables from the ns_set here
+    # We need the variables from the ns_set
     ad_ns_set_to_tcl_vars $dt_info_set
 
     ns_set put $dt_info_set first_julian_date \
-        [expr $first_julian_date_of_month - (($first_day_of_month + 6 - $first_day_of_week) % 7)]
-
+        [expr $first_julian_date_of_month + 1 - $first_day_of_month]
     ns_set put $dt_info_set first_day \
-        [expr $days_in_last_month - (($first_day_of_month + 6 - $first_day_of_week) %7) + 1]
-
+        [expr $days_in_last_month + 2 - $first_day_of_month]
     ns_set put $dt_info_set last_julian_date_in_month \
         [expr $first_julian_date_of_month + $num_days_in_month - 1]
 
     set days_in_next_month \
-        [expr (7-(($num_days_in_month + $first_day_of_month - $first_day_of_week - 1) % 7)) % 7]
+        [expr (7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7]
 
     ns_set put $dt_info_set last_julian_date \
         [expr $first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month]
