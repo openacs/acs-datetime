@@ -8,16 +8,16 @@
   <msg key="Date_as_YYYYMMDD">Formato de fecha: AAAAMMDD</msg>
   <msg key="Day">Día</msg>
   <msg key="Day_of_Week">Día de la Semana</msg>
-  <msg key="days_of_week">domingo lunes martes miércoles jueves viernes sábado</msg>
+  <msg key="days_of_week">lunes martes miércoles jueves viernes sábado domingo</msg>
   <msg key="forward_one_day">adelante un día</msg>
   <msg key="is">es</msg>
   <msg key="Items_from">Citas desde</msg>
-  <msg key="Items_until">Registros hasta el @pretty_end_date@ </msg>
+  <msg key="Items_until">Citas hasta el @pretty_end_date@ </msg>
   <msg key="List">Lista</msg>
   <msg key="lt_Width_must_be_">El ancho debe tener un valor entre 1 y 12</msg>
   <msg key="Month">Mes</msg>
-  <msg key="short_days_of_week">D L M X J V S</msg>
-  <msg key="to">a</msg>
+  <msg key="short_days_of_week">L M X J V S D</msg>
+  <msg key="to">hasta</msg>
   <msg key="Today">Hoy</msg>
   <msg key="Week">Semana</msg>
 </message_catalog>

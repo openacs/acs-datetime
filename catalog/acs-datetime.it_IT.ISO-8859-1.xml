@@ -11,7 +11,7 @@
   <msg key="Day_of_Week">Giorno della Settimana</msg>
   <msg key="days_of_week">Domenica Lunedì Martedì Mercoledì Giovedì Venerdì Sabato</msg>
   <msg key="forward_one_day">Un giorno avanti</msg>
-  <msg key="is">&amp;egrave; il</msg>
+  <msg key="is">è il</msg>
   <msg key="Items_from">Prospetto agenda da</msg>
   <msg key="Items_until">Prospetto fino al @pretty_end_date@</msg>
   <msg key="List">Elenco</msg>
