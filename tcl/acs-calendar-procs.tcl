@@ -547,6 +547,17 @@ ad_proc dt_widget_calendar_navigation {
 	set date [dt_sysdate]
     }
 
+
+    # Ben: some annoying stuff to do here since we are passing in things in GET format already
+    if {![empty_string_p $pass_in_vars]} {
+        set vars [split $pass_in_vars "&"]
+        set list_of_vars [list]
+        foreach var $vars {
+            set things [split $var "="]
+            lappend list_of_vars $things
+        }
+    }
+
     # Get the current month, day, and the first day of the month
 
     dt_get_info $date
@@ -725,7 +736,19 @@ ad_proc dt_widget_calendar_navigation {
     <table cellspacing=0 cellpadding=1 border=0 bgcolor=lavender>
     <td><td>
     <font size=-1><a href=\"$today_url\"><font color=blue>
-    <b>Today</b></font></a> is [dt_ansi_to_pretty]</font></td>
+    <b>Today</b></font></a> is [dt_ansi_to_pretty]</font><br>
+    <form method=get action=$base_url>
+    Go to: <INPUT TYPE=text name=date size=10> <INPUT type=submit value=go>
+    <INPUT TYPE=hidden name=view value=day>
+    "
+
+    foreach var $list_of_vars {
+        append output "<INPUT TYPE=hidden name=[lindex $var 0] value=[lindex $var 1]>"
+    }
+    
+    append output "
+    </form>
+    </td>
     </td>
     </tr>
     </table>
