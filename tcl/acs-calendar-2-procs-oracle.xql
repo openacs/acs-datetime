@@ -34,7 +34,11 @@ as friday_julian,
 to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6) 
 as saturday_date,
 to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6,'J') 
-as saturday_julian
+as saturday_julian,
+to_date(:current_date,'yyyy-mm-dd') - 7 as last_week,
+to_char(to_date(:current_date, 'yyyy-mm-dd') - 7,'Month DD, YYYY') as last_week_pretty,
+to_date(:current_date,'yyyy-mm-dd') + 7 as next_week,
+to_char(to_date(:current_date, 'yyyy-mm-dd') + 7,'Month DD, YYYY') as next_week_pretty
 from     dual
 </querytext>
 </fullquery>

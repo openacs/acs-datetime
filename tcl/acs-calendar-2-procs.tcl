@@ -36,8 +36,10 @@ ad_proc dt_widget_week {
     - prev_week_template:
 } {
 
+    set today_date [dt_sysdate]
+
     if {[empty_string_p $date]} {
-        set date [dt_sysdate]
+        set date $today_date
     }
 
     set current_date $date
@@ -52,20 +54,20 @@ ad_proc dt_widget_week {
 
     # Loop through the days of the week
     set julian $sunday_julian
-    set return_html "<table CELLPADDING=3 CELLSPACING=0 BORDER=0 width=85%>\n"
+    set return_html "<table CELLPADDING=3 CELLSPACING=0 BORDER=0 width=95%>\n"
     
     # Navigation Bar
     append return_html "<tr><td>
     <table cellpadding=3 cellspacing=0 border=0 width=90%>
     <tr bgcolor=lavender>
     <td align=center>
-    <a href=?current_view=week&view_mode=full&group_id=418&current_view=week&current_date=2002-04-18>&lt;</a>
+    [subst $prev_week_template]
     <FONT face=\"Arial,Helvetica\" SIZE=-1>
     <B>
-    April     21, 2002 - April     27, 2002
+    [util_AnsiDatetoPrettyDate $sunday_date] - [util_AnsiDatetoPrettyDate $saturday_date]
     </B>
     </FONT>
-    <a href=?current_view=week&view_mode=full&group_id=418&current_view=week&current_date=2002-05-02>&gt;</a>
+    [subst $next_week_template]
     </td>
     </tr>
     </table></td></tr>
@@ -84,16 +86,13 @@ ad_proc dt_widget_week {
         set pretty_date [util_AnsiDatetoPrettyDate $date]
         set day_html [subst $day_template]
 
-        if {$date == $current_date} {
+        if {$date == $today_date} {
             set bgcolor $today_bgcolor
         } else {
             set bgcolor $day_bgcolor
         }
 
-        append return_html "<tr><td bgcolor=\"$bgcolor\">$day_html &nbsp
-        <font size=-1> 
-        <a href=>Add Item</a>
-        </font>
+        append return_html "<tr><td bgcolor=\"$bgcolor\">$day_html &nbsp;
         </td>
         </tr>
         <tr>
