@@ -416,27 +416,26 @@ ad_proc -private dt_navbar_view {
     # properly
 
     append result "
-    <tr align=center>    
-     [ad_decode $view "list" "<td bgcolor=ffd700>" "<td>"]    
-    <a href=\"$base_url" "view=list&date=$date\">
-    <font size=-1 color=blue>List</font></a>
+    <tr align=center>"
+    
+    foreach viewname {list day week month year} {
+        set text [string toupper $viewname 0]
+        if { $viewname == $view } {
+            # current view
+            append result "<td bgcolor=ffd700>
+    <font size=-1>$text</font>
     </td>
-     [ad_decode $view "day" "<td bgcolor=ffd700>" "<td>"]    
-    <a href=\"$base_url" "view=day&date=$date\">
-    <font size=-1 color=blue>Day</font></a>
+    "
+        } else {
+            append result "<td>
+    <a href=\"$base_url" "view=$viewname&date=$date\">
+    <font size=-1 color=blue>$text</font></a>
     </td>
-     [ad_decode $view "week" "<td bgcolor=ffd700>" "<td>"]
-    <a href=\"$base_url" "view=week&date=$date\">
-    <font size=-1 color=blue>Week</font></a>
-    </td>
-     [ad_decode $view "month" "<td bgcolor=ffd700>" "<td>"]    
-    <a href=\"$base_url" "view=month&date=$date\">
-    <font size=-1 color=blue>Month</font></a>
-    </td>
-     [ad_decode $view "year" "<td bgcolor=ffd700>" "<td>"]
-    <a href=\"$base_url" "view=year&date=$date\">
-    <font size=-1 color=blue>Year</a>
-    </td>
+    "
+        }
+    }
+
+    append result "
     </tr>
     "
 
@@ -735,8 +734,17 @@ ad_proc dt_widget_calendar_navigation {
     <tr><td align=center bgcolor=lavender colspan=5>
     <table cellspacing=0 cellpadding=1 border=0 bgcolor=lavender>
     <td><td>
-    <font size=-1><a href=\"$today_url\"><font color=blue>
-    <b>Today</b></font></a> is [dt_ansi_to_pretty]</font><br>
+    <font size=-1>"
+
+    if { $view == "day" && [dt_sysdate] == $date } {
+        append output "<b>Today</b>"
+    } else {
+        append output "<a href=\"$today_url\"><font color=blue>
+    <b>Today</b></font></a> "
+    }
+    
+    append output "
+    is [dt_ansi_to_pretty]</font><br>
     <form method=get action=$base_url>
     Go to: <INPUT TYPE=text name=date size=10> <INPUT type=submit value=go>
     <INPUT TYPE=hidden name=view value=day>
