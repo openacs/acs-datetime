@@ -208,11 +208,13 @@ ad_proc dt_widget_day {
                 # One ugly hack
                 set end_time_lst [split [lindex $one_item_val 1] ":"]
 
-                if {[lindex $end_time_lst 1] == 0} {
+                if {[string range [lindex $end_time_lst 1] 0 1] == "00"} {
                     set end_time [expr [string trimleft [lindex $end_time_lst 0] 0] - 1]
                 } else {
-                    set end_time [lindex $end_time_lst 1]
+                    set end_time [lindex $end_time_lst 0]
                 }
+
+                ns_log Notice "$end_time_lst / $end_time / $start_time"
 
                 set start_time $hour
                 append return_html "<td valign=top bgcolor=white rowspan=[expr $end_time - $start_time + 1]><font size=-1>[lindex $one_item_val 2]</font></td>"
