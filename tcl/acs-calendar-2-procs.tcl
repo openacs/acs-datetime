@@ -114,14 +114,24 @@ ad_proc dt_widget_day {
 	set calendar_details [ns_set create calendar_details]
     }
 
+    # Select some basic stuff
+    db_1row select_day_info {}
+
     # Loop through the hours of the day
-    set return_html "<table cellpadding=2 border=1 width=$calendar_width>\n"
+    set return_html "<table border=0 cellpadding=2 width=$calendar_width><tr bgcolor=black><td>
+<table cellpadding=2 border=0 width=100%>\n"
 
     if {$show_nav} {
-        append return_html "<tr bgcolor=lightblue><th colspan=2>&lt; &nbsp; &nbsp; $date &nbsp; &nbsp; &gt;</th></tr>\n"
+        append return_html "<tr bgcolor=lightblue><th colspan=2><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr>\n"
     }
 
     for {set hour $start_hour} {$hour < $end_hour} {incr hour} {
+
+        if {$hour < 10} {
+            set index_hour "0$hour"
+        } else {
+            set index_hour $hour
+        }
 
         # display stuff
         if {$hour >= 12} {
@@ -150,11 +160,17 @@ ad_proc dt_widget_day {
             append display_hour "am"
         }
 
-        append return_html "<tr bgcolor=#cccccc><td>$display_hour</td><td>\n"
+        append return_html "<tr bgcolor=#cccccc><td width=60><font size=-1>$display_hour</font></td>"
         
+        if {[ns_set find $calendar_details $index_hour] != -1} {
+            append return_html "<td bgcolor=white><font size=-1>"
+        } else {
+            append return_html "<td bgcolor=#cccccc><font size=-1>"
+        }
+
         # Go through events
         while {1} {
-            set index [ns_set find $calendar_details $hour]
+            set index [ns_set find $calendar_details $index_hour]
             if {$index == -1} {
                 break
             }
@@ -164,10 +180,10 @@ ad_proc dt_widget_day {
             ns_set delete $calendar_details $index
         }
 
-        append return_html "</td></tr>\n"
+        append return_html "</font></td></tr>\n"
     }
 
-    append return_html "</table>"
+    append return_html "</table></td></tr></table>"
     
     return $return_html
 }
