@@ -96,8 +96,7 @@ ad_proc dt_widget_day {
 	-day_bgcolor "#DDDDDD" 
 	-today_bgcolor "#DDDDDD" 
 	-day_text_color "white" 
-	-empty_bgcolor "white"
-        -overlap_p 0
+	-empty_bgcolor "white"  
     }
 } {
     Returns a calendar for a specific day, with details supplied by
@@ -119,45 +118,15 @@ ad_proc dt_widget_day {
     # Select some basic stuff
     db_1row select_day_info {}
 
-    set return_html ""
+    # Loop through the hours of the day
+    set return_html "<table border=0 cellpadding=2 width=$calendar_width><tr bgcolor=black><td>
+<table cellpadding=2 border=0 width=100%>\n"
 
     if {$show_nav} {
-        append return_html "<table border=0 cellpadding=0 width=$calendar_width><tr bgcolor=#dddddd><th><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr></table><p>\n"
-    }
-
-    # Loop through the hours of the day
-    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr bgcolor=#999999><td>
-    <table cellpadding=1 cellspacing=1 border=0 width=100%>\n"
-
-    # The items that have no hour
-    set hour ""
-    set next_hour ""
-    set start_time ""
-    set display_hour "No Time"
-    append return_html "<tr bgcolor=#cccccc><td width=70 bgcolor=white><font size=-1>&nbsp;[subst $hour_template]</font></td>"
-    if {[ns_set find $calendar_details ""] != -1} {
-        append return_html "<td bgcolor=white>"
-    }
-    
-    # Go through events
-    while {1} {
-        set index [ns_set find $calendar_details "X"]
-        if {$index == -1} {
-            break
-        }
-        
-        if {$overlap_p} {
-            append return_html "[lindex [ns_set value $calendar_details $index] 2]"
-        } else {
-            append return_html "[ns_set value $calendar_details $index]<br>\n"
-        }
-        
-        ns_set delete $calendar_details $index
+        append return_html "<tr bgcolor=lightblue><th colspan=2><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr>\n"
     }
 
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
-
-        set next_hour [expr $hour + 1]
 
         if {$hour < 10} {
             set index_hour "0$hour"
@@ -193,8 +162,14 @@ ad_proc dt_widget_day {
         }
 
         set display_hour [subst $hour_template]
-        append return_html "<tr bgcolor=white><td width=70><font size=-1>&nbsp;$display_hour</font></td>"
+        append return_html "<tr bgcolor=#cccccc><td width=60><font size=-1>$display_hour</font></td>"
         
+        if {[ns_set find $calendar_details $index_hour] != -1} {
+            append return_html "<td bgcolor=white><font size=-1>"
+        } else {
+            append return_html "<td bgcolor=#cccccc><font size=-1>"
+        }
+
         # Go through events
         while {1} {
             set index [ns_set find $calendar_details $index_hour]
@@ -202,30 +177,12 @@ ad_proc dt_widget_day {
                 break
             }
 
-            if {$overlap_p} {
-                set one_item_val [ns_set value $calendar_details $index]
-                
-                # One ugly hack
-                set end_time_lst [split [lindex $one_item_val 1] ":"]
-
-                if {[string range [lindex $end_time_lst 1] 0 1] == "00"} {
-                    set end_time [expr [string trimleft [lindex $end_time_lst 0] 0] - 1]
-                } else {
-                    set end_time [lindex $end_time_lst 0]
-                }
-
-                ns_log Notice "$end_time_lst / $end_time / $start_time"
-
-                set start_time $hour
-                append return_html "<td valign=top bgcolor=white rowspan=[expr $end_time - $start_time + 1]><font size=-1>[lindex $one_item_val 2]</font></td>"
-            } else {
-                append return_html "[ns_set value $calendar_details $index]<br>\n"
-            }
+            append return_html "[ns_set value $calendar_details $index]<br>\n"
 
             ns_set delete $calendar_details $index
         }
 
-        append return_html "</tr>\n"
+        append return_html "</font></td></tr>\n"
     }
 
     append return_html "</table></td></tr></table>"
