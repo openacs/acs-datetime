@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <message_catalog package_key="acs-datetime" package_version="4.0" locale="ms_my" charset="utf-8">
 
+  <msg key="All_day">Seluruh hari</msg>
+  <msg key="back_one_day">kembali satu hari</msg>
   <msg key="Date">Tarikh</msg>
   <msg key="Date_as">Tarikh seperti</msg>
   <msg key="Date_as_YYYYMMDD">Tarikh seperti YYYYMMDD</msg>
   <msg key="Day">Hari</msg>
   <msg key="Day_of_Week">Hari Dalam Minggu</msg>
+  <msg key="forward_one_day">satu hari ke hadapan</msg>
   <msg key="is">ialah</msg>
   <msg key="Items_from">Senarai dari</msg>
   <msg key="List">Senarai</msg>

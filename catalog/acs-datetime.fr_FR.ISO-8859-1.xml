@@ -6,7 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Format YYYYMMDD</msg>
   <msg key="Day">Jour</msg>
   <msg key="Day_of_Week">Jour de la semaine</msg>
-  <msg key="is">est</msg>
+  <msg key="days_of_week">dimanche lundi mardi mercredi jeudi vendredi samedi</msg>
+  <msg key="is">nous sommes le</msg>
   <msg key="Items_from">Eléments de</msg>
   <msg key="List">Liste</msg>
   <msg key="Month">Mois</msg>

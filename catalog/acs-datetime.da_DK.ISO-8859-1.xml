@@ -3,9 +3,10 @@
 
   <msg key="Date">Dato</msg>
   <msg key="Date_as">Datoen skrives som</msg>
-  <msg key="Date_as_YYYYMMDD">Missing</msg>
+  <msg key="Date_as_YYYYMMDD">Dato som ÅÅÅÅMMDD</msg>
   <msg key="Day">Dag</msg>
   <msg key="Day_of_Week">Ugedag</msg>
+  <msg key="days_of_week">Søndag Mandag Tirsdag Onsdag Torsdag Fredag Lørdag</msg>
   <msg key="is">er</msg>
   <msg key="Items_from">Emner fra</msg>
   <msg key="List">Liste</msg>

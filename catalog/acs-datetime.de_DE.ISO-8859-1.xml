@@ -5,12 +5,13 @@
   <msg key="Date_as">Datum in der Form:</msg>
   <msg key="Date_as_YYYYMMDD">Datum (JJJJMMTT)</msg>
   <msg key="Day">Tag</msg>
-  <msg key="Day_of_Week">Tag der Woche</msg>
-  <msg key="is">Datum:</msg>
-  <msg key="Items_from">Einträge vom</msg>
+  <msg key="Day_of_Week">Wochentag</msg>
+  <msg key="is">&amp;nbsp;</msg>
+  <msg key="Items_from">Termine vom</msg>
+  <msg key="Items_until">Termine bis @pretty_end_date@</msg>
   <msg key="List">Termine</msg>
   <msg key="Month">Monat</msg>
   <msg key="to">bis</msg>
-  <msg key="Today">Heutiges </msg>
+  <msg key="Today">Heute: </msg>
   <msg key="Week">Woche</msg>
 </message_catalog>
