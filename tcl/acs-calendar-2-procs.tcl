@@ -1,4 +1,15 @@
 
+# /packages/acs-datetime/tcl/acs-calendar-procs.tcl
+
+ad_library {
+
+    Library for calendar display widgets
+
+    @author  ron@arsdigita.com
+    @created 2000-11-21
+    @cvs-id  $Id$
+}
+
 ad_proc dt_widget_week { 
     {
 	-calendar_details "" 
@@ -361,6 +372,28 @@ ad_proc dt_widget_day {
 }
 
 
+
+ad_proc -public dt_widget_list {
+    {-calendar_details:required}
+    {-item_template {$item}}
+    {-start_date ""}
+    {-end_date ""}
+    {-order_by ""}
+    {-url_template {?order_by=$order_by}}
+} {
+    create a listing widget for lists
+} {
+    set return_html "<ul>\n"
+    for {set i 0} {$i < [ns_set size $calendar_details]} {incr i} {
+        set item [ns_set value $calendar_details $i]
+        append return_html "<li> $item\n"
+    }
+
+    append return_html "</ul>"
+
+    return $return_html
+}
+    
         
 #
 # Additional Utility Procs

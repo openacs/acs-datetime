@@ -31,6 +31,7 @@ ad_proc dt_widget_month {
 	-prev_month_template "" 
 	-prev_next_links_in_title 0 
 	-fill_all_days 0 
+        -show_calendar_name_p 1
     }
 } {
     Returns a calendar for a specific month, with details supplied by
@@ -90,7 +91,7 @@ ad_proc dt_widget_month {
     # Write out the header and the days of the week
 
     append output "
-    <table bgcolor=$master_bgcolor cellpadding=3 cellspacing=1 border=0 width=$calendar_width>
+    <table bgcolor=$master_bgcolor cellpadding=3 cellspacing=0 border=1 width=$calendar_width>
     <tr bgcolor=$header_bgcolor> $title </tr>
     <tr bgcolor=$day_header_bgcolor>\n"
 
@@ -105,11 +106,12 @@ ad_proc dt_widget_month {
 
     append output "</tr><tr>\n"
 
-    if { $fill_all_days == 0 } {
-	for { set n 1} { $n < $first_day_of_month } { incr n } {
-	    append output "<td bgcolor=$empty_bgcolor align=right valign=top></td>\n"
-	}
-    }
+    # This is not necessary (ben)
+#      if { $fill_all_days == 0 } {
+#  	for { set n 1} { $n < $first_day_of_month } { incr n } {
+#  	    append output "<td bgcolor=$empty_bgcolor align=right valign=top></td>\n"
+#  	}
+#      }
 
     set day_of_week 1
     set julian_date $first_julian_date
@@ -150,7 +152,7 @@ ad_proc dt_widget_month {
 		append output "[subst $day_number_template]&nbsp;"
 	    }
 	} else {
-	    append output "<td bgcolor=$day_bgcolor align=right valign=top>[subst $day_number_template]&nbsp;"
+	    append output "<td bgcolor=$day_bgcolor align=left valign=top>[subst $day_number_template]&nbsp;"
 	}
 
 	if { (!$skip_day) && $large_calendar_p == 1 } {
