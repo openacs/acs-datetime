@@ -252,7 +252,6 @@ ad_proc dt_widget_day {
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
         if {$max_n_events < $n_events($hour)} {
             set max_n_events $n_events($hour)
-            ns_log Notice "BMA-DEBUG-CAL: Setting max_n_events to $max_n_events"
         }
     }
     
