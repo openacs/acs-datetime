@@ -193,9 +193,7 @@ ad_proc dt_widget_day {
     set start_time ""
     set display_hour "No Time"
     append return_html "<tr bgcolor=#cccccc><td width=70 bgcolor=white><font size=-1>&nbsp;[subst $hour_template]</font></td>"
-    if {[ns_set find $calendar_details ""] != -1} {
-        append return_html "<td bgcolor=white>"
-    }
+    append return_html "<td bgcolor=white><font size=-1>"
     
     # Go through events
     while {1} {
@@ -205,7 +203,7 @@ ad_proc dt_widget_day {
         }
         
         if {$overlap_p} {
-            append return_html "[lindex [ns_set value $calendar_details $index] 2]"
+            append return_html "[lindex [ns_set value $calendar_details $index] 2]<br>"
         } else {
             append return_html "[ns_set value $calendar_details $index]<br>\n"
         }
@@ -213,8 +211,10 @@ ad_proc dt_widget_day {
         ns_set delete $calendar_details $index
     }
 
+    append return_html "</font></td></tr>"
+    
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
-
+        
         set next_hour [expr $hour + 1]
 
         if {$hour < 10} {
@@ -305,15 +305,15 @@ ad_proc dt_midnight_p {
     if {$time == "00:00" || $time == ""} {
         return 1
     }
-
+    
     if {[regexp {00:00 *[aA][mM]} $time the_match]} {
         return 1
     }
-
+    
     if {[regexp {12:00 *[aA][mM]} $time the_match]} {
         return 1
     }
-
+    
     return 0
 }
 
