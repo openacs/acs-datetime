@@ -49,13 +49,13 @@ ad_proc dt_format {
 ad_proc dt_month_names {} {
     Returns the calendar month names as a Tcl list (January, February, ...)
 } {
-    return [nsv_get locale [lang::conn::locale],mon]
+    return [lc_get mon]
 }
 
 ad_proc dt_month_abbrev {} {
     Returns the calendar month names as a Tcl list (Jan, Feb, ...)
 } {
-    return [nsv_get locale [lang::conn::locale],abmon]
+    return [lc_get abmon]
 }
 
 ad_proc dt_ansi_to_julian_single_arg {
