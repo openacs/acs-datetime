@@ -152,8 +152,8 @@ ad_proc dt_widget_day {
         -start_hour {0}
         -end_hour {23}
         -show_nav 1
-        -prev_nav_template {<a href="?date=[ns_urlencode $yesterday]"><img border=0 src=\"[dt_left_arrow]\" alt=\"back one day\"></a>}
-        -next_nav_template {<a href="?date=[ns_urlencode $tomorrow]"><img border=0 src=\"[dt_right_arrow]\" alt=\"forward one day\"></a>}
+        -prev_nav_template {<a href="?date=[ns_urlencode $yesterday]"><img border=0 src=\"[dt_left_arrow]\" alt=\"[_ acs-datetime.back_one_day]\"></a>}
+        -next_nav_template {<a href="?date=[ns_urlencode $tomorrow]"><img border=0 src=\"[dt_right_arrow]\" alt=\"[_ acs-datetime.forward_one_day]\"></a>}
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
 	-header_text_color "white" 
@@ -250,7 +250,7 @@ ad_proc dt_widget_day {
     set next_hour ""
     set start_time ""
     set odd_row_p 0
-    set display_hour "<span style=\"font-size: 70%; text-decoration: none;\">All day</span>"
+    set display_hour "<span style=\"font-size: 70%; text-decoration: none;\">[_ acs-datetime.All_day]</span>"
     append return_html "<tr class=\"odd\"><td class=\"center\" align=\"left\" width=\"60\" \"nowrap\"><font size=-1>[subst $hour_template]</font></td>"
     append return_html "<td colspan=\"$max_n_events\"><font size=-1>"
     
@@ -418,7 +418,8 @@ ad_proc -public dt_widget_list {
     }
 
     if {[empty_string_p $start_date] && ![empty_string_p $end_date]} {
-        set title "Items until [util_AnsiDatetoPrettyDate $end_date]"
+	set $pretty_end_date [lc_time_fmt $end_date "%x"]
+        set title "[_ acs-datetime.Items_until]"
     }
 
     if {![empty_string_p $start_date] && [empty_string_p $end_date]} {

@@ -13,7 +13,7 @@ ad_proc dt_widget_month {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "Sunday Monday Tuesday Wednesday Thursday Friday Saturday" 
+	-days_of_week ""
 	-large_calendar_p 1 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -42,6 +42,10 @@ ad_proc dt_widget_month {
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details. 
 } {
+    if [empty_string_p $days_of_week] {
+	set days_of_week "[_ acs-datetime.days_of_week]" 
+    }
+
     dt_get_info $date
 
     set today_date [dt_sysdate]    
@@ -207,7 +211,7 @@ ad_proc dt_widget_month_small {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week ""
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -226,6 +230,9 @@ ad_proc dt_widget_month_small {
 } {
     Returns a small calendar for a specific month. Defaults to this month.
 } {
+    if [empty_string_p $days_of_week] {
+	set days_of_week "[_ acs-datetime.short_days_of_week]"
+    }
     return [dt_widget_month \
 	    -calendar_details $calendar_details \
 	    -date $date \
@@ -250,7 +257,7 @@ ad_proc dt_widget_month_centered {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week ""
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -270,6 +277,10 @@ ad_proc dt_widget_month_centered {
     Returns a calendar for a specific month, with details supplied by
     Julian date. Defaults to this month.
 } {
+
+    if [empty_string_p $days_of_week] {
+	set days_of_week "[_ acs-datetime.short_days_of_week]" 
+    }
     set output ""
 
     dt_get_info $date
@@ -298,7 +309,7 @@ ad_proc dt_widget_year {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week ""
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -320,7 +331,11 @@ ad_proc dt_widget_year {
     ignored.
 } { 
     if { $width < 1 || $width > 12 } {
-	return "Width must be between 1 and 12"
+	return "[_ acs-datetime.lt_Width_must_be_]"
+    }
+
+    if [empty_string_p $days_of_week] {
+	set days_of_week "[_ acs-datetime.short_days_of_week]" 
     }
 
     set output "<table><tr valign=top>\n"
@@ -351,7 +366,7 @@ ad_proc dt_widget_calendar_year {
     {
 	-calendar_details "" 
 	-date "" 
-	-days_of_week "S M T W T F S" 
+	-days_of_week ""
 	-large_calendar_p 0 
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
@@ -372,6 +387,10 @@ ad_proc dt_widget_calendar_year {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
 } {
+    if [empty_string_p $days_of_week] {
+	set days_of_week "[_ acs-datetime.short_days_of_week]" 
+    }
+
     dt_get_info $date
 
     return [dt_widget_year \
@@ -898,7 +917,7 @@ ad_proc -private dt_get_info {
     ns_set put $dt_info_set julian_date_today \
         [dt_ansi_to_julian $year $month $day]
     ns_set put $dt_info_set month \
-        [clock format [clock scan $the_date] -format %B]
+        [lc_time_fmt $the_date "%B"]
     ns_set put $dt_info_set year \
         [clock format [clock scan $the_date] -format %Y]
     ns_set put $dt_info_set first_julian_date_of_month \

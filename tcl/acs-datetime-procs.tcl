@@ -179,10 +179,7 @@ ad_proc dt_ansi_to_pretty {
 	set ansi_date [dt_sysdate]
     }
 
-    set date [clock scan $ansi_date]
-    set day  [clock format $date -format "%e"]
-
-    return [clock format $date -format "%B [string trim $day], %Y"]
+    return [lc_time_fmt $ansi_date "%x"]
 }
 
 ad_proc dt_ansi_to_list {
