@@ -469,20 +469,54 @@ ad_proc -private dt_navbar_year {
     set now [clock scan $date]
 
     # Compute formatted strings for curr, prev, and next
-    set prev_year [clock format [clock scan "1 year ago" -base $now] -format "%Y-%m-%d"]
-    set next_year [clock format [clock scan "1 year" -base $now] -format "%Y-%m-%d"]
+
+    # Check that links to prev/next year don't lead to illegal dates that would bomb
+    if {[catch {set prev_year [clock format [clock scan "1 year ago" -base $now] -format "%Y-%m-%d"]} err]} {
+	set prev_year_legal_p 0
+    } else {
+	if {[catch {clock scan $prev_year}]} {
+	    set prev_year_legal_p 0
+	} else {
+	    set prev_year_legal_p 1
+	}
+    }
+
+    if {[catch {set next_year [clock format [clock scan "1 year" -base $now] -format "%Y-%m-%d"]} err]} {
+	set next_year_legal_p 0
+    } else {
+	if {[catch {clock scan $next_year}]} {
+	    set next_year_legal_p 0
+	} else {
+	    set next_year_legal_p 1
+	}
+    }
+
     set curr_year [clock format $now -format "%Y"]
 
     append result "
     <tr>
     <td nowrap align=center colspan=5 class=\"no-border\">
     <table cellspacing=0 cellpadding=1 border=0>
-    <tr><td nowrap valign=middle>
+    <tr><td nowrap valign=middle>"
+
+    # Serve arrow link to prev year if it leads to legal date
+    if {$prev_year_legal_p != 0} {
+	append result "
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_year]\">
-    <img border=0 src=[dt_left_arrow]></a>
-    <b>$curr_year</b>
+    <img border=0 src=[dt_left_arrow]></a>"
+    }
+
+    append result "
+    <b>$curr_year</b>"
+    
+    # Serve arrow to next year if it leads to a legal date
+    if {$next_year_legal_p != 0} {
+	append result "
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_year]\">
-    <img border=0 src=[dt_right_arrow]></a>
+    <img border=0 src=[dt_right_arrow]></a>"
+    }
+
+    append result "
     </td>
     </tr>
     </table>
@@ -501,21 +535,54 @@ ad_proc -private dt_navbar_month {
 } {
     set now        [clock scan $date]
     set curr_month [clock format $now -format "%B"]
-    set prev_month [clock format [clock scan "1 month ago" -base $now] -format "%Y-%m-%d"]
-    set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]
+
+    # Check that the arrows to prev/next months don't go to illegal dates and bomb
+    if {[catch {set prev_month [clock format [clock scan "1 month ago" -base $now] -format "%Y-%m-%d"]} err ]} {
+	set prev_month_legal_p 0
+    } else {
+	if {[catch {clock scan $prev_month}]} {
+	    set prev_month_legal_p 0
+	} else {
+	    set prev_month_legal_p 1
+	}
+    }
+
+    if {[catch {set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]} err]} {
+	set next_month_legal_p 0
+    } else {
+	if {[catch {clock scan $next_month}]} {
+	    set next_month_legal_p 0
+	} else {
+	    set next_month_legal_p 1
+	}
+    }
 
     append results "
     <tr><td class=\"bottom-border\" nowrap align=center colspan=5>
     <table cellspacing=0 cellpadding=1 border=0>
-    <tr><td nowrap valign=middle>
+    <tr><td nowrap valign=middle>"
+
+    # Output link to previous month only if it's legal
+    if {$prev_month_legal_p != 0} {
+	append results "
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_month]\">
-    <img border=0 src=[dt_left_arrow]></a>
-    <font size=-1><b>$curr_month</b></font>
+    <img border=0 src=[dt_left_arrow]></a>"
+    }
+    
+    append results "
+    <font size=-1><b>$curr_month</b></font>"
+
+    # Output link to next month only if it's a legal month
+    if {$next_month_legal_p != 0} {
+	append results "
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\">
-    <img border=0 src=[dt_right_arrow]></a>
+    <img border=0 src=[dt_right_arrow]></a>"
+    }
+    
+    append results "
     </td>
     </tr>\n"
-
+	
     return $results
 }
 
