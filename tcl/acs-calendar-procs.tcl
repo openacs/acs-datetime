@@ -402,13 +402,13 @@ ad_proc dt_widget_calendar_year {
 ad_proc -private dt_left_arrow {} {
     Returns the image location for a left navigation arrow
 } {
-    return "/doc/acs-datetime/pics/left.gif"
+    return "/shared/images/left.gif"
 }
 
 ad_proc -private dt_right_arrow {} {
     Returns the image location for a right navigation arrow
 } {
-    return "/doc/acs-datetime/pics/right.gif"
+    return "/shared/images/right.gif"
 }
 
 ad_proc -private dt_navbar_view {
@@ -827,7 +827,7 @@ ad_proc dt_widget_calendar_navigation {
     is [dt_ansi_to_pretty]</font></td></tr>
     <tr><td align=center><br>
     <form method=get action=$base_url>
-    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>Date as YYYYMMDD</font>
+    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/shared/images/go.gif\" alt=\"Go\" border=0><br><font size=-2>Date as YYYYMMDD</font>
     <INPUT TYPE=hidden name=view value=day>
     "
 
