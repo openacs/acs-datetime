@@ -19,7 +19,7 @@
         <description format="text/html">Note: this version of the package requires acs-event(s) for a helper function. This requirement may go away in the future. </description>
 
         <provides url="acs-datetime" version="4.0"/>
-        <requires url="acs-event" version="0.1d"/>
+        <requires url="acs-events" version="0.1d"/>
         <requires url="acs-kernel" version="4.0"/>
         <requires url="acs-templating" version="4.0.1"/>
 
