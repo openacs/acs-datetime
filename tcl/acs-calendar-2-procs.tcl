@@ -146,7 +146,11 @@ ad_proc dt_widget_day {
             break
         }
         
-        append return_html "[ns_set value $calendar_details $index]<br>\n"
+        if {$overlap_p} {
+            append return_html "[lindex [ns_set value $calendar_details $index] 2]"
+        } else {
+            append return_html "[ns_set value $calendar_details $index]<br>\n"
+        }
         
         ns_set delete $calendar_details $index
     }
@@ -199,9 +203,19 @@ ad_proc dt_widget_day {
             }
 
             if {$overlap_p} {
-                set end_time [expr $hour + 2]
+                set one_item_val [ns_set value $calendar_details $index]
+                
+                # One ugly hack
+                set end_time_lst [split [lindex $one_item_val 1] ":"]
+
+                if {[lindex $end_time_lst 1] == 0} {
+                    set end_time [expr [string trimleft [lindex $end_time_lst 0] 0] - 1]
+                } else {
+                    set end_time [lindex $end_time_lst 1]
+                }
+
                 set start_time $hour
-                append return_html "<td valign=top bgcolor=white rowspan=[expr $end_time - $start_time + 1]><font size=-1>[ns_set value $calendar_details $index]</font></td>"
+                append return_html "<td valign=top bgcolor=white rowspan=[expr $end_time - $start_time + 1]><font size=-1>[lindex $one_item_val 2]</font></td>"
             } else {
                 append return_html "[ns_set value $calendar_details $index]<br>\n"
             }
