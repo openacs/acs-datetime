@@ -554,11 +554,11 @@ ad_proc dt_widget_calendar_navigation {
 	set date [dt_sysdate]
     }
 
+    set list_of_vars [list]
 
     # Ben: some annoying stuff to do here since we are passing in things in GET format already
     if {![empty_string_p $pass_in_vars]} {
         set vars [split $pass_in_vars "&"]
-        set list_of_vars [list]
         foreach var $vars {
             set things [split $var "="]
             lappend list_of_vars $things
