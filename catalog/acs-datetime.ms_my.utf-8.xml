@@ -8,11 +8,15 @@
   <msg key="Date_as_YYYYMMDD">Tarikh seperti YYYYMMDD</msg>
   <msg key="Day">Hari</msg>
   <msg key="Day_of_Week">Hari Dalam Minggu</msg>
+  <msg key="days_of_week">Ahad Isnin Selasa Rabu Khamis Jumaat Sabtu</msg>
   <msg key="forward_one_day">satu hari ke hadapan</msg>
   <msg key="is">ialah</msg>
   <msg key="Items_from">Senarai dari</msg>
+  <msg key="Items_until">Barang sehingga @pretty_end_date@</msg>
   <msg key="List">Senarai</msg>
+  <msg key="lt_Width_must_be_">Lebar hendaklah antara 1 hingga 12</msg>
   <msg key="Month">Bulan</msg>
+  <msg key="short_days_of_week">A I S R K J S</msg>
   <msg key="to">hingga</msg>
   <msg key="Today">Hari Ini</msg>
   <msg key="Week">Minggu</msg>

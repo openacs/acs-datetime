@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <message_catalog package_key="acs-datetime" package_version="4.0" locale="fr_FR" charset="ISO-8859-1">
 
+  <msg key="All_day">Journée entière</msg>
   <msg key="Date">Date</msg>
   <msg key="Date_as">Date comme</msg>
   <msg key="Date_as_YYYYMMDD">Format YYYYMMDD</msg>
@@ -11,6 +12,7 @@
   <msg key="Items_from">Eléments de</msg>
   <msg key="List">Liste</msg>
   <msg key="Month">Mois</msg>
+  <msg key="short_days_of_week">S L M M J V S</msg>
   <msg key="to">à</msg>
   <msg key="Today">Aujourd'hui</msg>
   <msg key="Week">Semaine</msg>
