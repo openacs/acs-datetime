@@ -44,7 +44,11 @@
             <file type="documentation" path="www/doc/examples/index.adp"/>
             <file type="documentation" path="www/doc/examples/master.adp"/>
             <file type="documentation" path="www/doc/index.html"/>
+            <file type="documentation" path="www/doc/pics/add.gif"/>
+            <file type="documentation" path="www/doc/pics/diamond.gif"/>
+            <file type="documentation" path="www/doc/pics/go.gif"/>
             <file type="documentation" path="www/doc/pics/left.gif"/>
+            <file type="documentation" path="www/doc/pics/new.gif"/>
             <file type="documentation" path="www/doc/pics/right.gif"/>
             <file type="documentation" path="www/doc/requirements.html"/>
         </files>
