@@ -83,7 +83,8 @@ ad_proc dt_widget_week {
 ad_proc dt_widget_day { 
     {
 	-calendar_details "" 
-	-date "" 
+	-date ""
+        -hour_template {$display_hour}
         -start_hour {0}
         -end_hour {23}
         -show_nav 1
@@ -125,7 +126,7 @@ ad_proc dt_widget_day {
         append return_html "<tr bgcolor=lightblue><th colspan=2><a href=?date=$yesterday>&lt;</a> &nbsp; &nbsp; $day_of_the_week &nbsp; &nbsp; <a href=?date=$tomorrow>&gt;</a></th></tr>\n"
     }
 
-    for {set hour $start_hour} {$hour < $end_hour} {incr hour} {
+    for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
 
         if {$hour < 10} {
             set index_hour "0$hour"
@@ -160,6 +161,7 @@ ad_proc dt_widget_day {
             append display_hour "am"
         }
 
+        set display_hour [subst $hour_template]
         append return_html "<tr bgcolor=#cccccc><td width=60><font size=-1>$display_hour</font></td>"
         
         if {[ns_set find $calendar_details $index_hour] != -1} {
