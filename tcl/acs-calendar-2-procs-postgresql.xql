@@ -36,9 +36,9 @@ as saturday_date,
 to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6,'J') 
 as saturday_julian,
 :current_date::timestamp - '7 days'::timespan as last_week,
-to_char(:current_date::timestamp - '7 days'::timespan, 'Month DD, YYYY') as last_week_pretty,
+to_char(:current_date::timestamp - '7 days'::interval, 'Month DD, YYYY') as last_week_pretty,
 :current_date::timestamp + '7 days'::timespan as next_week,
-to_char(:current_date::timestamp + '7 days'::timespan, 'Month DD, YYYY') as next_week_pretty
+to_char(:current_date::timestamp + '7 days'::interval, 'Month DD, YYYY') as next_week_pretty
 from     dual
 </querytext>
 </fullquery>
