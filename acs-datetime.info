@@ -26,6 +26,7 @@
         <files>
             <file type="package_spec" path="acs-datetime.info"/>
             <file type="query_file" db_type="oracle" path="tcl/acs-calendar-2-procs-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="tcl/acs-calendar-2-procs-postgresql.xql"/>
             <file type="tcl_procs" path="tcl/acs-calendar-2-procs.tcl"/>
             <file type="tcl_procs" path="tcl/acs-calendar-procs.tcl"/>
             <file type="tcl_procs" path="tcl/acs-datetime-procs.tcl"/>
