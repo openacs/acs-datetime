@@ -19,4 +19,5 @@
   <msg key="Month">Month</msg>
   <msg key="Date">Date</msg>
   <msg key="No_Items">No Items</msg>
+  <msg key="Date_as_YYYYMMDD">Date as YYYYMMDD</msg>
 </message_catalog>
