@@ -1,4 +1,4 @@
-# /packages/acs-datetime/tcl/acs-calendar-widgets.tcl
+# /packages/acs-datetime/tcl/acs-calendar-procs.tcl
 
 ad_library {
 
@@ -41,7 +41,7 @@ ad_proc dt_widget_month {
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details. 
 } {
-    dt_get_info_from_db $date
+    dt_get_info $date
 
     if [empty_string_p $calendar_details] {
 	set calendar_details [ns_set create calendar_details]
@@ -264,7 +264,7 @@ ad_proc dt_widget_month_centered {
 } {
     set output ""
 
-    dt_get_info_from_db $date
+    dt_get_info $date
 
     append output "
     <table>
@@ -319,7 +319,7 @@ ad_proc dt_widget_year {
     set current_width 0
 
     for { set n 1 } { $n <= 12 } { incr n } {
-	dt_get_info_from_db $date
+	dt_get_info $date
 	
 	append output "
 	<td>
@@ -364,7 +364,7 @@ ad_proc dt_widget_calendar_year {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
 } {
-    dt_get_info_from_db $date
+    dt_get_info $date
 
     return [dt_widget_year \
 	    -calendar_details $calendar_details \
@@ -549,7 +549,7 @@ ad_proc dt_widget_calendar_navigation {
 
     # Get the current month, day, and the first day of the month
 
-    dt_get_info_from_db $date
+    dt_get_info $date
 
     set output "
     <table border=1 cellpadding=1 cellspacing=0 width=160>
@@ -736,7 +736,7 @@ ad_proc dt_widget_calendar_navigation {
     return $output
 }
 
-ad_proc -private dt_get_info_from_db {
+ad_proc -private dt_get_info {
     {the_date ""}
 } {
     Calculates various dates required by the dt_widget_month
@@ -745,7 +745,7 @@ ad_proc -private dt_get_info_from_db {
 
     Returns the following (example for the_date = 2000-12-08):
 
-    julian_date_today           2451889
+    julian_date_today           2451887
     month                       December
     year                        2000
     first_julian_date           2451875
@@ -763,49 +763,55 @@ ad_proc -private dt_get_info_from_db {
     next_month_name             January
     prev_month_name             November
 
-    Input: 
+    Input:
 
     the_day      ANSI formatted date string (yyyy-mm-dd).  If not
                  specified this procedure will default to today's
-                 date. 
+                 date.
 } {
     # If no date was passed in, let's set it to today
 
     if [empty_string_p $the_date] {
-	set the_date [dt_sysdate]
+        set the_date [dt_sysdate]
     }
 
-    # We put all the columns into dt_info_set and return it later
+    # get year, month, day
+    set date_list [dt_ansi_to_list $the_date]
+    set year [dt_trim_leading_zeros [lindex $date_list 0]]
+    set month [dt_trim_leading_zeros [lindex $date_list 1]]
+    set day [dt_trim_leading_zeros [lindex $date_list 2]]
+
+    # We put all the data into dt_info_set and return it later
     set dt_info_set [ns_set create]
-    set bind_vars [ad_tcl_vars_to_ns_set the_date]
 
-    # This query gets us all of the date information we need to
-    # calculate the calendar, including the name of the month, the
-    # year, the julian date of the first of the month, the day of the
-    # week of the first day of the month, the day number of the last
-    # day (28, 29, 30 ,31) and a month string of the next and previous
-    # months 
+    ns_set put $dt_info_set julian_date_today \
+        [dt_ansi_to_julian $year $month $day]
+    ns_set put $dt_info_set month \
+        [clock format [clock scan $the_date] -format %B]
+    ns_set put $dt_info_set year \
+        [clock format [clock scan $the_date] -format %Y]
+    ns_set put $dt_info_set first_julian_date_of_month \
+        [dt_ansi_to_julian $year $month 1]
+    ns_set put $dt_info_set num_days_in_month \
+        [dt_num_days_in_month $year $month]
+    ns_set put $dt_info_set first_day_of_month \
+        [dt_first_day_of_month $year $month]
+    ns_set put $dt_info_set last_day \
+        [dt_num_days_in_month $year $month]
+    ns_set put $dt_info_set next_month \
+        [dt_next_month $year $month $day] 
+    ns_set put $dt_info_set prev_month \
+        [dt_prev_month $year $month $day]
+    ns_set put $dt_info_set beginning_of_year \
+        $year-01-01
+    ns_set put $dt_info_set days_in_last_month \
+        [dt_num_days_in_month $year [expr $month - 1]]
+    ns_set put $dt_info_set next_month_name \
+        [dt_next_month_name $year $month]
+    ns_set put $dt_info_set prev_month_name \
+        [dt_prev_month_name $year $month]
 
-    db_1row dt_get_information "
-	select to_char(to_date(:the_date,'yyyy-mm-dd'),'J') as julian_date_today,
-               to_char(trunc(to_date(:the_date, 'yyyy-mm-dd'), 'Month'), 'fmMonth') as month, 
-               to_char(trunc(to_date(:the_date, 'yyyy-mm-dd'), 'Month'), 'YYYY') as year, 
-               to_char(trunc(to_date(:the_date, 'yyyy-mm-dd'), 'Month'), 'J') as first_julian_date_of_month, 
-               to_char(last_day(to_date(:the_date, 'yyyy-mm-dd')), 'DD') as num_days_in_month,
-               to_char(trunc(to_date(:the_date, 'yyyy-mm-dd'), 'Month'), 'D') as first_day_of_month, 
-               to_char(last_day(to_date(:the_date, 'yyyy-mm-dd')), 'DD') as last_day,
-               trunc(add_months(to_date(:the_date, 'yyyy-mm-dd'), 1)) as next_month,
-               trunc(add_months(to_date(:the_date, 'yyyy-mm-dd'), -1)) as prev_month,
-               trunc(to_date(:the_date, 'yyyy-mm-dd'), 'yyyy') as beginning_of_year,
-               to_char(last_day(add_months(to_date(:the_date, 'yyyy-mm-dd'), -1)), 'DD') as days_in_last_month,
-               to_char(add_months(to_date(:the_date, 'yyyy-mm-dd'), 1), 'fmMonth') as next_month_name,
-               to_char(add_months(to_date(:the_date, 'yyyy-mm-dd'), -1), 'fmMonth') as prev_month_name
-	from   dual
-    " -bind $bind_vars -column_set dt_info_set
-
-    ns_set free $bind_vars
-
-    # We need the variables from the select query here as well
+    # We need the variables from the ns_set
     ad_ns_set_to_tcl_vars $dt_info_set
 
     ns_set put $dt_info_set first_julian_date \
@@ -816,15 +822,14 @@ ad_proc -private dt_get_info_from_db {
         [expr $first_julian_date_of_month + $num_days_in_month - 1]
 
     set days_in_next_month \
-	    [expr (7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7]
+        [expr (7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7]
 
     ns_set put $dt_info_set last_julian_date \
-	    [expr $first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month]
+        [expr $first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month]
 
     # Now, set the variables in the caller's environment
 
     ad_ns_set_to_tcl_vars -level 2 $dt_info_set
     ns_set free $dt_info_set
 }
-
 

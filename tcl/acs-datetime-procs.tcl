@@ -70,16 +70,99 @@ ad_proc dt_month_abbrev {} {
     return $month_names
 }
 
+ad_proc dt_ansi_to_julian {
+    year
+    month
+    day
+    {era ""}
+} {
+    Returns the ANSI date as Julian or -1 in the case
+    of an invalid ANSI date argument (year less than
+    4713 BCE, greater than 9999 CE, or equal to 0)
+} {
+    if [empty_string_p $era] {
+        set era CE
+    }
+
+    if {$year == 0} {
+        set julian_date -1
+    } elseif {$year == 1582 && $month == 10 && $day > 4 && $day < 15} {
+        # mimic the functionality of Oracle for these non-existent
+        # gregorian dates (returns the julian date of the day following
+        # 1582-10-04; 1582-10-15)
+        set julian_date [dt_ansi_to_julian 1582 10 15 CE]
+    } else {
+        if {$era == "BCE"} {
+            set year [expr -$year + 1]
+        }
+
+        if {$month > 2} {
+            set year_n $year
+            set month_n [expr $month + 1]
+        } else {
+            set year_n [expr $year - 1]
+            set month_n [expr $month + 13]
+        }
+
+        set julian_date [expr floor(floor(365.25 * $year_n) + floor(30.6001 * $month_n) + ($day + 1720995))]
+
+        # check for change to the Gregorian Calendar
+        set gregorian [expr 15 + 31 * (10 + 12 * 1582)]
+        if {$day + 31 * ($month + 12 * $year) >= $gregorian} {
+            set julian_date [expr $julian_date + (2 - floor(0.01 * $year_n) + floor(0.25 * floor(0.01 * $year_n)))]
+        }
+    }
+
+    return [expr int($julian_date)]
+}
+
 ad_proc dt_julian_to_ansi {
     julian_date
 } {
     Returns julian_date formatted as "yyyy-mm-dd"
 } {
-    return [db_string julian_to_ansi "
-    select to_char(to_date(:julian_date,'J'),'yyyy-mm-dd') from dual"]
+    # Gregorian calendar correction
+    set gregorian 2299161
+
+    if {$julian_date >= $gregorian} {
+      set calc [expr floor((($julian_date - 1867216) - 0.25) / 36524.25)]
+      set calc [expr $julian_date + 1 + $calc - floor(0.25 * $calc)]
+    } else {
+      set calc $julian_date
+    }
+
+    # get initial calculations to set year, month, day
+    set calc [expr $calc + 1524]
+    set calc2 [expr floor(6680 + (($calc - 2439870) - 122.1) / 365.25)]
+    set calc3 [expr floor($calc2 * 365.25)]
+    set calc4 [expr floor(($calc - $calc3) / 30.6001)]
+
+    # set year, month, day
+    set year [expr floor($calc2 - 4715)]
+    set month [expr floor($calc4 - 1)]
+    if {$month > 12} {
+      set month [expr $month - 12]
+    }
+    if {$month > 2 || $year <= 0} {
+      set year [expr $year - 1]
+    }
+    set day [expr floor($calc - $calc3 - floor($calc4 * 30.6001))]
+
+    set year [expr int($year)]
+    set month [expr int($month)]
+    set day [expr int($day)]
+
+    if {$month < 10} {
+      set month 0$month
+    }
+
+    if {$day < 10} {
+      set day 0$day
+    }
+
+    return $year-$month-$day
 }
 
-    
 ad_proc dt_ansi_to_pretty {
     {ansi_date ""}
 } {
@@ -113,6 +196,103 @@ ad_proc dt_ansi_to_list {
     }
     
     return $date_info
+}
+
+ad_proc dt_num_days_in_month {
+    year
+    month
+} {
+    Returns the numbers of days for the given month/year
+} {
+    if {$month == 0} {
+      set month 01
+    } elseif {$month == 12} {
+      set year [expr $year + 1]
+      set month 01
+    } elseif {$month == 13} {
+      set year [expr $year + 1]
+      set month 02
+    } else {
+      set month [expr $month + 1]
+    }
+
+    return [clock format [clock scan "last day" -base [clock scan $year-$month-01]] -format %d]
+}
+
+ad_proc dt_first_day_of_month {
+    year
+    month
+} {
+    Returns the weekday number of the first day for the given month/year
+} {
+    # calendar widgets are expecting integers 1-7, so we must adjust
+    return [expr [clock format [clock scan $year-$month-01] -format %w] + 1]
+}
+
+ad_proc dt_next_month {
+    year
+    month
+    day
+} {
+    Returns the ANSI date for the next month
+} {
+    if {$month == 12} {
+      set year [expr $year + 1]
+      set month 01
+    } else {
+      set month [expr $month + 1]
+    }
+
+    return [clock format [clock scan $year-$month-$day] -format %Y-%m-%d]
+}
+
+ad_proc dt_prev_month {
+    year
+    month
+    day
+} {
+    Returns the ANSI date for the previous month
+} {
+    if {$month == 1} {
+      set year [expr $year - 1]
+      set month 12
+    } else {
+      set month [expr $month - 1]
+    }
+
+    return [clock format [clock scan $year-$month-$day] -format %Y-%m-%d]
+}
+
+ad_proc dt_next_month_name {
+    year
+    month
+} {
+    Returns the ANSI date for the next month
+} {
+    if {$month == 12} {
+      set year [expr $year + 1]
+      set month 01
+    } else {
+      set month [expr $month + 1]
+    }
+
+    return [clock format [clock scan $year-$month-01] -format %B]
+}
+
+ad_proc dt_prev_month_name {
+    year
+    month
+} {
+    Returns the ANSI date for the previous month
+} {
+    if {$month == 12} {
+      set year [expr $year + 1]
+      set month 01
+    } else {
+      set month [expr $month + 1]
+    }
+
+    return [clock format [clock scan $year-$month-01] -format %B]
 }
 
 ad_proc -public dt_widget_datetime { 
