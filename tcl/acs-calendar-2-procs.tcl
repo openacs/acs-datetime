@@ -448,8 +448,13 @@ ad_proc -public dt_widget_list {
         set item_type [lindex $item 4]
         set item_details [lindex $item 5]
 
+        # Adjust the display of no-time items
+        if {[dt_no_time_p -start_time $start_time -end_time $end_time]} {
+            set start_time "--"
+            set end_time "--"
+        }
+
         # Do we need a title?
-        ns_log Notice "BMA-check : $real_order_by , $item_type, $old_item_type"
         if {$real_order_by == "item_type" && $item_type != "$old_item_type"} {
             if {[empty_string_p $item_type]} {
                 set item_type "(No Item Type)"
