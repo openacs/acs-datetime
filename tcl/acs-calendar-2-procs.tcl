@@ -12,8 +12,8 @@ ad_proc dt_widget_week {
 	-day_header_size 2 
 	-day_header_bgcolor "#666666" 
 	-calendar_width "100%" 
-	-day_bgcolor "#DDDDDD" 
-	-today_bgcolor "#DDDDDD" 
+	-day_bgcolor "#DCDCDC" 
+	-today_bgcolor "#FFF8DC" 
 	-day_text_color "white" 
 	-empty_bgcolor "white"  
 	-next_week_template ""   
@@ -52,10 +52,29 @@ ad_proc dt_widget_week {
 
     # Loop through the days of the week
     set julian $sunday_julian
-    set return_html "<table border=0 cellpadding=1 cellspacing=0 width=$calendar_width>
-    <tr bgcolor=black><td>
-    <table cellpadding=2 cellspacing=0 border=0 width=100%>\n"
+    set return_html "<table CELLPADDING=3 CELLSPACING=0 BORDER=0 width=85%>\n"
     
+    # Navigation Bar
+    append return_html "<tr><td>
+    <table cellpadding=3 cellspacing=0 border=0 width=90%>
+    <tr bgcolor=lavender>
+    <td align=center>
+    <a href=?current_view=week&view_mode=full&group_id=418&current_view=week&current_date=2002-04-18>&lt;</a>
+    <FONT face=\"Arial,Helvetica\" SIZE=-1>
+    <B>
+    April     21, 2002 - April     27, 2002
+    </B>
+    </FONT>
+    <a href=?current_view=week&view_mode=full&group_id=418&current_view=week&current_date=2002-05-02>&gt;</a>
+    </td>
+    </tr>
+    </table></td></tr>
+    "
+
+    append return_html "<tr>
+    <td>
+    <table cellpadding=3 cellspacing=0 border=1 width=90%>"
+
     set days_of_week {Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
     foreach day $days_of_week {
 
@@ -65,9 +84,22 @@ ad_proc dt_widget_week {
         set pretty_date [util_AnsiDatetoPrettyDate $date]
         set day_html [subst $day_template]
 
-        append return_html "<tr bgcolor=#cccccc><td>$day_html</td></tr>
-        <tr bgcolor=white><td>&nbsp;"
-        
+        if {$date == $current_date} {
+            set bgcolor $today_bgcolor
+        } else {
+            set bgcolor $day_bgcolor
+        }
+
+        append return_html "<tr><td bgcolor=\"$bgcolor\">$day_html &nbsp
+        <font size=-1> 
+        <a href=>Add Item</a>
+        </font>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        <table border=0 width=100%>"
+	    
         # Go through events
         while {1} {
             set index [ns_set find $calendar_details $julian]
@@ -75,10 +107,21 @@ ad_proc dt_widget_week {
                 break
             }
 
-            append return_html "[ns_set value $calendar_details $index]<br>\n"
+            append return_html "
+            <tr>
+            <td>
+            <font size=-1>
+            [ns_set value $calendar_details $index]		    
+	    </font>
+	    </td>      
+	    </tr>
+	    "
 
             ns_set delete $calendar_details $index
         }
+
+        append return_html "</table></td></tr>"
+
 
         append return_html "</td></tr>\n"
         incr julian
@@ -107,7 +150,7 @@ ad_proc dt_widget_day {
 	-header_text_size "+2" 
 	-calendar_width "100%" 
 	-day_bgcolor "#DDDDDD" 
-	-today_bgcolor "#DDDDDD" 
+	-today_bgcolor "yellow" 
 	-day_text_color "white" 
 	-empty_bgcolor "white"  
         -overlap_p 0
@@ -246,4 +289,44 @@ ad_proc dt_widget_day {
     append return_html "</table></td></tr></table>"
     
     return $return_html
+}
+
+
+        
+#
+# Additional Utility Procs
+#
+
+ad_proc dt_midnight_p {
+    time
+} {
+    check if a time is midnight
+} {
+    if {$time == "00:00" || $time == ""} {
+        return 1
+    }
+
+    if {[regexp {00:00 *[aA][mM]} $time the_match]} {
+        return 1
+    }
+
+    if {[regexp {12:00 *[aA][mM]} $time the_match]} {
+        return 1
+    }
+
+    return 0
+}
+
+ad_proc dt_no_time_p {
+    {-start_time:required}
+    {-end_time:required}
+} {
+    This decides whether an item is without a time
+} {
+    # Compare times and make sure it's midnight on both
+    if {[dt_midnight_p $start_time] && [dt_midnight_p $end_time]} {
+        return 1
+    } else {
+        return 0
+    }
 }
