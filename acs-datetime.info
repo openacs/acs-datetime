@@ -23,35 +23,6 @@
         <requires url="acs-kernel" version="4.6.2"/>
         <requires url="acs-templating" version="4.0.1"/>
 
-        <files>
-            <file type="package_spec" path="acs-datetime.info"/>
-            <file type="query_file" db_type="oracle" path="tcl/acs-calendar-2-procs-oracle.xql"/>
-            <file type="query_file" db_type="postgresql" path="tcl/acs-calendar-2-procs-postgresql.xql"/>
-            <file type="tcl_procs" path="tcl/acs-calendar-2-procs.tcl"/>
-            <file type="tcl_procs" path="tcl/acs-calendar-procs.tcl"/>
-            <file type="tcl_procs" path="tcl/acs-datetime-procs.tcl"/>
-            <file type="query_file" path="tcl/acs-datetime-procs.xql"/>
-            <file type="documentation" path="www/doc/coversheet.html"/>
-            <file type="documentation" path="www/doc/design.html"/>
-            <file type="documentation" path="www/doc/examples/calendar-navigation.adp"/>
-            <file type="documentation" path="www/doc/examples/calendar-navigation.tcl"/>
-            <file type="documentation" path="www/doc/examples/calendar-widgets.adp"/>
-            <file type="documentation" path="www/doc/examples/calendar-widgets.tcl"/>
-            <file type="documentation" path="www/doc/examples/datetime-procs.adp"/>
-            <file type="documentation" path="www/doc/examples/datetime-procs.tcl"/>
-            <file type="documentation" path="www/doc/examples/datetime-widgets.adp"/>
-            <file type="documentation" path="www/doc/examples/datetime-widgets.tcl"/>
-            <file type="documentation" path="www/doc/examples/index.adp"/>
-            <file type="documentation" path="www/doc/examples/master.adp"/>
-            <file type="documentation" path="www/doc/index.html"/>
-            <file type="documentation" path="www/doc/pics/add.gif"/>
-            <file type="documentation" path="www/doc/pics/diamond.gif"/>
-            <file type="documentation" path="www/doc/pics/go.gif"/>
-            <file type="documentation" path="www/doc/pics/left.gif"/>
-            <file type="documentation" path="www/doc/pics/new.gif"/>
-            <file type="documentation" path="www/doc/pics/right.gif"/>
-            <file type="documentation" path="www/doc/requirements.html"/>
-        </files>
         <parameters>
         <!-- No version parameters -->
         </parameters>
