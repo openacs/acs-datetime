@@ -77,9 +77,9 @@ ad_proc dt_widget_month {
 	</td>\n"
     } else {
 	set title "
-	<td colspan=7>
+	<td class=\"no-border\" colspan=7>
 	<table width=100% cellpadding=0 cellspacing=0 border=0>
-	<tr>
+	<tr class=\"table-header\">
 	<td align=left>$prev_month_url</td>
 	<td align=center><font size=$header_text_size color=$header_text_color>
 	<b>$month_heading</b></font>
@@ -93,13 +93,13 @@ ad_proc dt_widget_month {
     # Write out the header and the days of the week
 
     append output "
-    <table bgcolor=$master_bgcolor cellpadding=3 cellspacing=0 border=1 width=$calendar_width>
+    <table class=\"table-display\" bgcolor=$master_bgcolor cellpadding=0 cellspacing=0 border=1 width=$calendar_width>
     <tr bgcolor=$header_bgcolor> $title </tr>
-    <tr bgcolor=$day_header_bgcolor>\n"
+    <tr bgcolor=$day_header_bgcolor class=\"table-header\">\n"
 
     foreach day_of_week $days_of_week {
 	append output "
-	<td width=14% align=center>
+	<td width=14% align=center class=\"no-border\">
 	<font face=\"Verdana,Arial,Helvetica\" size=$day_header_size color=$day_text_color>
 	<b>$day_of_week</b>
 	</font>
@@ -143,7 +143,7 @@ ad_proc dt_widget_month {
 	set skip_day 0
 
 	if {$before_month_p || $after_month_p} {
-	    append output "<td bgcolor=$empty_bgcolor align=right valign=top>&nbsp;"
+	    append output "<td class=\"no-border\" bgcolor=$empty_bgcolor align=right valign=top>&nbsp;"
 	    if { $fill_all_days == 0 } {
 		set skip_day 1
 	    } else {
@@ -152,11 +152,13 @@ ad_proc dt_widget_month {
 	} else {
             if {$julian_date == $today_julian_date} {
                 set the_bgcolor $today_bgcolor
+		set the_class "cal-month-today"
             } else {
                 set the_bgcolor $day_bgcolor
+		set the_class "cal-month-day"
             }
 
-	    append output "<td bgcolor=$the_bgcolor align=left valign=top>[subst $day_number_template]&nbsp;"
+	    append output "<td class=$the_class bgcolor=$the_bgcolor align=left valign=top>[subst $day_number_template]&nbsp;"
 	}
 
 	if { (!$skip_day) && $large_calendar_p == 1 } {
@@ -422,21 +424,21 @@ ad_proc -private dt_navbar_view {
     # properly
 
     append result "
-    <tr align=center>"
+    <tr align=center class=\"table-header\">"
     
     # ben: taking out year for now, since it doesn't work
     foreach viewname {list day week month} {
         set text [string toupper $viewname 0]
         if { $viewname == $view } {
             # current view
-            append result "<td bgcolor=ffd700>
-    <font size=-1>$text</font>
+            append result "<td class=\"selected\">
+    <font size=-1><b>$text</b></font>
     </td>
     "
         } else {
-            append result "<td>
+            append result "<td class=\"no-border\">
     <a href=\"$base_url" "view=$viewname&date=$date\">
-    <font size=-1 color=blue>$text</font></a>
+    <font size=-1><b>$text</b></font></a>
     </td>
     "
         }
@@ -473,7 +475,7 @@ ad_proc -private dt_navbar_year {
 
     append result "
     <tr>
-    <td nowrap align=center bgcolor=lavender colspan=5>
+    <td nowrap align=center colspan=5 class=\"no-border\">
     <table cellspacing=0 cellpadding=1 border=0>
     <tr><td nowrap valign=middle>
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_year]\">
@@ -503,12 +505,12 @@ ad_proc -private dt_navbar_month {
     set next_month [clock format [clock scan "1 month" -base $now] -format "%Y-%m-%d"]
 
     append results "
-    <tr><td nowrap align=center bgcolor=lavender colspan=5>
+    <tr><td class=\"bottom-border\" nowrap align=center colspan=5>
     <table cellspacing=0 cellpadding=1 border=0>
     <tr><td nowrap valign=middle>
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $prev_month]\">
     <img border=0 src=[dt_left_arrow]></a>
-    <tt><b>$curr_month</b></tt>
+    <font size=-1><b>$curr_month</b></font>
     <a href=\"$base_url" "view=$view&date=[ns_urlencode $next_month]\">
     <img border=0 src=[dt_right_arrow]></a>
     </td>
@@ -570,7 +572,7 @@ ad_proc dt_widget_calendar_navigation {
     dt_get_info $date
 
     set output "
-    <table border=1 cellpadding=1 cellspacing=0 width=160>
+    <center><table class=\"table-display\" border=1 cellpadding=1 cellspacing=0 width=160>
 
     [dt_navbar_view $view $base_url $date]
 
@@ -580,7 +582,7 @@ ad_proc dt_widget_calendar_navigation {
 	# month view
 	append output "
 	<tr>
-	<td colspan=5>
+	<td class=\"no-borders\" colspan=5>
 	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
 	<tr>
 	"
@@ -656,15 +658,17 @@ ad_proc dt_widget_calendar_navigation {
 	</td>
 	</tr>
 
-	<tr><td colspan=5>
-	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
+	<tr><td class=\"bottom-border\"colspan=5>
+	<table cellspacing=3 cellpadding=1>
+	<tr>
 	"
 
-	set days_of_week [list Su Mo Tu We Th Fr Sa]
+	set days_of_week [list S M T W T F S]
 
 	foreach day_of_week $days_of_week {
 	    append output "<td align=right><font size=-1><b>$day_of_week</b></td>\n"
 	}
+	append output "</tr><tr><td colspan=7><hr></td></tr>"
 
 	set day_of_week 1
 	set julian_date $first_julian_date
@@ -737,24 +741,26 @@ ad_proc dt_widget_calendar_navigation {
     </td>
     </tr>
     </table>
+    </center>
     </td>
     </tr>
-    <tr><td align=center bgcolor=lavender colspan=5>
-    <table cellspacing=0 cellpadding=1 border=0 bgcolor=lavender>
-    <td><td>
-    <font size=-1>"
+    <tr class=\"table-header\"><td align=center colspan=5>
+    <table cellspacing=0 cellpadding=0 border=0>
+    <tr><td nowrap>
+    <font size=-2>"
 
     if { $view == "day" && [dt_sysdate] == $date } {
         append output "<b>Today</b>"
     } else {
-        append output "<a href=\"$today_url\"><font color=blue>
-    <b>Today</b></font></a> "
+        append output "<a href=\"$today_url\">
+    <b>Today</b></a> "
     }
     
     append output "
-    is [dt_ansi_to_pretty]</font><br>
+    is [dt_ansi_to_pretty]</font></td></tr>
+    <tr><td align=center><br>
     <form method=get action=$base_url>
-    Go to: <INPUT TYPE=text name=date size=10> <INPUT type=submit value=go>
+    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/doc/acs-datetime/pics/go.gif\" alt=\"Go\" border=0><br><font size=-2>Date as YYYYMMDD</font>
     <INPUT TYPE=hidden name=view value=day>
     "
 
@@ -764,7 +770,6 @@ ad_proc dt_widget_calendar_navigation {
     
     append output "
     </form>
-    </td>
     </td>
     </tr>
     </table>

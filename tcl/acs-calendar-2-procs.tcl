@@ -15,8 +15,8 @@ ad_proc dt_widget_week {
 	-calendar_details "" 
 	-date "" 
 	-large_calendar_p 1 
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
+	-master_bgcolor "" 
+	-header_bgcolor "" 
 	-header_text_color "white" 
 	-header_text_size "+2" 
 	-day_template {<!--$julian-->$day} 
@@ -65,12 +65,12 @@ ad_proc dt_widget_week {
 
     # Loop through the days of the week
     set julian $sunday_julian
-    set return_html "<table CELLPADDING=3 CELLSPACING=0 BORDER=0 width=95%>\n"
+    set return_html "<table CELLPADDING=0 CELLSPACING=0 BORDER=0 width=95%>\n"
     
     # Navigation Bar
     append return_html "<tr><td>
-    <table cellpadding=3 cellspacing=0 border=0 width=90%>
-    <tr bgcolor=lavender>
+    <table cellpadding=3 cellspacing=0 border=0 width=90% class=\"table-display\">
+    <tr class=\"table-header\" bgcolor=lavender>
     <td align=center>
     [subst $prev_week_template]
     <FONT face=\"Arial,Helvetica\" SIZE=-1>
@@ -86,7 +86,7 @@ ad_proc dt_widget_week {
 
     append return_html "<tr>
     <td>
-    <table cellpadding=3 cellspacing=0 border=1 width=90%>"
+    <table  class=\"table-display\" cellpadding=0 cellspacing=0 border=0 width=90%>"
 
     set days_of_week {Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
     foreach day $days_of_week {
@@ -103,12 +103,12 @@ ad_proc dt_widget_week {
             set bgcolor $day_bgcolor
         }
 
-        append return_html "<tr><td bgcolor=\"$bgcolor\">$day_html &nbsp;
+        append return_html "<tr><td class=\"cal-week\" bgcolor=\"$bgcolor\">$day_html &nbsp;
         </td>
         </tr>
         <tr>
-        <td>
-        <table border=0 width=100%>"
+        <td class=\"cal-week-event\">
+        <table cellpadding=0 cellspacing=0 border=0 width=100%>"
 	    
         # Go through events
         while {1} {
@@ -119,7 +119,7 @@ ad_proc dt_widget_week {
 
             append return_html "
             <tr>
-            <td>
+            <td class=\"cal-week-event\">
             <font size=-1>
             [ns_set value $calendar_details $index]		    
 	    </font>
@@ -183,7 +183,7 @@ ad_proc dt_widget_day {
     }
 
     # Collect some statistics about the events (for overlap)
-    for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
+    for {set hour $start_hour} {$hour <= 23} {incr hour} {
         set n_events($hour) 0
         set n_starting_events($hour) 0
     }
@@ -237,20 +237,22 @@ ad_proc dt_widget_day {
     if {$show_nav} {
         set prev_nav [subst $prev_nav_template]
         set next_nav [subst $next_nav_template]
-        append return_html "<table border=0 cellpadding=0 width=$calendar_width><tr bgcolor=#dddddd><th> $prev_nav &nbsp; &nbsp; $day_of_the_week $next_nav &nbsp; &nbsp; </th></tr></table><p>\n"
+        append return_html "<table border=0 cellspacing=0 cellpadding=0 width=$calendar_width><tr class=\"table-header\"><th> $prev_nav &nbsp; &nbsp; $day_of_the_week $next_nav &nbsp; &nbsp; </th></tr>
+</table>"
     }
 
     # Loop through the hours of the day
-    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr bgcolor=\"black\"><td bgcolor=\"black\">
-    <table cellpadding=1 cellspacing=1 border=0 width=100%>\n"
+    append return_html "<table border=0 cellpadding=0 cellspacing=0 width=$calendar_width><tr><td><table cellpadding=1 cellspacing=0 border=0 width=100%>
+"
 
     # The items that have no hour
     set hour ""
     set next_hour ""
     set start_time ""
-    set display_hour "No Time"
-    append return_html "<tr><td bgcolor=\"white\" width=\"10%\" nowrap><font size=-1>&nbsp;[subst $hour_template]&nbsp;</font></td>"
-    append return_html "<td bgcolor=\"#f0f0f0\" colspan=\"$max_n_events\"><font size=-1>"
+    set odd_row_p 0
+    set display_hour "<img border=0 align=\"center\" src=\"/doc/acs-datetime/pics/diamond.gif\" alt=\"No Time\">"
+    append return_html "<tr class=\"z_light\"><td class=\"center\" align=\"left\" width=\"60\" \"nowrap\"><font size=-1>[subst $hour_template]</font></td>"
+    append return_html "<td colspan=\"$max_n_events\"><font size=-1>"
     
     # Go through events
     while {1} {
@@ -268,7 +270,8 @@ ad_proc dt_widget_day {
         ns_set delete $calendar_details $index
     }
 
-    append return_html "</font></td></tr>"
+    append return_html "</font>
+    </td></tr>"
     
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
         
@@ -294,7 +297,7 @@ ad_proc dt_widget_day {
         }
 
         if {$ampm_hour < 10} {
-            set display_hour "0$ampm_hour"
+            set display_hour "$ampm_hour"
         } else {
             set display_hour "$ampm_hour"
         }
@@ -307,8 +310,16 @@ ad_proc dt_widget_day {
             append display_hour "am"
         }
 
+	if { $odd_row_p } {
+	    set class "z_light"
+	    set odd_row_p 0
+	} else {
+	    set class "z_dark"
+	    set odd_row_p 1
+	}
+
         set display_hour [subst $hour_template]
-        append return_html "<tr><td bgcolor=\"white\" width=\"10%\" nowrap><font size=-1>&nbsp;$display_hour&nbsp;</font></td>"
+        append return_html "<tr class=\"$class\"><td class=\"center\" align=left width=\"60\" \"nowrap\"><nobr><font size=-2>$display_hour</font></nobr></td>\n"
         
         set n_processed_events 0
         
@@ -348,7 +359,7 @@ ad_proc dt_widget_day {
                     set colspan 1
                 } 
 
-                append return_html "<td valign=top bgcolor=\"white\" rowspan=[expr $hour_diff + 1] colspan=$colspan><font size=-1>[lindex $one_item_val 2]</font></td>"
+                append return_html "<td valign=top rowspan=[expr $hour_diff + 1] colspan=$colspan><font size=-1>[lindex $one_item_val 2]</font></td>"
             } else {
                 append return_html "[ns_set value $calendar_details $index]<br>\n"
             }
@@ -358,10 +369,10 @@ ad_proc dt_widget_day {
 
         if {$n_processed_events == 0 || ($n_events($hour) < $max_n_events && $must_complete_p)} {
             if {$n_events($hour) == 0 || $n_events($hour) == $n_processed_events} {
-		append return_html "<td colspan=\"[expr $max_n_events - $n_events($hour)]\" bgcolor=\"#dddddd\">&nbsp;</td>"
+		append return_html "<td colspan=\"[expr $max_n_events - $n_events($hour)]\" class=\"$class\">&nbsp;</td>"
 	    } else {
 		for {set i 0} {$i < [expr "$max_n_events - $n_events($hour)"]} {incr i} {
-		    append return_html "<td colspan=\"1\" bgcolor=\"#dddddd\">&nbsp;</td>"
+		    append return_html "<td colspan=\"1\" class=$class>&nbsp;</td>"
 		}
 	    }
 	    
@@ -371,7 +382,9 @@ ad_proc dt_widget_day {
         append return_html "</tr>\n"
     }
 
-    append return_html "</table></td></tr></table>"
+    append return_html "</table>
+</td></tr>
+</table>"
     
     return $return_html
 }
@@ -400,7 +413,8 @@ ad_proc -public dt_widget_list {
 
     # The title
     if {[empty_string_p $start_date] && [empty_string_p $end_date]} {
-        set title "All Items"
+	#This used to be All Items but that was just taking up space and not adding value so now we assume All Items and only give a title if its something else. - Caroline@meekshome.com
+        set title ""
     }
 
     if {[empty_string_p $start_date] && ![empty_string_p $end_date]} {
@@ -426,10 +440,8 @@ ad_proc -public dt_widget_list {
 
     # Create the header
     append return_html "
-    <table border=0 cellspacing=0 cellpadding=1>
-    <tr bgcolor=black><td bgcolor>
-    <table border=0 cellspacing=1 cellpadding=2>
-    <tr bgcolor=#aaaaaa><th>Day of Week</th><th><a href=\"$start_date_url\">Date</a></th><th>Start Time</th><th>End Time</th>"
+    <table class=\"table-display\" border=0 cellspacing=0 cellpadding=2>
+    <tr class=\"table-header\"><th>Day of Week</th><th><a href=\"$start_date_url\">Date</a></th><th>Start Time</th><th>End Time</th>"
 
     if {$real_order_by != "item_type"} {
         append return_html "<th><a href=\"$item_type_url\">Type</a></th>"
@@ -466,20 +478,20 @@ ad_proc -public dt_widget_list {
             } else {
                 set item_type_for_title $item_type
             }
-            append return_html "<tr bgcolor=#bbbbbb><td colspan=5><b>$item_type_for_title</b></td></tr>\n"
+            append return_html "<tr class=\"table-title\"><td colspan=5><b>$item_type_for_title</b></td></tr>\n"
             set flip 0
         }
 
         set old_item_type $item_type
 
         if {[expr $flip % 2] == 0} {
-            set bgcolor white
+            set z_class z_light 
         } else {
-            set bgcolor #dddddd
+            set z_class z_dark
         }
         
         append return_html "
-        <tr bgcolor=$bgcolor><td>$weekday</td><td>$date</td><td>$start_time</td><td>$end_time</td>"
+        <tr class=$z_class><td>$weekday</td><td>$date</td><td>$start_time</td><td>$end_time</td>"
         
         if {$real_order_by != "item_type"} {
             append return_html "<td>$item_type</td>"
@@ -489,7 +501,8 @@ ad_proc -public dt_widget_list {
         incr flip
     }
 
-    append return_html "</table></td></tr></table>\n"
+    append return_html "</table>
+<!-- End of dt_widget_list --->"
 
     return $return_html
 }
@@ -516,6 +529,13 @@ ad_proc dt_midnight_p {
         return 1
     }
     
+    if {[regexp {[0-9]+-[0-9]+[0-9]+ (0?)0:0(0?)} $time the_match]} {
+	return 1
+    }
+
+    if {[regexp {[0-9]+-[0-9]+ (0?)0:0(0?)} $time the_match]} {
+	return 1
+    }
     return 0
 }
 
