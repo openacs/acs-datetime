@@ -280,7 +280,7 @@ ad_proc dt_widget_day {
     set start_time ""
     set odd_row_p 0
     set display_hour "<img border=0 align=\"center\" src=\"/doc/acs-datetime/pics/diamond.gif\" alt=\"No Time\">"
-    append return_html "<tr class=\"z_light\"><td class=\"center\" align=\"left\" width=\"60\" \"nowrap\"><font size=-1>[subst $hour_template]</font></td>"
+    append return_html "<tr class=\"odd\"><td class=\"center\" align=\"left\" width=\"60\" \"nowrap\"><font size=-1>[subst $hour_template]</font></td>"
     append return_html "<td colspan=\"$max_n_events\"><font size=-1>"
     
     # Go through events
@@ -316,10 +316,10 @@ ad_proc dt_widget_day {
         set display_hour [string tolower [string trimleft [lc_time_fmt "0000-00-00 ${hour}:00:00" "%X"] 0]]
 
 	if { $odd_row_p } {
-	    set class "z_light"
+	    set class "odd"
 	    set odd_row_p 0
 	} else {
-	    set class "z_dark"
+	    set class "even"
 	    set odd_row_p 1
 	}
 
@@ -490,9 +490,9 @@ ad_proc -public dt_widget_list {
         set old_item_type $item_type
 
         if {[expr $flip % 2] == 0} {
-            set z_class z_light 
+            set z_class odd
         } else {
-            set z_class z_dark
+            set z_class even
         }
         
         append return_html "
