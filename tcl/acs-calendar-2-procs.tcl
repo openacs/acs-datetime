@@ -215,6 +215,7 @@ ad_proc dt_widget_day {
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
         if {$max_n_events < $n_events($hour)} {
             set max_n_events $n_events($hour)
+            ns_log Notice "BMA-DEBUG-CAL: Setting max_n_events to $max_n_events"
         }
     }
     
@@ -301,6 +302,9 @@ ad_proc dt_widget_day {
         
         set n_processed_events 0
         
+        # A flag to force completion of the row
+        set must_complete_p 0
+
         # Go through events
         while {1} {
             set index [ns_set find $calendar_details $index_hour]
@@ -320,7 +324,15 @@ ad_proc dt_widget_day {
                 # Calculate the colspan
                 if {$n_processed_events == $n_starting_events($hour)} {
                     # This is the last one, make it as wide as possible
-                    set colspan [expr "$max_n_events - $n_events($hour) + 1"]
+                    if {$hour_diff > 0} {
+                        set colspan 1
+                        set must_complete_p 1
+                    } else {
+                        # HACK
+                        set colspan 1
+                        set must_complete_p 1
+                        #set colspan [expr "$max_n_events - $n_events($hour) + 1"]
+                    }
                 } {
                     # Just make it one
                     set colspan 1
@@ -334,8 +346,10 @@ ad_proc dt_widget_day {
             ns_set delete $calendar_details $index
         }
 
-        if {$n_processed_events == 0} {
-            append return_html "<td colspan=\"[expr "$max_n_events - $n_events($hour)"]\" bgcolor=#cccccc>&nbsp;</td>"
+        if {$n_processed_events == 0 || ($n_events($hour) < $max_n_events && $must_complete_p)} {
+            for {set i 0} {$i < [expr "$max_n_events - $n_events($hour)"]} {incr i} {
+                append return_html "<td colspan=\"1\" bgcolor=#cccccc>&nbsp;</td>"
+            }
         }
 
         append return_html "</tr>\n"
