@@ -84,7 +84,9 @@ ad_proc dt_widget_day {
     {
 	-calendar_details "" 
 	-date "" 
-	-hours_of_day {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23}
+        -start_hour {0}
+        -end_hour {23}
+        -show_nav 1
 	-master_bgcolor "black" 
 	-header_bgcolor "black" 
 	-header_text_color "white" 
@@ -115,7 +117,11 @@ ad_proc dt_widget_day {
     # Loop through the hours of the day
     set return_html "<table cellpadding=2 border=1 width=$calendar_width>\n"
 
-    foreach hour $hours_of_day {
+    if {$show_nav} {
+        append return_html "<tr bgcolor=lightblue><th colspan=2>&lt; &nbsp; &nbsp; $date &nbsp; &nbsp; &gt;</th></tr>\n"
+    }
+
+    for {set hour $start_hour} {$hour < $end_hour} {incr hour} {
 
         # display stuff
         if {$hour >= 12} {
