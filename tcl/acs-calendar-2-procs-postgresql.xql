@@ -7,38 +7,38 @@
 <querytext>
 select   to_char(to_date(:current_date, 'yyyy-mm-dd'), 'D') 
 as day_of_the_week,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday')
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') as date)
 as sunday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday'),'J') 
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday'),'J') 
 as sunday_julian,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 1
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('1 day' as interval) as date)
 as monday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 1,'J')
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('1 day' as interval),'J')
 as monday_julian,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 2
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('2 days' as interval) as date)
 as tuesday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 2,'J') 
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('2 days' as interval),'J') 
 as tuesday_julian,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 3
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('3 days' as interval) as date)
 as wednesday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 3,'J') 
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('3 days' as interval),'J') 
 as wednesday_julian,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 4
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('4 days' as interval) as date)
 as thursday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 4,'J') 
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('4 days' as interval),'J') 
 as thursday_julian,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 5
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('5 days' as interval) as date)
 as friday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 5,'J') 
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('5 days' as interval),'J') 
 as friday_julian,
-next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6
+cast(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('6 days' as interval) as date)
 as saturday_date,
-to_char(next_day(to_date(:current_date, 'yyyy-mm-dd')-7, 'Sunday') + 6,'J') 
+to_char(next_day(to_date(:current_date, 'yyyy-mm-dd') - cast('7 days' as interval), 'Sunday') + cast('6 days' as interval),'J') 
 as saturday_julian,
-:current_date::timestamp - '7 days'::timespan as last_week,
-to_char(:current_date::timestamp - '7 days'::interval, 'Month DD, YYYY') as last_week_pretty,
-:current_date::timestamp + '7 days'::timespan as next_week,
-to_char(:current_date::timestamp + '7 days'::interval, 'Month DD, YYYY') as next_week_pretty
+cast(:current_date::timestamptz - cast('7 days' as interval) as date) as last_week,
+to_char(:current_date::timestamptz - cast('7 days' as interval), 'Month DD, YYYY') as last_week_pretty,
+cast(:current_date::timestamptz + cast('7 days' as interval) as date) as next_week,
+to_char(:current_date::timestamptz + cast('7 days' as interval), 'Month DD, YYYY') as next_week_pretty
 from     dual
 </querytext>
 </fullquery>
@@ -47,9 +47,9 @@ from     dual
 <querytext>
 select   to_char(to_date(:current_date, 'yyyy-mm-dd'), 'Day, DD Month YYYY') 
 as day_of_the_week,
-to_char(to_date(:current_date, 'yyyy-mm-dd')-1, 'yyyy-mm-dd')
+to_char(to_date(:current_date, 'yyyy-mm-dd') - cast('1 day' as interval), 'yyyy-mm-dd')
 as yesterday,
-to_char(to_date(:current_date, 'yyyy-mm-dd')+1, 'yyyy-mm-dd')
+to_char(to_date(:current_date, 'yyyy-mm-dd') + cast('1 day' as interval), 'yyyy-mm-dd')
 as tomorrow
 from     dual
 </querytext>

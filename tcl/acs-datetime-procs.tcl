@@ -243,7 +243,12 @@ ad_proc dt_next_month {
       set month [expr $month + 1]
     }
 
-    return [clock format [clock scan $year-$month-01] -format %Y-%m-%d]
+    # jarkko: added this check to avoid calendars bombing when prev month goes
+    # beyond borders
+    if {[catch {set next_month [clock format [clock scan $year-$month-01] -format %Y-%m-%d]} err]} {
+	return ""
+    }
+    return $next_month
 }
 
 ad_proc dt_prev_month {
@@ -259,7 +264,13 @@ ad_proc dt_prev_month {
       set month [expr $month - 1]
     }
 
-    return [clock format [clock scan $year-$month-01] -format %Y-%m-%d]
+    # jarkko: added this check to avoid calendars bombing when prev month goes
+    # beyond borders
+    if {[catch {set prev_month [clock format [clock scan $year-$month-01] -format %Y-%m-%d]} err]} {
+	return ""
+    }
+
+    return $prev_month
 }
 
 ad_proc dt_next_month_name {
@@ -275,7 +286,14 @@ ad_proc dt_next_month_name {
       set month [expr $month + 1]
     }
 
+    # jarkko: added this check to avoid calendars bombing when next month goes
+    # beyond borders
+    if {[catch {set next_name [clock format [clock scan $year-$month-01] -format %B]} err]} {
+	return ""
+    }
+
     return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
+
 }
 
 ad_proc dt_prev_month_name {
@@ -289,6 +307,13 @@ ad_proc dt_prev_month_name {
       set month 12
     } else {
       set month [expr $month - 1]
+    }
+
+    # jarkko: added this check to avoid calendars bombing when prev month goes
+    # beyond borders
+
+    if {[catch {set prev_name [clock format [clock scan $year-$month-01] -format %B]} err]} {
+	return ""
     }
 
     return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
