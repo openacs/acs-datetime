@@ -799,9 +799,9 @@ ad_proc -private dt_get_info {
     ns_set put $dt_info_set last_day \
         [dt_num_days_in_month $year $month]
     ns_set put $dt_info_set next_month \
-        [dt_next_month $year $month $day] 
+        [dt_next_month $year $month] 
     ns_set put $dt_info_set prev_month \
-        [dt_prev_month $year $month $day]
+        [dt_prev_month $year $month]
     ns_set put $dt_info_set beginning_of_year \
         $year-01-01
     ns_set put $dt_info_set days_in_last_month \

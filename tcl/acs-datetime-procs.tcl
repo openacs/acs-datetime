@@ -232,7 +232,6 @@ ad_proc dt_first_day_of_month {
 ad_proc dt_next_month {
     year
     month
-    day
 } {
     Returns the ANSI date for the next month
 } {
@@ -243,13 +242,12 @@ ad_proc dt_next_month {
       set month [expr $month + 1]
     }
 
-    return [clock format [clock scan $year-$month-$day] -format %Y-%m-%d]
+    return [clock format [clock scan $year-$month-01] -format %Y-%m-%d]
 }
 
 ad_proc dt_prev_month {
     year
     month
-    day
 } {
     Returns the ANSI date for the previous month
 } {
@@ -260,7 +258,7 @@ ad_proc dt_prev_month {
       set month [expr $month - 1]
     }
 
-    return [clock format [clock scan $year-$month-$day] -format %Y-%m-%d]
+    return [clock format [clock scan $year-$month-01] -format %Y-%m-%d]
 }
 
 ad_proc dt_next_month_name {
