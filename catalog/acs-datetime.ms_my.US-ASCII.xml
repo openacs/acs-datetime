@@ -6,15 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Tarikh seperti YYYYMMDD</msg>
   <msg key="Day">Hari</msg>
   <msg key="Day_of_Week">Hari Dalam Minggu</msg>
-  <msg key="End_Time">Masa Tamat</msg>
   <msg key="is">ialah</msg>
   <msg key="Items_from">Senarai dari</msg>
-  <msg key="List">Senarai</msg>
-  <msg key="Month">Bulan</msg>
-  <msg key="Start_Time">Masa Mula</msg>
-  <msg key="Title">Tajuk</msg>
   <msg key="to">hingga</msg>
   <msg key="Today">Hari Ini</msg>
-  <msg key="Type">Jenis</msg>
-  <msg key="Week">Minggu</msg>
 </message_catalog>

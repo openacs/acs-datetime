@@ -4,10 +4,5 @@
   <msg key="Date">Tarih</msg>
   <msg key="Day">Gün</msg>
   <msg key="Day_of_Week">Haftanýn Günü</msg>
-  <msg key="End_Time">Bitiþ Saati</msg>
-  <msg key="Month">Ay</msg>
-  <msg key="No_Items">Hiç bir madde yok</msg>
-  <msg key="Start_Time">Baþlangýç Saati</msg>
   <msg key="Today">Bugün</msg>
-  <msg key="Week">Hafta</msg>
 </message_catalog>

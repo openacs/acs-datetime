@@ -5,17 +5,8 @@
   <msg key="Date_as">Datum kao</msg>
   <msg key="Day">Dan</msg>
   <msg key="Day_of_Week">Dan u sedmici</msg>
-  <msg key="End_Time">Vreme kraja</msg>
   <msg key="is">je</msg>
   <msg key="Items_from">Stavka od</msg>
-  <msg key="List">Lista</msg>
-  <msg key="Month">Mesec</msg>
-  <msg key="No_Item_Type">Tip dogadaja nije naveden</msg>
-  <msg key="No_Items">Nema stavki</msg>
-  <msg key="Start_Time">Vreme pocetka</msg>
-  <msg key="Title">Naziv</msg>
   <msg key="to">do</msg>
   <msg key="Today">Danas</msg>
-  <msg key="Type">Vrsta</msg>
-  <msg key="Week">Sedmica</msg>
 </message_catalog>

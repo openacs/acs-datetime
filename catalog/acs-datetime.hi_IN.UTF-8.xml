@@ -6,10 +6,6 @@
   <msg key="Date_as_YYYYMMDD">तिथि का प्रकार YYYYMMDD</msg>
   <msg key="Day">दिन</msg>
   <msg key="Day_of_Week">सप्ताह का दिन</msg>
-  <msg key="End_Time">अन्तिम समय</msg>
   <msg key="is">है</msg>
   <msg key="Items_from">विषय क्रम से</msg>
-  <msg key="List">सूची</msg>
-  <msg key="Month">महीना</msg>
-  <msg key="Start_Time">आरम्भ समय</msg>
 </message_catalog>

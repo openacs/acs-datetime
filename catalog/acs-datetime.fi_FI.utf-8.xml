@@ -6,17 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Päiväys muodossa VVVVKKPP</msg>
   <msg key="Day">Päivä</msg>
   <msg key="Day_of_Week">Viikonpäivä</msg>
-  <msg key="End_Time">Päättymisaika</msg>
   <msg key="is">on</msg>
   <msg key="Items_from">Tapahtumat välillä</msg>
-  <msg key="List">Lista</msg>
-  <msg key="Month">Kuukausi</msg>
-  <msg key="No_Item_Type">Ei nimiketyyppiä</msg>
-  <msg key="No_Items">Ei tapahtumia</msg>
-  <msg key="Start_Time">Alkamisaika</msg>
-  <msg key="Title">Otsikko</msg>
   <msg key="to">-</msg>
   <msg key="Today">Tänään</msg>
-  <msg key="Type">Tyyppi</msg>
-  <msg key="Week">Viikko</msg>
 </message_catalog>

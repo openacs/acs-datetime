@@ -6,17 +6,8 @@
   <msg key="Date_as_YYYYMMDD">日期以YYYYMMDD表示</msg>
   <msg key="Day">日</msg>
   <msg key="Day_of_Week">Day_of_Week</msg>
-  <msg key="End_Time">結束時間</msg>
   <msg key="is">是</msg>
   <msg key="Items_from">品項來自</msg>
-  <msg key="List">序列</msg>
-  <msg key="Month">月</msg>
-  <msg key="No_Item_Type">無品項型態</msg>
-  <msg key="No_Items">無品項</msg>
-  <msg key="Start_Time">開始時間</msg>
-  <msg key="Title">抬頭</msg>
   <msg key="to">到</msg>
   <msg key="Today">今日</msg>
-  <msg key="Type">型態</msg>
-  <msg key="Week">週</msg>
 </message_catalog>

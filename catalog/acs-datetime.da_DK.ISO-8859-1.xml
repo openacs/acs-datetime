@@ -6,17 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Missing</msg>
   <msg key="Day">Dag</msg>
   <msg key="Day_of_Week">Ugedag</msg>
-  <msg key="End_Time">Sluttidspunkt</msg>
   <msg key="is">er</msg>
   <msg key="Items_from">Emner fra</msg>
-  <msg key="List">Liste</msg>
-  <msg key="Month">Måned</msg>
-  <msg key="No_Item_Type">Ingen emnetype</msg>
-  <msg key="No_Items">Ingen emner</msg>
-  <msg key="Start_Time">Starttidspunkt</msg>
-  <msg key="Title">Titel</msg>
   <msg key="to">til</msg>
   <msg key="Today">I dag</msg>
-  <msg key="Type">Type</msg>
-  <msg key="Week">Uge</msg>
 </message_catalog>

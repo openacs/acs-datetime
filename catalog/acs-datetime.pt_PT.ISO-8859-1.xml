@@ -6,17 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Data como AAAAMMDD</msg>
   <msg key="Day">Dia</msg>
   <msg key="Day_of_Week">Dia da Semana</msg>
-  <msg key="End_Time">Horário de Término</msg>
   <msg key="is">é</msg>
   <msg key="Items_from">Itens de</msg>
-  <msg key="List">Lista</msg>
-  <msg key="Month">Mês</msg>
-  <msg key="No_Item_Type">Nenhum Tipo de Item</msg>
-  <msg key="No_Items">Não há Itens</msg>
-  <msg key="Start_Time">Horário de Inicio</msg>
-  <msg key="Title">Titulo</msg>
   <msg key="to">a</msg>
   <msg key="Today">Hoje</msg>
-  <msg key="Type">Tipo</msg>
-  <msg key="Week">Semana</msg>
 </message_catalog>

@@ -8,21 +8,12 @@
   <msg key="Day">Día</msg>
   <msg key="Day_of_Week">Día de la Semana</msg>
   <msg key="days_of_week">Domingo Lunes Martes Miircoles Jueves Viernes Sabado</msg>
-  <msg key="End_Time">Hora Final</msg>
   <msg key="forward_one_day">adelantar un dma</msg>
   <msg key="is">es</msg>
   <msg key="Items_from">Citas desde</msg>
   <msg key="Items_until">Mtems hasta @pretty_end_date@</msg>
-  <msg key="List">Lista</msg>
   <msg key="lt_Width_must_be_">Ancho debe ser entre 1 y 12</msg>
-  <msg key="Month">Mes</msg>
-  <msg key="No_Item_Type">Sin Tipo</msg>
-  <msg key="No_Items">Sin Citas</msg>
   <msg key="short_days_of_week">D L M M J V S</msg>
-  <msg key="Start_Time">Hora Inicial</msg>
-  <msg key="Title">Título</msg>
   <msg key="to">a</msg>
   <msg key="Today">Hoy</msg>
-  <msg key="Type">Tipo</msg>
-  <msg key="Week">Semana</msg>
 </message_catalog>

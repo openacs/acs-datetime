@@ -6,17 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Data w formacie RRRRMMDD</msg>
   <msg key="Day">Dzieñ</msg>
   <msg key="Day_of_Week">Dzieñ Tygodnia</msg>
-  <msg key="End_Time">Koniec</msg>
   <msg key="is">jest</msg>
   <msg key="Items_from">Terminy z</msg>
-  <msg key="List">Lista</msg>
-  <msg key="Month">Miesi±c</msg>
-  <msg key="No_Item_Type">Brak Typu </msg>
-  <msg key="No_Items">Brak Terminów</msg>
-  <msg key="Start_Time">Pocz±tek</msg>
-  <msg key="Title">Tytu³</msg>
   <msg key="to">do</msg>
   <msg key="Today">Dzi¶</msg>
-  <msg key="Type">Typ</msg>
-  <msg key="Week">Tydzieñ</msg>
 </message_catalog>

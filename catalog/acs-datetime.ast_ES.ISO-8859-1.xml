@@ -6,17 +6,8 @@
   <msg key="Date_as_YYYYMMDD">Fecha en DDMMYYYY</msg>
   <msg key="Day">Día</msg>
   <msg key="Day_of_Week">Día de la Selmana</msg>
-  <msg key="End_Time">Horariu d'Acabu</msg>
   <msg key="is">ye</msg>
   <msg key="Items_from">Items de</msg>
-  <msg key="List">Llistáu</msg>
-  <msg key="Month">Mes</msg>
-  <msg key="No_Item_Type">Nengún tipu d'Item</msg>
-  <msg key="No_Items">Nengún Item</msg>
-  <msg key="Start_Time">Horariu d'Entamu</msg>
-  <msg key="Title">Títulu</msg>
   <msg key="to">pa</msg>
   <msg key="Today">Hoi</msg>
-  <msg key="Type">Tipu</msg>
-  <msg key="Week">Selmana</msg>
 </message_catalog>
