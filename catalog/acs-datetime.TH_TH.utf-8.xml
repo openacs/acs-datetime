@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<message_catalog package_key="acs-datetime" package_version="4.0" locale="TH_TH" charset="utf-8">
-
-  <msg key="Date_as">รูปแบบวันที่</msg>
-  <msg key="Day">วัน</msg>
-  <msg key="is">คือ</msg>
-  <msg key="Today">วันนี้</msg>
-</message_catalog>

@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<message_catalog package_key="acs-datetime" package_version="4.0" locale="tr_TR" charset="ISO-8859-9">
-
-  <msg key="Date">Tarih</msg>
-  <msg key="Day">Gün</msg>
-  <msg key="Day_of_Week">Haftanýn Günü</msg>
-  <msg key="Today">Bugün</msg>
-</message_catalog>
