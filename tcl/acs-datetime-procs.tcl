@@ -39,10 +39,14 @@ ad_proc dt_valid_time_p {
     }
 }
 
-ad_proc dt_format {
+ad_proc -deprecated dt_format {
     {-format "%Y-%m-%d %H:%M:%S" -gmt f}
     time
 } {
+    This proc should not be used, because it does not take internationalization into account. Use lc_time_fmt instead.
+    
+    @see lc_time_fmt
+} { 
     return [clock format [clock scan $time] -format $format -gmt $gmt]
 }
 
