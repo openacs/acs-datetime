@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<message_catalog package_key="acs-datetime" package_version="4.0" locale="gl_ES" charset="utf-8">
+
+  <msg key="Date">Data</msg>
+  <msg key="Date_as">Data en</msg>
+  <msg key="Date_as_YYYYMMDD">Data en AAAAMMDD</msg>
+  <msg key="Day">Día</msg>
+  <msg key="Day_of_Week">Día da Semana</msg>
+  <msg key="End_Time">Horario de Término</msg>
+  <msg key="is">é</msg>
+  <msg key="Items_from">Ítems de</msg>
+  <msg key="List">Lista</msg>
+  <msg key="Month">Mes</msg>
+  <msg key="No_Item_Type">Ningún Tipo de Ítem</msg>
+  <msg key="No_Items">Ningún Ítem</msg>
+  <msg key="Start_Time">Horario de Inicio</msg>
+  <msg key="Title">Título</msg>
+  <msg key="to">para</msg>
+  <msg key="Today">Hoxe</msg>
+  <msg key="Type">Tipo</msg>
+  <msg key="Week">Semana</msg>
+</message_catalog>
