@@ -250,7 +250,7 @@ ad_proc dt_widget_day {
     set next_hour ""
     set start_time ""
     set odd_row_p 0
-    set display_hour "<span style=\"font-size: 70%; text-decoration: none;\">[_ acs-datetime.All_day]</span>"
+    set display_hour "<img border=0 align=\"center\" src=\"/resources/acs-subsite/diamond.gif\" alt=\"All day\">"
     append return_html "<tr class=\"odd\"><td class=\"center\" align=\"left\" width=\"60\" \"nowrap\"><font size=-1>[subst $hour_template]</font></td>"
     append return_html "<td colspan=\"$max_n_events\"><font size=-1>"
     
