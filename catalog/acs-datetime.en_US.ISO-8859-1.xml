@@ -13,8 +13,11 @@
   <msg key="is">is</msg>
   <msg key="Items_from">Items from</msg>
   <msg key="Items_until">Items until @pretty_end_date@</msg>
+  <msg key="List">List</msg>
   <msg key="lt_Width_must_be_">Width must be between 1 and 12</msg>
+  <msg key="Month">Month</msg>
   <msg key="short_days_of_week">S M T W T F S</msg>
   <msg key="to">to</msg>
   <msg key="Today">Today</msg>
+  <msg key="Week">Week</msg>
 </message_catalog>
