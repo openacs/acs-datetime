@@ -457,9 +457,11 @@ ad_proc -public dt_widget_list {
         # Do we need a title?
         if {$real_order_by == "item_type" && $item_type != "$old_item_type"} {
             if {[empty_string_p $item_type]} {
-                set item_type "(No Item Type)"
+                set item_type_for_title "(No Item Type)"
+            } else {
+                set item_type_for_title $item_type
             }
-            append return_html "<tr bgcolor=#bbbbbb><td colspan=5><b>$item_type</b></td></tr>\n"
+            append return_html "<tr bgcolor=#bbbbbb><td colspan=5><b>$item_type_for_title</b></td></tr>\n"
             set flip 0
         }
 
