@@ -4,26 +4,32 @@
 <package key="acs-datetime" url="http://www.arsdgita.com/acs-repository/apm/packages/acs-datetime" type="apm_service">
     <package-name>ACS DateTime</package-name>
     <pretty-plural>ACS DateTime</pretty-plural>
+    <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
 
-    <version name="4.0b" url="http://www.arsdigita.com/acs-repository/download/apm/acs-datetime-4.0b.apm">
+    <version name="4.0b2" url="http://openacs.org/apms/acs-datetime-4.0b2.apm">
     <database-support>
         <database>oracle</database>
         <database>postgresql</database>
     </database-support>
-        <owner url="mailto:ron@arsdigita.com">Ron Henderson</owner>
+        <owner url="mailto:arjun@openforce.net">Arjun Sanyal</owner>
         <summary>Service package to support date and time functions</summary>
-        <release-date>2001-02-08</release-date>
-        <vendor url="http://www.arsdigita.com/">ArsDigita Corporation</vendor>
+        <release-date>2001-08-23</release-date>
+        <vendor url="http://openacs.org">OpenACS.org</vendor>
+        <description format="text/html">Note: this version of the package requires acs-event(s) for a helper function. This requirement may go away in the future. </description>
 
         <provides url="acs-datetime" version="4.0"/>
+        <requires url="acs-event" version="0.1d"/>
         <requires url="acs-kernel" version="4.0"/>
         <requires url="acs-templating" version="4.0.1"/>
 
         <files>
             <file type="package_spec" path="acs-datetime.info"/>
+            <file type="query_file" db_type="oracle" path="tcl/acs-calendar-procs-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="tcl/acs-calendar-procs-postgresql.xql"/>
             <file type="tcl_procs" path="tcl/acs-calendar-procs.tcl"/>
             <file type="tcl_procs" path="tcl/acs-datetime-procs.tcl"/>
+            <file type="query_file" path="tcl/acs-datetime-procs.xql"/>
             <file type="documentation" path="www/doc/coversheet.html"/>
             <file type="documentation" path="www/doc/design.html"/>
             <file type="documentation" path="www/doc/examples/calendar-navigation.adp"/>
