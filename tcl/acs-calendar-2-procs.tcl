@@ -250,7 +250,7 @@ ad_proc dt_widget_day {
     set next_hour ""
     set start_time ""
     set display_hour "No Time"
-    append return_html "<tr><td width=\"50\" bgcolor=\"white\"><font size=-1>&nbsp;[subst $hour_template]</font></td>"
+    append return_html "<tr><td bgcolor=\"white\" width=\"10%\" nowrap><font size=-1>&nbsp;[subst $hour_template]&nbsp;</font></td>"
     append return_html "<td bgcolor=\"#f0f0f0\" colspan=\"$max_n_events\"><font size=-1>"
     
     # Go through events
@@ -309,7 +309,7 @@ ad_proc dt_widget_day {
         }
 
         set display_hour [subst $hour_template]
-        append return_html "<tr><td bgcolor=\"white\" width=\"50\"><font size=-1>&nbsp;$display_hour</font></td>"
+        append return_html "<tr><td bgcolor=\"white\" width=\"10%\" nowrap><font size=-1>&nbsp;$display_hour&nbsp;</font></td>"
         
         set n_processed_events 0
         
