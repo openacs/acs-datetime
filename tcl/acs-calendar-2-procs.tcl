@@ -226,7 +226,7 @@ ad_proc dt_widget_day {
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
         if {$max_n_events < $n_events($hour)} {
             set max_n_events $n_events($hour)
-            #ns_log Notice "BMA-DEBUG-CAL: Setting max_n_events to $max_n_events"
+            ns_log Notice "BMA-DEBUG-CAL: Setting max_n_events to $max_n_events"
         }
     }
     
@@ -358,9 +358,15 @@ ad_proc dt_widget_day {
         }
 
         if {$n_processed_events == 0 || ($n_events($hour) < $max_n_events && $must_complete_p)} {
-            for {set i 0} {$i < [expr "$max_n_events - $n_events($hour)"]} {incr i} {
-                append return_html "<td colspan=\"1\" bgcolor=\"#dddddd\">&nbsp;</td>"
-            }
+            if {$n_events($hour) == 0 || $n_events($hour) == $n_processed_events} {
+		append return_html "<td colspan=\"[expr $max_n_events - $n_events($hour)]\" bgcolor=\"#dddddd\">&nbsp;</td>"
+	    } else {
+		for {set i 0} {$i < [expr "$max_n_events - $n_events($hour)"]} {incr i} {
+		    append return_html "<td colspan=\"1\" bgcolor=\"#dddddd\">&nbsp;</td>"
+		}
+	    }
+	    
+
         }
 
         append return_html "</tr>\n"
