@@ -2,7 +2,7 @@
 <message_catalog package_key="acs-datetime" package_version="4.0" locale="ms_my" charset="utf-8">
 
   <msg key="All_day">Seluruh hari</msg>
-  <msg key="back_one_day">ke belakang satu hari</msg>
+  <msg key="back_one_day">undur satu hari</msg>
   <msg key="Date">Tarikh</msg>
   <msg key="Date_as">Tarikh seperti</msg>
   <msg key="Date_as_YYYYMMDD">Tarikh seperti YYYYMMDD</msg>
