@@ -16,8 +16,8 @@
 
         <provides url="acs-datetime" version="4.0"/>
         <requires url="acs-events" version="0.1d"/>
-        <requires url="acs-kernel" version="5.0.0a5"/>
-        <requires url="acs-templating" version="5.0.0a5"/>
+        <requires url="acs-kernel" version="5.0.0b4"/>
+        <requires url="acs-templating" version="5.0.0b4"/>
 
         <callbacks>
         </callbacks>
