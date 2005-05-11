@@ -446,8 +446,8 @@ ad_proc -private dt_navbar_view {
     <tr align=center class=\"table-header\">"
     
     # ben: taking out year for now, since it doesn't work
-    foreach viewname {list day week month} {
-        set text [string toupper $viewname 0]
+    foreach {viewname viewlink viewdesc} [list "list" [_ acs-datetime.list] [_ acs-datetime.view_calendar_day] "day" [_acs-datetime.day] [_ acs-datetime.view_calendar_list] "week" [_acs-datetime.week] [_ acs-datetime.view_calendar_week] "month" [acs_datetime.month] [_ acs-datetime.view_calendar_month]] {
+        set text [string toupper $viewlink 0]
         if { $viewname == $view } {
             # current view
             append result "<td class=\"selected\">
@@ -456,7 +456,7 @@ ad_proc -private dt_navbar_view {
     "
         } else {
             append result "<td class=\"no-border\">
-    <a href=\"$base_url" "view=$viewname&date=$date\">
+    <a href=\"$base_url" "view=$viewname&date=$date\" title=\"$viewdesc\">
     <font size=-1><b>$text</b></font></a>
     </td>
     "
