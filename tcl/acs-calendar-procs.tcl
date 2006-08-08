@@ -446,7 +446,7 @@ ad_proc -private dt_navbar_view {
     <tr align=center class=\"table-header\">"
     
     # ben: taking out year for now, since it doesn't work
-    foreach {viewname viewlink viewdesc} [list "list" [_ acs-datetime.list] [_ acs-datetime.view_calendar_day] "day" [_acs-datetime.day] [_ acs-datetime.view_calendar_list] "week" [_acs-datetime.week] [_ acs-datetime.view_calendar_week] "month" [acs_datetime.month] [_ acs-datetime.view_calendar_month]] {
+    foreach {viewname viewlink viewdesc} [list "list" [_ acs-datetime.List] [_ acs-datetime.view_calendar_day] "day" [_ acs-datetime.Day] [_ acs-datetime.view_calendar_list] "week" [_ acs-datetime.Week] [_ acs-datetime.view_calendar_week] "month" [_ acs-datetime.Month] [_ acs-datetime.view_calendar_month]] {
         set text [string toupper $viewlink 0]
         if { $viewname == $view } {
             # current view
