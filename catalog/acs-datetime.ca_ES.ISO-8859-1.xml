@@ -8,7 +8,7 @@
   <msg key="Date_as_YYYYMMDD">Format de data AAAAMMDD</msg>
   <msg key="Day">Dia</msg>
   <msg key="Day_of_Week">Dia de la setmana</msg>
-  <msg key="days_of_week">dilluns dimarts dimecres dijous divendres dissabte diumenge</msg>
+  <msg key="days_of_week">Dilluns Dimarts Dimecres Dijous Divendres Dissabte Diumenge</msg>
   <msg key="forward_one_day">Un dia endavant</msg>
   <msg key="is">és</msg>
   <msg key="Items_from">Cites des de</msg>
@@ -24,4 +24,5 @@
   <msg key="view_calendar_month">Vista per mes</msg>
   <msg key="view_calendar_week">Vista per setmana</msg>
   <msg key="Week">Setmana</msg>
+  <msg key="Year">Any</msg>
 </message_catalog>
