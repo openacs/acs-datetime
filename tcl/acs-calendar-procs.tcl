@@ -846,7 +846,7 @@ ad_proc dt_widget_calendar_navigation {
     is [dt_ansi_to_pretty]</font></td></tr>
     <tr><td align=center><br>
     <form method=get action=$base_url>
-    <INPUT TYPE=text name=date size=10> <INPUT type=image src=\"/resources/acs-subsite/go.gif\" alt=\"Go\" border=0><br><font size=-2>Date as YYYYMMDD</font>
+    <INPUT TYPE=text name=date size=10><INPUT type=image src=\"/resources/acs-subsite/go.gif\" alt=\"Go\" border=0> <br><font size=-2>Date as YYYYMMDD</font>
     <INPUT TYPE=hidden name=view value=day>
     "
 
