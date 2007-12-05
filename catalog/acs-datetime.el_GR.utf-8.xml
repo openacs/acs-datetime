@@ -12,12 +12,17 @@
   <msg key="forward_one_day">επόμενη ημέρα</msg>
   <msg key="is">είναι</msg>
   <msg key="Items_from">Αντικείμενα από</msg>
-  <msg key="Items_until">αντικείμενα έως @pretty_end_date@</msg>
+  <msg key="Items_until">Aντικείμενα έως @pretty_end_date@</msg>
   <msg key="List">Λίστα</msg>
   <msg key="lt_Width_must_be_">Η τιμή πρέπει να είναι μεταξύ 1 και 12</msg>
   <msg key="Month">Μήνας</msg>
   <msg key="short_days_of_week">Κ Δ Τ Τ Π Π Σ</msg>
   <msg key="to">εως</msg>
   <msg key="Today">Σήμερα</msg>
+  <msg key="view_calendar_day">Προβολή ημέρας</msg>
+  <msg key="view_calendar_list">Προβολή λίστας</msg>
+  <msg key="view_calendar_month">Προβολή Μήνα</msg>
+  <msg key="view_calendar_week">Προβολή εβδομάδας</msg>
   <msg key="Week">Εβδομάδα</msg>
+  <msg key="Year">Χρόνος</msg>
 </message_catalog>
