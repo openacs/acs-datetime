@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<message_catalog package_key="acs-datetime" package_version="5.2.2" locale="ru_RU" charset="utf-8">
+<message_catalog package_key="acs-datetime" locale="ru_RU" charset="utf-8">
 
   <msg key="All_day">Целый день</msg>
   <msg key="back_one_day">назад на 1 день</msg>

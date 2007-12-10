@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<message_catalog package_key="acs-datetime" package_version="5.2.2" locale="hi_IN" charset="utf-8">
+<message_catalog package_key="acs-datetime" locale="hi_IN" charset="utf-8">
 
   <msg key="All_day">पूरा दिन</msg>
   <msg key="back_one_day">एक दिन पीछे </msg>
