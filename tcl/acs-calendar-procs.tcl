@@ -75,42 +75,46 @@ ad_proc dt_widget_month {
     # in the title bar
 
     if { $prev_next_links_in_title == 0 } {
-	set title "
-	<td colspan=7 align=center>
-	<font size=$header_text_size color=$header_text_color><b>$month_heading</b></font>
-	</td>\n"
+        set title [subst {
+            <td colspan=7 align="center">
+            <span style="font-size:$header_text_size; color:$header_text_color; background:inherit; font-weight:bold">
+            $month_heading
+            </span>
+            </td>\n}]
     } else {
-	set title "
-	<td class=\"no-border\" colspan=7>
-	<table width=100% cellpadding=0 cellspacing=0 border=0>
-	<tr class=\"table-header\">
-	<td align=left>$prev_month_url</td>
-	<td align=center><font size=$header_text_size color=$header_text_color>
-	<b>$month_heading</b></font>
-	</td>
-	<td align=right>$next_month_url</td>
-	</tr>
-	</table>
-	</td>\n"
+        set title [subst {
+            <td class=\"no-border\" colspan=7>
+            <table width=100% cellpadding=0 cellspacing=0 border=0>
+            <tr class=\"table-header\">
+            <td align=left>$prev_month_url</td>
+            <td align=center>
+            <span style="font-size:$header_text_size; color:$header_text_color; background:inherit; font-weight:bold">
+            $month_heading
+            </span>
+            </td>
+            <td align=right>$next_month_url</td>
+            </tr>
+            </table>
+            </td>\n}]
     }
 
     # Write out the header and the days of the week
 
-    append output "
-    <table class=\"table-display\" bgcolor=$master_bgcolor cellpadding=0 cellspacing=0 border=1 width=$calendar_width>
-    <tr bgcolor=$header_bgcolor> $title </tr>
-    <tr bgcolor=$day_header_bgcolor class=\"table-header\">\n"
+    append output [subst {
+        <table class=\"table-display\" style="background:$master_bgcolor; color:inherit;" cellpadding=0 cellspacing=0 border=1 width=$calendar_width>
+        <tr style="background:$header_bgcolor; color:inherit;"> $title </tr>
+        <tr style="background:$day_header_bgcolor; color:inherit;" class=\"table-header\">\n}]
 
     foreach day_of_week $days_of_week {
-	append output "
-	<td width=14% align=center class=\"no-border\">
-	<font face=\"Verdana,Arial,Helvetica\" size=$day_header_size color=$day_text_color>
-	<b>$day_of_week</b>
-	</font>
-	</td>\n"
+        append output [subst {
+            <td style="width:14%" align=center class=\"no-border\">
+            <span style="font-family: Verdana,Arial,Helvetica; font-size:$day_header_size; color:$day_text_color; background:inherit; font-weight:bold;">
+            $day_of_week
+            </span>
+            </td>\n}]
     }
 
-    append output "</tr><tr>\n"
+    append output "</tr>\n"
 
     set day_of_week 1
     set julian_date $first_julian_date
@@ -140,68 +144,68 @@ ad_proc dt_widget_month {
             set day_number 1
         }
 
-	if { $day_of_week == 1} {
-	    append output "<tr>\n"
-	}
+        if { $day_of_week == 1} {
+            append output "<tr>\n"
+        }
 
-	set skip_day 0
+        set skip_day 0
 
-	if {$before_month_p || $after_month_p} {
-	    append output "<td class=\"no-border\" bgcolor=$empty_bgcolor align=right valign=top>&nbsp;"
-	    if { $fill_all_days == 0 } {
-		set skip_day 1
-	    } else {
-		append output "[subst $day_number_template]&nbsp;"
-	    }
-	} else {
+        if {$before_month_p || $after_month_p} {
+            append output "<td class=\"no-border\" style=\"background:$empty_bgcolor; color:inherit;\" align=right valign=top>&nbsp;"
+            if { $fill_all_days == 0 } {
+                set skip_day 1
+            } else {
+                append output "[subst $day_number_template]&nbsp;"
+            }
+        } else {
             if {$julian_date == $today_julian_date} {
                 set the_bgcolor $today_bgcolor
-		set the_class "cal-month-today"
+                set the_class "cal-month-today"
             } else {
                 set the_bgcolor $day_bgcolor
-		set the_class "cal-month-day"
+                set the_class "cal-month-day"
             }
 
-	    append output "<td class=$the_class bgcolor=$the_bgcolor align=left valign=top>[subst $day_number_template]&nbsp;"
-	}
+            append output "<td class=\"$the_class\" style=\"background:$the_bgcolor; color:inherit;\" align=left valign=top>[subst $day_number_template]&nbsp;"
+        }
 
-	if { (!$skip_day) && $large_calendar_p == 1 } {
-	    append output "<div align=left>"
+        if { (!$skip_day) && $large_calendar_p == 1 } {
+            append output "<div align=left>"
 
-	    set calendar_day_index [ns_set find $calendar_details $julian_date]
-	    
-	    while { $calendar_day_index >= 0 } {
-		set calendar_day [ns_set value $calendar_details $calendar_day_index]
+            set calendar_day_index [ns_set find $calendar_details $julian_date]
+        
+            while { $calendar_day_index >= 0 } {
+                set calendar_day [ns_set value $calendar_details $calendar_day_index]
 
-		ns_set delete $calendar_details $calendar_day_index
+                ns_set delete $calendar_details $calendar_day_index
 
-		append output "$calendar_day"
+                append output "$calendar_day"
 
-		set calendar_day_index [ns_set find $calendar_details $julian_date]
-	    }
-	    append output "</div>"
-	}
+                set calendar_day_index [ns_set find $calendar_details $julian_date]
+            }
+            append output "</div>"
+        }
 
-	append output "</td>\n"
+        append output "</td>\n"
 
-	incr day_of_week
-	incr julian_date
+        incr day_of_week
+        incr julian_date
         incr day_number
 
-	if { $day_of_week > 7 } {
-	    set day_of_week 1
-	    append output "</tr>\n"
-	}
+        if { $day_of_week > 7 } {
+            set day_of_week 1
+            append output "</tr>\n"
+        }
     }
 
     # There are two ways to display previous and next month link -
     # this is the default 
 
     if { $prev_next_links_in_title == 0 } {
-	append output "
-	<tr bgcolor=white>
-	<td align=center colspan=7>$prev_month_url$next_month_url</td>
-	</tr>\n"
+        append output [subst {
+            <tr style="background:white; color:inherit;">
+            <td align=center colspan=7>$prev_month_url$next_month_url</td>
+            </tr>\n}]
     }
 
     return [concat $output "</table>\n"]
