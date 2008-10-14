@@ -19,7 +19,7 @@ ad_proc dt_widget_month {
 	-header_bgcolor "black" 
 	-header_text_color "white" 
 	-header_text_size "+2" 
-	-day_number_template {<!--$julian_date--><font size=1>$day_number</font>} 
+	-day_number_template {<!--$julian_date-->$day_number} 
 	-day_header_size 2 
 	-day_header_bgcolor "#666666" 
 	-calendar_width "100%" 
@@ -221,7 +221,7 @@ ad_proc dt_widget_month_small {
 	-header_bgcolor "black" 
 	-header_text_color "white" 
 	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date--><font size=1>$day_number</font>} 
+	-day_number_template {<!--$julian_date-->$day_number} 
 	-day_header_size 1 
 	-day_header_bgcolor "#666666" 
 	-calendar_width 0 
@@ -267,7 +267,7 @@ ad_proc dt_widget_month_centered {
 	-header_bgcolor "black" 
 	-header_text_color "white" 
 	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date--><font size=1>$day_number</font>} 
+	-day_number_template {<!--$julian_date-->$day_number} 
 	-day_header_size 1 
 	-day_header_bgcolor "#666666" 
 	-calendar_width 0 
@@ -319,7 +319,7 @@ ad_proc dt_widget_year {
 	-header_bgcolor "black" 
 	-header_text_color "white" 
 	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date--><font size=1>$day_number</font>} 
+	-day_number_template {<!--$julian_date-->$day_number} 
 	-day_header_size 1 
 	-day_header_bgcolor "#666666" 
 	-calendar_width 0 
@@ -376,7 +376,7 @@ ad_proc dt_widget_calendar_year {
 	-header_bgcolor "black" 
 	-header_text_color "white" 
 	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date--><font size=1>$day_number</font>} 
+	-day_number_template {<!--$julian_date-->$day_number} 
 	-day_header_size 1 
 	-day_header_bgcolor "#666666" 
 	-calendar_width 0 
@@ -455,13 +455,13 @@ ad_proc -private dt_navbar_view {
         if { $viewname == $view } {
             # current view
             append result "<td class=\"selected\">
-    <font size=-1><b>$text</b></font>
+    <span style=\"font-size: smaller\; font-weight: bold\">$text</span>
     </td>
     "
         } else {
             append result "<td class=\"no-border\">
     <a href=\"$base_url" "view=$viewname&date=$date\" title=\"$viewdesc\">
-    <font size=-1><b>$text</b></font></a>
+    <span style=\"font-size: smaller; font-weight: bold\">$text</span></a>
     </td>
     "
         }
@@ -593,7 +593,7 @@ ad_proc -private dt_navbar_month {
     }
     
     append results "
-    <font size=-1><b>$curr_month</b></font>"
+    <span style=\"font-size: smaller; font-weight: bold\">$curr_month</span>"
 
     # Output link to next month only if it's a legal month
     if {$next_month_legal_p != 0} {
@@ -694,7 +694,7 @@ ad_proc dt_widget_calendar_navigation {
 	    if {$i == $curr_month} {
 		append output "
 		<td>
-		<font size=-1 color=red>$month</font>
+		<span style=\"font-size: smaller; color: red\">$month</span>
 		</td>\n"
 	    } else {
 		set target_date [clock format \
@@ -703,7 +703,7 @@ ad_proc dt_widget_calendar_navigation {
 		append output "
 		<td>
 		<a href=\"$base_url" "view=month&date=[ns_urlencode $target_date]\">
-		<font size=-1 color=blue>$month</font></a>
+		<span style=\"font-size: smaller; color: blue;\">$month</span></a>
 		</td>\n"
 	    }
 	}
@@ -728,12 +728,12 @@ ad_proc dt_widget_calendar_navigation {
 	for {set year [expr $curr_year - 2]} {$year <= $end_year} {incr year} {
 	    if {$year == $curr_year} {
 		append output "
-		<td><font size=-1 color=red>$year</font></td>\n"
+		<td><span style=\"font-size: smaller; color: red\">$year</span></td>\n"
 	    } else {
 		append output "
 		<td>
 		<a href=\"$base_url" "view=year&date=[ns_urlencode "$year-$monthday"]\">
-		<font size=-1 color=blue>$year</font></a>
+		<span style=\"font-size: smaller; color: blue;\">$year</span></a>
 		</td>\n"
 	    }
 	}
@@ -756,7 +756,7 @@ ad_proc dt_widget_calendar_navigation {
 	set days_of_week [list S M T W T F S]
 
 	foreach day_of_week $days_of_week {
-	    append output "<td align=right><font size=-1><b>$day_of_week</b></td>\n"
+	    append output "<td align=right><span style=\"font-size: smaller; font-weight: bold;\">$day_of_week</span></td>\n"
 	}
 	append output "</tr><tr><td colspan=7><hr></td></tr>"
 
@@ -795,18 +795,18 @@ ad_proc dt_widget_calendar_navigation {
 		append output "
 		<td align=right>
 		<a href=\"$base_url" "view=$view&date=[ns_urlencode $ansi_date]\">
-		<font color=gray>$day_number</font></a>
+		<span style=\"color: gray\">$day_number</span></a>
 		</td>"
 	    } elseif {$julian_date == $julian_date_today} {
 		append output "
 		<td align=right>
-		<b>$day_number</b>
+		<strong>$day_number</strong>
 		</td>"
 	    } else {
 		append output "
 		<td align=right>
 		<a href=\"$base_url" "view=$view&date=[ns_urlencode $ansi_date]\">
-		<font color=blue>$day_number</font></a>
+		<span style=\"color: blue\">$day_number</span></a>
 		</td>"
 	    }
 
@@ -837,21 +837,23 @@ ad_proc dt_widget_calendar_navigation {
     <tr class=\"table-header\"><td align=center colspan=5>
     <table cellspacing=0 cellpadding=0 border=0>
     <tr><td nowrap>
-    <font size=-2>"
+    <span style=\"font-size: smaller\">"
 
     if { $view == "day" && [dt_sysdate] == $date } {
-        append output "<b>Today</b>"
+        append output "<strong>Today</strong>"
     } else {
         append output "<a href=\"$today_url\">
-    <b>Today</b></a> "
+    <strong>Today</strong></a> "
     }
     
     append output "
-    is [dt_ansi_to_pretty]</font></td></tr>
+    is [dt_ansi_to_pretty]</span></td></tr>
     <tr><td align=center><br>
     <form method=get action=$base_url>
-    <INPUT TYPE=text name=date size=10><INPUT type=image src=\"/resources/acs-subsite/go.gif\" alt=\"Go\" border=0> <br><font size=-2>Date as YYYYMMDD</font>
+    <div>
+    <INPUT TYPE=text name=date size=10><INPUT type=image src=\"/resources/acs-subsite/go.gif\" alt=\"Go\" border=0> <br><span style=\"font-size:smaller\">Date as YYYYMMDD</span>
     <INPUT TYPE=hidden name=view value=day>
+    </div>
     "
 
     foreach var $list_of_vars {
