@@ -10,7 +10,7 @@
     <version name="5.4.3b1" url="http://openacs.org/apms/acs-datetime-5.4.3b1.apm">
         <owner url="http://openacs.org">OpenACS</owner>
         <summary>An API for date and time functions</summary>
-        <release-date>2006-02-18</release-date>
+        <release-date>2013-08-30</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
         <description format="text/html">Note: this version of the package requires acs-event(s) for a helper function. This requirement may go away in the future. </description>
         <maturity>0</maturity>
