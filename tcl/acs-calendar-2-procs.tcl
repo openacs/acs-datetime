@@ -485,7 +485,7 @@ ad_proc -public dt_widget_list {
 
         set old_item_type $item_type
 
-        if {[expr $flip % 2] == 0} {
+        if {$flip % 2 == 0} {
             set z_class odd
         } else {
             set z_class even
