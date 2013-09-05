@@ -140,7 +140,7 @@ ad_proc dt_widget_month {
             set day_number 1
         } elseif {$julian_date > $last_julian_date} {
             break
-        } elseif {$julian_date == [expr $last_julian_date_in_month+1]} {
+        } elseif {$julian_date == $last_julian_date_in_month + 1} {
             set day_number 1
         }
 
@@ -687,7 +687,7 @@ ad_proc dt_widget_calendar_navigation {
 
 	    # show 3 months in a row
 
-	    if {($i != 0) && ([expr $i % 3] == 0)} {
+	    if {($i != 0) && ($i % 3 == 0)} {
 		append output "</tr><tr>"
 	    }
 	    
@@ -698,7 +698,7 @@ ad_proc dt_widget_calendar_navigation {
 		</td>\n"
 	    } else {
 		set target_date [clock format \
-			[clock scan "[expr $i-$curr_month] month" -base $now] -format "%Y-%m-%d"]
+				     [clock scan "[expr {$i-$curr_month}] month" -base $now] -format "%Y-%m-%d"]
 
 		append output "
 		<td>
@@ -722,10 +722,10 @@ ad_proc dt_widget_calendar_navigation {
 
 	set now       [clock scan $date]
 	set curr_year $year
-	set end_year  [expr $year + 2]
+	set end_year  [expr {$year + 2}]
 	set monthday  [clock format $now -format "%m-%d"]
 
-	for {set year [expr $curr_year - 2]} {$year <= $end_year} {incr year} {
+	for {set year [expr {$curr_year - 2}]} {$year <= $end_year} {incr year} {
 	    if {$year == $curr_year} {
 		append output "
 		<td><span style=\"font-size: smaller; color: red\">$year</span></td>\n"
@@ -783,7 +783,7 @@ ad_proc dt_widget_calendar_navigation {
 		set day_number 1
 	    } elseif {$julian_date > $last_julian_date} {
 		break
-	    } elseif {$julian_date == [expr $last_julian_date_in_month +1]} {
+	    } elseif {$julian_date == $last_julian_date_in_month + 1} {
 		set day_number 1
 	    }
 
@@ -941,7 +941,7 @@ ad_proc -private dt_get_info {
     ns_set put $dt_info_set beginning_of_year \
         $year-01-01
     ns_set put $dt_info_set days_in_last_month \
-        [dt_num_days_in_month $year [expr $month - 1]]
+        [dt_num_days_in_month $year [expr {$month - 1}]]
     ns_set put $dt_info_set next_month_name \
         [dt_next_month_name $year $month]
     ns_set put $dt_info_set prev_month_name \
@@ -951,17 +951,17 @@ ad_proc -private dt_get_info {
     ad_ns_set_to_tcl_vars $dt_info_set
 
     ns_set put $dt_info_set first_julian_date \
-        [expr $first_julian_date_of_month + 1 - $first_day_of_month]
+        [expr {$first_julian_date_of_month + 1 - $first_day_of_month}]
     ns_set put $dt_info_set first_day \
-        [expr $days_in_last_month + 2 - $first_day_of_month]
+        [expr {$days_in_last_month + 2 - $first_day_of_month}]
     ns_set put $dt_info_set last_julian_date_in_month \
-        [expr $first_julian_date_of_month + $num_days_in_month - 1]
+        [expr {$first_julian_date_of_month + $num_days_in_month - 1}]
 
     set days_in_next_month \
-        [expr (7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7]
+        [expr {(7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7}]
 
     ns_set put $dt_info_set last_julian_date \
-        [expr $first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month]
+        [expr {$first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month}]
 
     # Now, set the variables in the caller's environment
 
