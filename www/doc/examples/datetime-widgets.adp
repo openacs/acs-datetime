@@ -2,7 +2,7 @@
 
 <master src="master">
 
-<property name="title">@title;noquote@</property>
+<property name="doc(title)">@title;noquote@</property>
 
 <p>There is one main procedure to generate date and time widgets:
 
