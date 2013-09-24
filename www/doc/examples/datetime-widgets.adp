@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<master src="master">
+<master>
 
 <property name="title">@title;noquote@</property>
 
