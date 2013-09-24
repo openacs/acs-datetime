@@ -11,7 +11,8 @@ ad_page_contract {
     dt_examples:multirow
 }
 
-set title "ACS DateTime Examples"
+set title "Date and Time Widgets"
+set context [list [list . "ACS DateTime Examples"] $title]
 
 set example_list {
     "dt_widget_datetime -default now name"
@@ -40,5 +41,6 @@ multirow create dt_examples "procedure" "result"
 foreach example $example_list {
     multirow append dt_examples $example [eval $example]
 }
+
 
 ad_return_template

@@ -15,7 +15,8 @@ ad_page_contract {
     calendar_widget:onevalue
 }
 
-set title "dt_widget_calendar_navigation"
+set title "Calendar Navigation"
+set context [list [list . "ACS DateTime Examples"] $title]
 
 set calendar_widget [dt_widget_calendar_navigation "" $view $date]
 

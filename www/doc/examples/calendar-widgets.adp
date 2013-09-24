@@ -2,8 +2,8 @@
 
 <master src="master">
 
-<property name="title">@title;noquote@</property>
-
+<property name="doc(title)">@title@</property>
+<property name="context">@context@</property>
 
 <p>These are the various widgets to generate calendar views.  Note
 that the <a href=calendar-navigation>calendar navigation</a> widget is

@@ -11,7 +11,8 @@ ad_page_contract {
     dt_examples:multirow
 }
 
-set title "ACS DateTime Examples"
+set title "Calendar Widgets"
+set context [list [list . "ACS DateTime Examples"] $title]
 
 set example_list {
     "dt_widget_month_small"

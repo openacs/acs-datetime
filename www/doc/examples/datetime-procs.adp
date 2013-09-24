@@ -2,7 +2,8 @@
 
 <master src="master">
 
-<property name="title">@title;noquote@</property>
+<property name="doc(title)">@title@</property>
+<property name="context">@context@</property>
 
 <p>The following table offers examples of the various date and time
 functions:</p>

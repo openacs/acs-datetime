@@ -2,7 +2,8 @@
 
 <master>
 
-<property name="title">@title;noquote@</property>
+<property name="doc(title)">@title@</property>
+<property name="context">@context@</property>
 
 <pre>dt_widget_calendar_navigation <i>base_url</i> <i>view</i> <i>date</i> <i>pass_in_vars</i> </pre>
 

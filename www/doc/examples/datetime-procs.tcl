@@ -11,7 +11,8 @@ ad_page_contract {
     dt_examples:multirow
 }
 
-set title "ACS DateTime Examples"
+set title "Date and Time Functions"
+set context [list [list . "ACS DateTime Examples"] $title]
 
 set example_list {
     "dt_systime"
