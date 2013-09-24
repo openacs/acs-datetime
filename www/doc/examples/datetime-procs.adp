@@ -2,7 +2,7 @@
 
 <master src="master">
 
-<property name="doc(title)">@title;noquote@</property>
+<property name="title">@title;noquote@</property>
 
 <p>The following table offers examples of the various date and time
 functions:</p>
@@ -36,7 +36,7 @@ results based on the current server time.
 <code>dt_systime</code> accepts any of the formatting codes supported
 by the Tcl <code>clock format</code> procedure, which is used for the
 underlying processing.  See current documentation at <a
-href=http://www.scriptics.com/man/>http://www.scriptics.com/man/</a>. 
+href="http://www.tcl.tk/man/">http:///www.tcl.tk/man/</a>. 
 
 <li>All procedures that take date or time as an input argument are capable of 
 accepting these inputs in any format capable of being parsed by <code>clock

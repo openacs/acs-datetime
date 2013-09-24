@@ -2,7 +2,7 @@
 
 <master src="master">
 
-<property name="doc(title)">@title;noquote@</property>
+<property name="title">@title;noquote@</property>
 
 
 <p>These are the various widgets to generate calendar views.  Note
@@ -21,7 +21,7 @@ documented separately.  This page documents the following:
 
 <h4><a name="#@dt_examples.rownum@"></a>@dt_examples.procedure@</h4>
 
-<center> @dt_examples.result@ </center>
+<center> @dt_examples.result;noquote@ </center>
 
 </multiple>
 

@@ -1,8 +1,8 @@
 <!-- $Id$ -->
 
-<master src="master">
+<master>
 
-<property name="doc(title)">@title;noquote@</property>
+<property name="title">@title;noquote@</property>
 
 <pre>dt_widget_calendar_navigation <i>base_url</i> <i>view</i> <i>date</i> <i>pass_in_vars</i> </pre>
 
@@ -35,7 +35,7 @@ and uses them to initialize the display.
 <center>
 <form>
 
-@calendar_widget@
+@calendar_widget;noquote@
 
 </form>
 </center>

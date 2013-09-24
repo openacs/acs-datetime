@@ -2,7 +2,7 @@
 
 <master src="master">
 
-<property name="doc(title)">@title;noquote@</property>
+<property name="title">@title;noquote@</property>
 
 <p>There is one main procedure to generate date and time widgets:
 
@@ -26,7 +26,7 @@ widgets:</p>
 <multiple name="dt_examples">
     <tr align=left>
         <td><code>@dt_examples.procedure@</code></td>
-        <td>@dt_examples.result@</td>
+        <td>@dt_examples.result;noquote@</td>
     </tr>
 </multiple>
 
