@@ -13,7 +13,7 @@
         <release-date>2013-09-08</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
         <description format="text/html">Note: this version of the package requires acs-event(s) for a helper function. This requirement may go away in the future. </description>
-        <maturity>0</maturity>
+        <maturity>2</maturity>
 
         <provides url="acs-datetime" version="5.4.3b1"/>
 	<requires url="acs-kernel" version="5.8.1d1"/>
