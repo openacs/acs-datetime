@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<master">
+<master>
 
 <property name="doc(title)">@title@</property>
 <property name="context">@context@</property>
