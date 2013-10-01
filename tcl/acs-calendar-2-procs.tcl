@@ -49,7 +49,7 @@ ad_proc dt_widget_week {
 
     set today_date [dt_sysdate]
 
-    if {[empty_string_p $date]} {
+    if {$date eq ""} {
         set date $today_date
     }
 
@@ -59,7 +59,7 @@ ad_proc dt_widget_week {
     db_1row select_week_info {}
     
     # Initialize the ns_set
-    if [empty_string_p $calendar_details] {
+    if {$calendar_details eq ""} {
 	set calendar_details [ns_set create calendar_details]
     }
 
@@ -171,14 +171,14 @@ ad_proc dt_widget_day {
 
 } {
 
-    if {[empty_string_p $date]} {
+    if {$date eq ""} {
         set date [dt_sysdate]
     }
 
     set current_date $date
 
     # Initialize the ns_set
-    if [empty_string_p $calendar_details] {
+    if {$calendar_details eq ""} {
 	set calendar_details [ns_set create calendar_details]
     }
 
@@ -207,15 +207,15 @@ ad_proc dt_widget_day {
             set item_val [ns_set value $calendar_details_2 $index]
             ns_set delete $calendar_details_2 $index
             # Count the num of events starting at this hour
-            set n_starting_events($hour) [expr $n_starting_events($hour) + 1]
+            set n_starting_events($hour) [expr {$n_starting_events($hour) + 1}]
 
             # Diff the hours 
             set hours_diff [dt_hour_diff -start_time [lindex $item_val 0] -end_time [lindex $item_val 1]]
 
             # Count the num of events at the hours of operations
             for {set i 0} {$i <= $hours_diff} {incr i} {
-                set the_hour [expr $hour + $i]
-                set n_events($the_hour) [expr $n_events([expr $the_hour - $i]) + 1]
+                set the_hour [expr {$hour + $i}]
+                set n_events($the_hour) [expr $n_events([expr {$the_hour - $i}]) + 1]
             }
         }
     }
@@ -275,7 +275,7 @@ ad_proc dt_widget_day {
     
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
         
-        set next_hour [expr $hour + 1]
+        set next_hour [expr {$hour + 1}]
 
         if {$hour < 10} {
             set index_hour "0$hour"
@@ -285,7 +285,7 @@ ad_proc dt_widget_day {
 
         # display stuff
         if {$hour >= 12} {
-            set ampm_hour [expr $hour - 12]
+            set ampm_hour [expr {$hour - 12}]
             set pm 1
         } else {
             set ampm_hour $hour
@@ -352,14 +352,14 @@ ad_proc dt_widget_day {
                         # HACK
                         set colspan 1
                         set must_complete_p 1
-                        #set colspan [expr "$max_n_events - $n_events($hour) + 1"]
+                        #set colspan [expr {$max_n_events - $n_events($hour) + 1}]
                     }
                 } {
                     # Just make it one
                     set colspan 1
                 } 
 
-                append return_html "<td valign=top rowspan=[expr $hour_diff + 1] colspan=$colspan><span style=\"font-size: smaller\">[lindex $one_item_val 2]</span></td>"
+                append return_html "<td valign=top rowspan=[expr {$hour_diff + 1}] colspan=$colspan><span style=\"font-size: smaller\">[lindex $one_item_val 2]</span></td>"
             } else {
                 append return_html "[ns_set value $calendar_details $index]<br>\n"
             }
@@ -369,9 +369,9 @@ ad_proc dt_widget_day {
 
         if {$n_processed_events == 0 || ($n_events($hour) < $max_n_events && $must_complete_p)} {
             if {$n_events($hour) == 0 || $n_events($hour) == $n_processed_events} {
-		append return_html "<td colspan=\"[expr $max_n_events - $n_events($hour)]\" class=\"$class\">&nbsp;</td>"
+		append return_html "<td colspan=\"[expr {$max_n_events - $n_events($hour)}]\" class=\"$class\">&nbsp;</td>"
 	    } else {
-		for {set i 0} {$i < [expr "$max_n_events - $n_events($hour)"]} {incr i} {
+		for {set i 0} {$i < $max_n_events - $n_events($hour)} {incr i} {
 		    append return_html "<td colspan=\"1\" class=$class>&nbsp;</td>"
 		}
 	    }
@@ -412,21 +412,21 @@ ad_proc -public dt_widget_list {
     }
 
     # The title
-    if {[empty_string_p $start_date] && [empty_string_p $end_date]} {
+    if {$start_date eq "" && $end_date eq ""} {
 	#This used to be All Items but that was just taking up space and not adding value so now we assume All Items and only give a title if its something else. - Caroline@meekshome.com
         set title ""
     }
 
-    if {[empty_string_p $start_date] && ![empty_string_p $end_date]} {
+    if {$start_date eq "" && $end_date ne ""} {
 	set $pretty_end_date [lc_time_fmt $end_date "%x"]
         set title "[_ acs-datetime.Items_until]"
     }
 
-    if {![empty_string_p $start_date] && [empty_string_p $end_date]} {
+    if {$start_date ne "" && $end_date eq ""} {
         set title "Items starting [util_AnsiDatetoPrettyDate $start_date]"
     }
 
-    if {![empty_string_p $start_date] && ![empty_string_p $end_date]} {
+    if {$start_date ne "" && $end_date ne ""} {
         set title "Items from [util_AnsiDatetoPrettyDate $start_date] to [util_AnsiDatetoPrettyDate $end_date]"
     }
 
@@ -444,7 +444,7 @@ ad_proc -public dt_widget_list {
     <table class=\"table-display\" border=0 cellspacing=0 cellpadding=2>
     <tr class=\"table-header\"><th>Day of Week</th><th><a href=\"$start_date_url\">Date</a></th><th>Start Time</th><th>End Time</th>"
 
-    if {$real_order_by != "item_type"} {
+    if {$real_order_by ne "item_type"} {
         append return_html "<th><a href=\"$item_type_url\">Type</a></th>"
     }
 
@@ -473,8 +473,8 @@ ad_proc -public dt_widget_list {
         }
 
         # Do we need a title?
-        if {$real_order_by == "item_type" && $item_type != "$old_item_type"} {
-            if {[empty_string_p $item_type]} {
+        if {$real_order_by eq "item_type" && $item_type != $old_item_type} {
+            if {$item_type eq ""} {
                 set item_type_for_title "(No Item Type)"
             } else {
                 set item_type_for_title $item_type
@@ -494,7 +494,7 @@ ad_proc -public dt_widget_list {
         append return_html "
         <tr class=$z_class><td>$weekday</td><td>$date</td><td>$start_time</td><td>$end_time</td>"
         
-        if {$real_order_by != "item_type"} {
+        if {$real_order_by ne "item_type"} {
             append return_html "<td>$item_type</td>"
         }
 
@@ -518,7 +518,7 @@ ad_proc dt_midnight_p {
 } {
     check if a time is midnight
 } {
-    if {$time == "00:00" || $time == ""} {
+    if {$time eq "00:00" || $time eq ""} {
         return 1
     }
     
@@ -568,9 +568,9 @@ ad_proc dt_hour_diff {
     set end_minutes [string range $end_time 3 4]
 
     # Special case when the hour is exact
-    if {[string compare $end_minutes "00"] == 0} {
-        return [expr "$end_hour - $start_hour - 1"]
+    if {$end_minutes eq "00" } {
+        return [expr {$end_hour - $start_hour - 1}]
     } else {
-        return [expr "$end_hour - $start_hour"]
+        return [expr {$end_hour - $start_hour}]
     }
 }

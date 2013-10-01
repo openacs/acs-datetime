@@ -32,7 +32,7 @@ ad_proc -public dt_valid_time_p {
 } {
     Returns 1 if "time" is a valid time specification, 0 otherwise.
 } {
-    if [catch { clock scan $time }] {
+    if {[catch { clock scan $time }]} {
 	return 0
     } else {
 	return 1
@@ -89,7 +89,7 @@ ad_proc -public dt_ansi_to_julian {
     of an invalid ANSI date argument (year less than
     4713 BCE, greater than 9999 CE, or equal to 0)
 } {
-    if [empty_string_p $era] {
+    if {$era eq ""} {
         set era CE
     }
 
@@ -101,28 +101,28 @@ ad_proc -public dt_ansi_to_julian {
         # 1582-10-04; 1582-10-15)
         set julian_date [dt_ansi_to_julian 1582 10 15 CE]
     } else {
-        if {$era == "BCE"} {
+        if {$era eq "BCE"} {
             set year [expr -$year + 1]
         }
 
         if {$month > 2} {
             set year_n $year
-            set month_n [expr $month + 1]
+            set month_n [expr {$month + 1}]
         } else {
-            set year_n [expr $year - 1]
-            set month_n [expr $month + 13]
+            set year_n [expr {$year - 1}]
+            set month_n [expr {$month + 13}]
         }
 
-        set julian_date [expr floor(floor(365.25 * $year_n) + floor(30.6001 * $month_n) + ($day + 1720995))]
+        set julian_date [expr {floor(floor(365.25 * $year_n) + floor(30.6001 * $month_n) + ($day + 1720995))}]
 
         # check for change to the Gregorian Calendar
-        set gregorian [expr 15 + 31 * (10 + 12 * 1582)]
+        set gregorian [expr {15 + 31 * (10 + 12 * 1582)}]
         if {$day + 31 * ($month + 12 * $year) >= $gregorian} {
-            set julian_date [expr $julian_date + (2 - floor(0.01 * $year_n) + floor(0.25 * floor(0.01 * $year_n)))]
+            set julian_date [expr {$julian_date + (2 - floor(0.01 * $year_n) + floor(0.25 * floor(0.01 * $year_n)))}]
         }
     }
 
-    return [expr int($julian_date)]
+    return [expr {int($julian_date)}]
 }
 
 ad_proc -public dt_julian_to_ansi {
@@ -134,32 +134,32 @@ ad_proc -public dt_julian_to_ansi {
     set gregorian 2299161
 
     if {$julian_date >= $gregorian} {
-      set calc [expr floor((($julian_date - 1867216) - 0.25) / 36524.25)]
-      set calc [expr $julian_date + 1 + $calc - floor(0.25 * $calc)]
+      set calc [expr {floor((($julian_date - 1867216) - 0.25) / 36524.25)}]
+      set calc [expr {$julian_date + 1 + $calc - floor(0.25 * $calc)}]
     } else {
       set calc $julian_date
     }
 
     # get initial calculations to set year, month, day
-    set calc [expr $calc + 1524]
-    set calc2 [expr floor(6680 + (($calc - 2439870) - 122.1) / 365.25)]
-    set calc3 [expr floor($calc2 * 365.25)]
-    set calc4 [expr floor(($calc - $calc3) / 30.6001)]
+    set calc [expr {$calc + 1524}]
+    set calc2 [expr {floor(6680 + (($calc - 2439870) - 122.1) / 365.25)}]
+    set calc3 [expr {floor($calc2 * 365.25)}]
+    set calc4 [expr {floor(($calc - $calc3) / 30.6001)}]
 
     # set year, month, day
-    set year [expr floor($calc2 - 4715)]
-    set month [expr floor($calc4 - 1)]
+    set year [expr {floor($calc2 - 4715)}]
+    set month [expr {floor($calc4 - 1)}]
     if {$month > 12} {
-      set month [expr $month - 12]
+      set month [expr {$month - 12}]
     }
     if {$month > 2 || $year <= 0} {
-      set year [expr $year - 1]
+      set year [expr {$year - 1}]
     }
-    set day [expr floor($calc - $calc3 - floor($calc4 * 30.6001))]
+    set day [expr {floor($calc - $calc3 - floor($calc4 * 30.6001))}]
 
-    set year [expr int($year)]
-    set month [expr int($month)]
-    set day [expr int($day)]
+    set year [expr {int($year)}]
+    set month [expr {int($month)}]
+    set day [expr {int($day)}]
 
     if {$month < 10} {
       set month 0$month
@@ -179,7 +179,7 @@ ad_proc -public dt_ansi_to_pretty {
     returns the current date based on server time.  Works for both
     date and date-time strings.
 } {
-    if [empty_string_p $ansi_date] {
+    if {$ansi_date eq ""} {
 	set ansi_date [dt_sysdate]
     }
 
@@ -193,7 +193,7 @@ ad_proc -public dt_ansi_to_list {
     hour, minute, and second. Works for any date than can be parsed
     by clock scan. 
 } {
-    if [empty_string_p $ansi_date] {
+    if {$ansi_date eq ""} {
 	set ansi_date [dt_systime]
     }
 
@@ -213,13 +213,13 @@ ad_proc -public dt_num_days_in_month {
     if {$month == 0} {
       set month 01
     } elseif {$month == 12} {
-      set year [expr $year + 1]
+      set year [expr {$year + 1}]
       set month 01
     } elseif {$month == 13} {
-      set year [expr $year + 1]
+      set year [expr {$year + 1}]
       set month 02
     } else {
-      set month [expr $month + 1]
+      set month [expr {$month + 1}]
     }
 
     return [clock format [clock scan "last day" -base [clock scan $year-$month-01]] -format %d]
@@ -242,10 +242,10 @@ ad_proc -public dt_next_month {
     Returns the ANSI date for the next month
 } {
     if {$month == 12} {
-      set year [expr $year + 1]
+      set year [expr {$year + 1}]
       set month 01
     } else {
-      set month [expr $month + 1]
+      set month [expr {$month + 1}]
     }
 
     # jarkko: added this check to avoid calendars bombing when prev month goes
@@ -263,10 +263,10 @@ ad_proc -public dt_prev_month {
     Returns the ANSI date for the previous month
 } {
     if {$month == 1} {
-      set year [expr $year - 1]
+      set year [expr {$year - 1}]
       set month 12
     } else {
-      set month [expr $month - 1]
+      set month [expr {$month - 1}]
     }
 
     # jarkko: added this check to avoid calendars bombing when prev month goes
@@ -285,10 +285,10 @@ ad_proc -public dt_next_month_name {
     Returns the ANSI date for the next month
 } {
     if {$month == 12} {
-      set year [expr $year + 1]
+      set year [expr {$year + 1}]
       set month 01
     } else {
-      set month [expr $month + 1]
+      set month [expr {$month + 1}]
     }
 
     # jarkko: added this check to avoid calendars bombing when next month goes
@@ -308,10 +308,10 @@ ad_proc -public dt_prev_month_name {
     Returns the ANSI date for the previous month
 } {
     if {$month == 1} {
-      set year [expr $year - 1]
+      set year [expr {$year - 1}]
       set month 12
     } else {
-      set month [expr $month - 1]
+      set month [expr {$month - 1}]
     }
 
     # jarkko: added this check to avoid calendars bombing when prev month goes
@@ -351,10 +351,10 @@ ad_proc -public dt_widget_datetime {
 } {
     set to_precision [dt_precision $granularity]
 
-    set show_day     [expr $to_precision < 1441]
-    set show_hours   [expr $to_precision < 61]
-    set show_minutes [expr $to_precision < 60]
-    set show_seconds [expr $to_precision < 1]
+    set show_day     [expr {$to_precision < 1441}]
+    set show_hours   [expr {$to_precision < 61}]
+    set show_minutes [expr {$to_precision < 60}]
+    set show_seconds [expr {$to_precision < 1}]
 
     if {$to_precision == 0} { 
 	set to_precision 1 
@@ -378,10 +378,10 @@ ad_proc -public dt_widget_datetime {
     # the other values too...
 
     if {$to_precision < 60} {
-        set minutes [expr [dt_round_to_precision $minutes $to_precision] % 60]
+        set minutes [expr {[dt_round_to_precision $minutes $to_precision] % 60}]
     }
 
-    if {$default == "none"} {
+    if {$default eq "none"} {
         set year    ""
         set month   ""
         set day     ""
@@ -454,11 +454,11 @@ ad_proc -public dt_widget_month_names {
     Returns a select widget for months of the year. 
 } {
     set month_names [dt_month_names]
-    set default     [expr $default-1]
+    set default     [expr {$default-1}]
     set input       "<option value=_undef>---------"
 
     for {set i 0} {$i < 12} {incr i} {
-	append input "<option [expr {$i == $default ? "selected" : ""}] value=[expr $i+1]>[lindex $month_names $i]\n"
+	append input "<option [expr {$i == $default ? "selected" : ""}] value=[expr {$i+1}]>[lindex $month_names $i]\n"
     }
     
     return "<select name=\"$name\">\n $input \n </select>\n"
@@ -474,13 +474,13 @@ ad_proc -public dt_widget_numeric_range {
 } {
     Returns an HTML select widget for a numeric range
 } {
-    if $with_leading_zeros {
+    if {$with_leading_zeros} {
 	set format "%02d"
     } else {
 	set format "%d"
     }
 
-    if ![empty_string_p $default] {
+    if {$default ne ""} {
 	set default [dt_trim_leading_zeros $default]
     }
 
@@ -506,9 +506,9 @@ ad_proc -public dt_widget_maybe_range {
 } {
     Returns form numeric range, or hidden_value if ask_for_value is false.
 } {
-    if !$ask_for_value {
+    if {!$ask_for_value} {
         # Note that this flattens to hidden_value for hidden fields
-        if $with_leading_zeros {
+        if {$with_leading_zeros} {
             return [dt_export_value $name $hidden_value]
         } else {
             return [dt_export_value $name [dt_trim_leading_zeros $hidden_value]]
@@ -544,7 +544,7 @@ ad_proc -private dt_trim_leading_zeros {
 } {
     set string [string trimleft $string 0]
 
-    if [empty_string_p $string] {
+    if {$string eq ""} {
         return "0"
     }
 
@@ -571,7 +571,7 @@ ad_proc -private dt_round_to_precision {
     32.678 .1</tt> will round to 32.7.
 
 } {
-    return [expr $precision * round(double($number)/$precision)]
+    return [expr {$precision * round(double($number)/$precision)}]
 }
 
 ad_proc -private dt_precision {

@@ -42,7 +42,7 @@ ad_proc dt_widget_month {
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details. 
 } {
-    if [empty_string_p $days_of_week] {
+    if {$days_of_week eq ""} {
 	set days_of_week "[_ acs-datetime.days_of_week]" 
     }
 
@@ -50,7 +50,7 @@ ad_proc dt_widget_month {
 
     set today_date [dt_sysdate]    
 
-    if [empty_string_p $calendar_details] {
+    if {$calendar_details eq ""} {
 	set calendar_details [ns_set create calendar_details]
     }
 
@@ -61,12 +61,12 @@ ad_proc dt_widget_month {
     set next_month_url ""
     set prev_month_url ""
 
-    if ![empty_string_p $prev_month_template] {
+    if {$prev_month_template ne ""} {
 	set ansi_date      [ns_urlencode $prev_month]
 	set prev_month_url [subst $prev_month_template]
     }
 
-    if ![empty_string_p $next_month_template] {
+    if {$next_month_template ne ""} {
 	set ansi_date      [ns_urlencode $next_month]
 	set next_month_url [subst $next_month_template]
     }
@@ -234,7 +234,7 @@ ad_proc dt_widget_month_small {
 } {
     Returns a small calendar for a specific month. Defaults to this month.
 } {
-    if [empty_string_p $days_of_week] {
+    if {$days_of_week eq ""} {
 	set days_of_week "[_ acs-datetime.short_days_of_week]"
     }
     return [dt_widget_month \
@@ -282,7 +282,7 @@ ad_proc dt_widget_month_centered {
     Julian date. Defaults to this month.
 } {
 
-    if [empty_string_p $days_of_week] {
+    if {$days_of_week eq ""} {
 	set days_of_week "[_ acs-datetime.short_days_of_week]" 
     }
     set output ""
@@ -338,7 +338,7 @@ ad_proc dt_widget_year {
 	return "[_ acs-datetime.lt_Width_must_be_]"
     }
 
-    if [empty_string_p $days_of_week] {
+    if {$days_of_week eq ""} {
 	set days_of_week "[_ acs-datetime.short_days_of_week]" 
     }
 
@@ -391,7 +391,7 @@ ad_proc dt_widget_calendar_year {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
 } {
-    if [empty_string_p $days_of_week] {
+    if {$days_of_week eq ""} {
 	set days_of_week "[_ acs-datetime.short_days_of_week]" 
     }
 
@@ -632,24 +632,24 @@ ad_proc dt_widget_calendar_navigation {
 
     # valid views are "list" "day" "week" "month" "year"
 
-    if {![exists_and_not_null base_url]} {
+    if {$base_url eq ""} {
 	set base_url [ns_conn url]
     }
 
-    if {[exists_and_not_null pass_in_vars]} {
+    if {$pass_in_vars ne ""} {
 	append base_url "?$pass_in_vars&"
     } else {
 	append base_url "?"
     }
 
-    if {![exists_and_not_null date]} {
+    if {$date eq ""} {
 	set date [dt_sysdate]
     }
 
     set list_of_vars [list]
 
     # Ben: some annoying stuff to do here since we are passing in things in GET format already
-    if {![empty_string_p $pass_in_vars]} {
+    if {$pass_in_vars ne ""} {
         set vars [split $pass_in_vars "&"]
         foreach var $vars {
             set things [split $var "="]
@@ -662,13 +662,13 @@ ad_proc dt_widget_calendar_navigation {
     dt_get_info $date
 
     set output "
-    <center><table class=\"table-display\" border=1 cellpadding=1 cellspacing=0 width=160>
+    <center><table class=\"table-display\" border='1' cellpadding='1' cellspacing='0' width='160'>
 
     [dt_navbar_view $view $base_url $date]
 
     [dt_navbar_year $view $base_url $date]\n"
 
-    if [string equal $view month] {
+    if {$view eq "month"} {
 	# month view
 	append output "
 	<tr>
@@ -687,7 +687,7 @@ ad_proc dt_widget_calendar_navigation {
 
 	    # show 3 months in a row
 
-	    if {($i != 0) && ($i % 3 == 0)} {
+	    if {$i != 0 && $i % 3 == 0} {
 		append output "</tr><tr>"
 	    }
 	    
@@ -710,14 +710,14 @@ ad_proc dt_widget_calendar_navigation {
 	
 	append output "</tr>"	    
 	
-    } elseif [string equal $view year] {
+    } elseif {$view eq "year"} {
 
 	# year view
 
 	append output "
 	<tr>
 	<td colspan=5>
-	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
+	<table bgcolor='ffffff' cellspacing='3' cellpadding='1' border='0'>
 	<tr>\n"
 
 	set now       [clock scan $date]
@@ -749,7 +749,7 @@ ad_proc dt_widget_calendar_navigation {
 	</tr>
 
 	<tr><td class=\"bottom-border\"colspan=5>
-	<table cellspacing=3 cellpadding=1>
+	<table cellspacing='3' cellpadding='1'>
 	<tr>
 	"
 
@@ -758,7 +758,7 @@ ad_proc dt_widget_calendar_navigation {
 	foreach day_of_week $days_of_week {
 	    append output "<td align=right><span style=\"font-size: smaller; font-weight: bold;\">$day_of_week</span></td>\n"
 	}
-	append output "</tr><tr><td colspan=7><hr></td></tr>"
+	append output "</tr><tr><td colspan='7'><hr></td></tr>"
 
 	set day_of_week 1
 	set julian_date $first_julian_date
@@ -799,7 +799,7 @@ ad_proc dt_widget_calendar_navigation {
 		</td>"
 	    } elseif {$julian_date == $julian_date_today} {
 		append output "
-		<td align=right>
+		<td align='right'>
 		<strong>$day_number</strong>
 		</td>"
 	    } else {
@@ -824,8 +824,8 @@ ad_proc dt_widget_calendar_navigation {
     append today_url "$base_url" "view=day&date=[ns_urlencode [dt_sysdate]]"
 
     append output "
-    <tr><td align=center colspan=7>
-    <table cellspacing=0 cellpadding=1 border=0>
+    <tr><td align='center' colspan='7'>
+    <table cellspacing='0' cellpadding='1' border='0'>
     <tr><td></td></tr>
     </table>
     </td>
@@ -834,12 +834,12 @@ ad_proc dt_widget_calendar_navigation {
     </center>
     </td>
     </tr>
-    <tr class=\"table-header\"><td align=center colspan=5>
-    <table cellspacing=0 cellpadding=0 border=0>
+    <tr class=\"table-header\"><td align='center' colspan='5'>
+    <table cellspacing='0' cellpadding='0' border='0'>
     <tr><td nowrap>
     <span style=\"font-size: smaller\">"
 
-    if { $view == "day" && [dt_sysdate] == $date } {
+    if { $view eq "day" && [dt_sysdate] == $date } {
         append output "<strong>Today</strong>"
     } else {
         append output "<a href=\"$today_url\">
@@ -849,15 +849,15 @@ ad_proc dt_widget_calendar_navigation {
     append output "
     is [dt_ansi_to_pretty]</span></td></tr>
     <tr><td align=center><br>
-    <form method=get action=$base_url>
+    <form method='get' action=\"$base_url\">
     <div>
-    <INPUT TYPE=text name=date size=10><INPUT type=image src=\"/resources/acs-subsite/go.gif\" alt=\"Go\" border=0> <br><span style=\"font-size:smaller\">Date as YYYYMMDD</span>
-    <INPUT TYPE=hidden name=view value=day>
+    <INPUT TYPE='text' name='date' size='10'><INPUT type=image src=\"/resources/acs-subsite/go.gif\" alt=\"Go\" border=0> <br><span style=\"font-size:smaller\">Date as YYYYMMDD</span>
+    <INPUT TYPE='hidden' name='view' value='day'>
     </div>
     "
 
     foreach var $list_of_vars {
-        append output "<INPUT TYPE=hidden name=[lindex $var 0] value=[lindex $var 1]>"
+        append output "<INPUT TYPE='hidden' name='[lindex $var 0]' value='[lindex $var 1]'>"
     }
     
     append output "
@@ -907,7 +907,7 @@ ad_proc -private dt_get_info {
 } {
     # If no date was passed in, let's set it to today
 
-    if [empty_string_p $the_date] {
+    if {$the_date eq ""} {
         set the_date [dt_sysdate]
     }
 
