@@ -102,14 +102,14 @@ ad_proc -public dt_ansi_to_julian {
         set julian_date [dt_ansi_to_julian 1582 10 15 CE]
     } else {
         if {$era eq "BCE"} {
-            set year [expr -$year + 1]
+            set year [expr {-$year + 1}]
         }
 
         if {$month > 2} {
             set year_n $year
             set month_n [expr {$month + 1}]
         } else {
-            set year_n [expr {$year - 1}]
+            set year_n  [expr {$year - 1}]
             set month_n [expr {$month + 13}]
         }
 
@@ -232,7 +232,7 @@ ad_proc -public dt_first_day_of_month {
     Returns the weekday number of the first day for the given month/year
 } {
     # calendar widgets are expecting integers 1-7, so we must adjust
-    return [expr [clock format [clock scan $year-$month-01] -format %w] + 1]
+    return [expr {[clock format [clock scan $year-$month-01] -format %w] + 1}]
 }
 
 ad_proc -public dt_next_month {
@@ -531,7 +531,7 @@ ad_proc -public dt_interval_check { start end } {
     Input variables can be any strings that can be converted to times
     using clock scan.
 } {
-    return [expr [clock scan $end]-[clock scan $start]]
+    return [expr {[clock scan $end] - [clock scan $start]}]
 }
 
 ad_proc -private dt_trim_leading_zeros { 

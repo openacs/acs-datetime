@@ -215,7 +215,7 @@ ad_proc dt_widget_day {
             # Count the num of events at the hours of operations
             for {set i 0} {$i <= $hours_diff} {incr i} {
                 set the_hour [expr {$hour + $i}]
-                set n_events($the_hour) [expr $n_events([expr {$the_hour - $i}]) + 1]
+                set n_events($the_hour) [expr {$n_events([expr {$the_hour - $i}]) + 1}]
             }
         }
     }

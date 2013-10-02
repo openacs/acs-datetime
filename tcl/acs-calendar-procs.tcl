@@ -484,7 +484,7 @@ ad_proc -private dt_navbar_year {
     string. 
 } {
     # Return immediately of the current view isn't month or year
-    if {[lsearch -exact [list month year] $view] == -1} {
+    if {$view ni [list month year]} {
 	return ""
     }
 
@@ -679,7 +679,7 @@ ad_proc dt_widget_calendar_navigation {
 
 	set months_list [dt_month_names]
 	set now         [clock scan $date]
-	set curr_month  [expr [dt_trim_leading_zeros [clock format $now -format "%m"]]-1]
+	set curr_month  [expr {[dt_trim_leading_zeros [clock format $now -format "%m"]] - 1}]
 
 	for {set i 0} {$i < 12} {incr i} {
 
