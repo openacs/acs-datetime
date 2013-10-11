@@ -449,16 +449,18 @@ ad_proc -public dt_widget_datetime {
 
 ad_proc -public dt_widget_month_names { 
     name 
-    {default ""}
+    {selected_month 0}
 } {
     Returns a select widget for months of the year. 
 } {
+    if {$selected_month eq ""} {set selected_month 0}
+    if {![string is integer $selected_month]} {error "selected_month must be integer"}
     set month_names [dt_month_names]
-    set default     [expr {$default-1}]
     set input       "<option value=_undef>---------"
+    incr selected_month -1
 
     for {set i 0} {$i < 12} {incr i} {
-	append input "<option [expr {$i == $default ? "selected" : ""}] value=[expr {$i+1}]>[lindex $month_names $i]\n"
+	append input "<option [expr {$i == $selected_month ? "selected" : ""}] value=[expr {$i+1}]>[lindex $month_names $i]\n"
     }
     
     return "<select name=\"$name\">\n $input \n </select>\n"
