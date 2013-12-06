@@ -10,7 +10,8 @@ ad_library {
 }
 
 ad_proc -public dt_systime {
-    {-format "%Y-%m-%d %H:%M:%S" -gmt f}
+    {-format "%Y-%m-%d %H:%M:%S"}
+    {-gmt f}
 } {
     Returns current server time in the standard format "yyyy-mm-dd
     hh:mi:ss".  With the optional -gmt flag it returns the time in
@@ -40,7 +41,8 @@ ad_proc -public dt_valid_time_p {
 }
 
 ad_proc -deprecated dt_format {
-    {-format "%Y-%m-%d %H:%M:%S" -gmt f}
+    {-format "%Y-%m-%d %H:%M:%S"}
+    {-gmt f}
     time
 } {
     This proc should not be used, because it does not take internationalization into account. Use lc_time_fmt instead.
@@ -325,8 +327,11 @@ ad_proc -public dt_prev_month_name {
 }
 
 ad_proc -public dt_widget_datetime { 
-    {-show_date 1 -date_time_sep "&nbsp;" -use_am_pm 0 -default none}
-    {name}
+    {-show_date 1}
+    {-date_time_sep "&nbsp;"}
+    {-use_am_pm 0} 
+    {-default none}
+    name
     {granularity days}
 } {
 
@@ -496,7 +501,10 @@ ad_proc -public dt_widget_numeric_range {
 }
 
 ad_proc -public dt_widget_maybe_range {
-    {-hide t -hidden_value "00" -default "" -format "%02d"}
+    {-hide t}
+    {-hidden_value "00"}
+    {-default ""}
+    {-format "%02d"}
     ask_for_value 
     name 
     start

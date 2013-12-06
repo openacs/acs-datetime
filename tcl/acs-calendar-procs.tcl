@@ -10,29 +10,27 @@ ad_library {
 }
 
 ad_proc dt_widget_month { 
-    {
-	-calendar_details "" 
-	-date "" 
-	-days_of_week ""
-	-large_calendar_p 1 
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
-	-header_text_color "white" 
-	-header_text_size "+2" 
-	-day_number_template {<!--$julian_date-->$day_number} 
-	-day_header_size 2 
-	-day_header_bgcolor "#666666" 
-	-calendar_width "100%" 
-	-day_bgcolor "#DDDDDD" 
-	-today_bgcolor "#DDDDDD" 
-	-day_text_color "white" 
-	-empty_bgcolor "white"  
-	-next_month_template ""   
-	-prev_month_template "" 
-	-prev_next_links_in_title 0 
-	-fill_all_days 0 
-        -show_calendar_name_p 1
-    }
+    {-calendar_details ""}
+    {-date ""}
+    {-days_of_week ""}
+    {-large_calendar_p 1}
+    {-master_bgcolor "black"}
+    {-header_bgcolor "black"}
+    {-header_text_color "white"}
+    {-header_text_size "+2"}
+    {-day_number_template {<!--$julian_date-->$day_number}}
+    {-day_header_size 2}
+    {-day_header_bgcolor "#666666"}
+    {-calendar_width "100%"}
+    {-day_bgcolor "#DDDDDD"}
+    {-today_bgcolor "#DDDDDD"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-next_month_template ""}
+    {-prev_month_template ""}
+    {-prev_next_links_in_title 0}
+    {-fill_all_days 0}
+    {-show_calendar_name_p 1}
 } {
     Returns a calendar for a specific month, with details supplied by
     Julian date. Defaults to this month. 
@@ -212,25 +210,23 @@ ad_proc dt_widget_month {
 }
 
 ad_proc dt_widget_month_small { 
-    {
-	-calendar_details "" 
-	-date "" 
-	-days_of_week ""
-	-large_calendar_p 0 
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
-	-header_text_color "white" 
-	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date-->$day_number} 
-	-day_header_size 1 
-	-day_header_bgcolor "#666666" 
-	-calendar_width 0 
-	-day_bgcolor "#DDDDDD" 
-	-day_text_color "white" 
-	-empty_bgcolor "white"  
-	-next_month_template ""   
-	-prev_month_template ""
-    }
+    {-calendar_details ""}
+    {-date ""}
+    {-days_of_week ""}
+    {-large_calendar_p 0}
+    {-master_bgcolor "black"}
+    {-header_bgcolor "black"}
+    {-header_text_color "white"}
+    {-header_text_size "+1"}
+    {-day_number_template {<!--$julian_date-->$day_number}}
+    {-day_header_size 1}
+    {-day_header_bgcolor "#666666"}
+    {-calendar_width 0}
+    {-day_bgcolor "#DDDDDD"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-next_month_template ""}
+    {-prev_month_template ""}
 } {
     Returns a small calendar for a specific month. Defaults to this month.
 } {
@@ -258,25 +254,23 @@ ad_proc dt_widget_month_small {
 }
 
 ad_proc dt_widget_month_centered { 
-    {
-	-calendar_details "" 
-	-date "" 
-	-days_of_week ""
-	-large_calendar_p 0 
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
-	-header_text_color "white" 
-	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date-->$day_number} 
-	-day_header_size 1 
-	-day_header_bgcolor "#666666" 
-	-calendar_width 0 
-	-day_bgcolor "#DDDDDD" 
-	-day_text_color "white" 
-	-empty_bgcolor "white"  
-	-next_month_template ""   
-	-prev_month_template ""  
-    }
+    {-calendar_details ""}
+    {-date ""}
+    {-days_of_week ""}
+    {-large_calendar_p 0}
+    {-master_bgcolor "black"}
+    {-header_bgcolor "black"}
+    {-header_text_color "white"}
+    {-header_text_size "+1"}
+    {-day_number_template {<!--$julian_date-->$day_number}}
+    {-day_header_size 1}
+    {-day_header_bgcolor "#666666"}
+    {-calendar_width 0}
+    {-day_bgcolor "#DDDDDD"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-next_month_template ""}
+    {-prev_month_template ""}
 } {
     Returns a calendar for a specific month, with details supplied by
     Julian date. Defaults to this month.
@@ -310,25 +304,24 @@ ad_proc dt_widget_month_centered {
 }
 
 ad_proc dt_widget_year { 
-    {
-	-calendar_details "" 
-	-date "" 
-	-days_of_week ""
-	-large_calendar_p 0 
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
-	-header_text_color "white" 
-	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date-->$day_number} 
-	-day_header_size 1 
-	-day_header_bgcolor "#666666" 
-	-calendar_width 0 
-	-day_bgcolor "#DDDDDD" 
-	-day_text_color "white" 
-	-empty_bgcolor "white"  
-	-next_month_template ""   
-	-prev_month_template ""  
-	-width 2} 
+    {-calendar_details ""}
+    {-date ""}
+    {-days_of_week ""}
+    {-large_calendar_p 0}
+    {-master_bgcolor "black"}
+    {-header_bgcolor "black"}
+    {-header_text_color "white"}
+    {-header_text_size "+1"}
+    {-day_number_template {<!--$julian_date-->$day_number}}
+    {-day_header_size 1}
+    {-day_header_bgcolor "#666666"}
+    {-calendar_width 0}
+    {-day_bgcolor "#DDDDDD"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-next_month_template ""}
+    {-prev_month_template ""}
+    {-width 2}
 } {
     Returns a year of small calendars given the starting month as a
     date.  Defaults to this month.  Data in calendar_details will be
@@ -367,26 +360,24 @@ ad_proc dt_widget_year {
 }
 
 ad_proc dt_widget_calendar_year { 
-    {
-	-calendar_details "" 
-	-date "" 
-	-days_of_week ""
-	-large_calendar_p 0 
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
-	-header_text_color "white" 
-	-header_text_size "+1" 
-	-day_number_template {<!--$julian_date-->$day_number} 
-	-day_header_size 1 
-	-day_header_bgcolor "#666666" 
-	-calendar_width 0 
-	-day_bgcolor "#DDDDDD" 
-	-day_text_color "white" 
-	-empty_bgcolor "white" 
-	-next_month_template "" 
-	-prev_month_template "" 
-	-width 2
-    }
+    {-calendar_details ""}
+    {-date ""}
+    {-days_of_week ""}
+    {-large_calendar_p 0}
+    {-master_bgcolor "black"}
+    {-header_bgcolor "black"}
+    {-header_text_color "white"}
+    {-header_text_size "+1"}
+    {-day_number_template {<!--$julian_date-->$day_number}}
+    {-day_header_size 1}
+    {-day_header_bgcolor "#666666"}
+    {-calendar_width 0}
+    {-day_bgcolor "#DDDDDD"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-next_month_template ""}
+    {-prev_month_template ""}
+    {-width 2}
 } {
     Returns a calendar year of small calendars for the year of the
     passed in date.  Defaults to this year. 
@@ -611,7 +602,6 @@ ad_proc -private dt_navbar_month {
 
 
 ad_proc dt_widget_calendar_navigation { 
-    {} 
     {base_url ""} 
     {view "week"} 
     {date ""} 

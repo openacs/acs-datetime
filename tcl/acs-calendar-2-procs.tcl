@@ -11,27 +11,25 @@ ad_library {
 }
 
 ad_proc dt_widget_week { 
-    {
-	-calendar_details "" 
-	-date "" 
-	-large_calendar_p 1 
-	-master_bgcolor "" 
-	-header_bgcolor "" 
-	-header_text_color "white" 
-	-header_text_size "+2" 
-	-day_template {<!--$julian-->$day} 
-	-day_header_size 2 
-	-day_header_bgcolor "#666666" 
-	-calendar_width "100%" 
-	-day_bgcolor "#DCDCDC" 
-	-today_bgcolor "#FFF8DC" 
-	-day_text_color "white" 
-	-empty_bgcolor "white"  
-	-next_week_template ""   
-	-prev_week_template "" 
-	-prev_next_links_in_title 0 
-	-fill_all_days 0 
-    }
+    {-calendar_details ""}
+    {-date ""}
+    {-large_calendar_p 1}
+    {-master_bgcolor ""}
+    {-header_bgcolor ""}
+    {-header_text_color "white"}
+    {-header_text_size "+2"}
+    {-day_template {<!--$julian-->$day}}
+    {-day_header_size 2}
+    {-day_header_bgcolor "#666666"}
+    {-calendar_width "100%"}
+    {-day_bgcolor "#DCDCDC"}
+    {-today_bgcolor "#FFF8DC"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-next_week_template ""}
+    {-prev_week_template ""}
+    {-prev_next_links_in_title 0}
+    {-fill_all_days 0}
 } {
     Returns a calendar for a specific week, with details supplied by
     Julian date. Defaults to this week. 
@@ -145,26 +143,24 @@ ad_proc dt_widget_week {
 
 
 ad_proc dt_widget_day { 
-    {
-	-calendar_details "" 
-	-date ""
-        -hour_template {$display_hour}
-        -start_hour {0}
-        -end_hour {23}
-        -show_nav 1
-        -prev_nav_template {<a href="?date=[ns_urlencode $yesterday]"><img border=0 src=\"[dt_left_arrow]\" alt=\"[_ acs-datetime.back_one_day]\"></a>}
-        -next_nav_template {<a href="?date=[ns_urlencode $tomorrow]"><img border=0 src=\"[dt_right_arrow]\" alt=\"[_ acs-datetime.forward_one_day]\"></a>}
-	-master_bgcolor "black" 
-	-header_bgcolor "black" 
-	-header_text_color "white" 
-	-header_text_size "+2" 
-	-calendar_width "100%" 
-	-day_bgcolor "#DDDDDD" 
-	-today_bgcolor "yellow" 
-	-day_text_color "white" 
-	-empty_bgcolor "white"  
-        -overlap_p 0
-    }
+    {-calendar_details ""}
+    {-date ""}
+    {-hour_template {$display_hour}}
+    {-start_hour 0}
+    {-end_hour 23}
+    {-show_nav 1}
+    {-prev_nav_template {<a href="?date=[ns_urlencode $yesterday]"><img border=0 src=\"[dt_left_arrow]\" alt=\"[_ acs-datetime.back_one_day]\"></a>}}
+    {-next_nav_template {<a href="?date=[ns_urlencode $tomorrow]"><img border=0 src=\"[dt_right_arrow]\" alt=\"[_ acs-datetime.forward_one_day]\"></a>}}
+    {-master_bgcolor "black"}
+    {-header_bgcolor "black"}
+    {-header_text_color "white"}
+    {-header_text_size "+2"}
+    {-calendar_width "100%"}
+    {-day_bgcolor "#DDDDDD"}
+    {-today_bgcolor "yellow"}
+    {-day_text_color "white"}
+    {-empty_bgcolor "white"}
+    {-overlap_p 0}
 } {
     Returns a calendar for a specific day, with details supplied by
     hour. Defaults to today.
