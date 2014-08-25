@@ -29,7 +29,7 @@ set example_list {
 multirow create dt_examples "procedure" "result"
 
 foreach example $example_list {
-    multirow append dt_examples $example [eval $example]
+    multirow append dt_examples $example [{*}$example]
 }
 
 ad_return_template
