@@ -368,7 +368,7 @@ ad_proc -public dt_widget_datetime {
     switch $default {
 	none    { set value [dt_systime] }
 	now     { set value [dt_systime] }
-	default { set value [dt_format $default] }
+	default { set value [lc_time_fmt $default "%Y-%m-%d %H:%M:%S"] }
     }
 
     set parsed_date [dt_ansi_to_list $value]
