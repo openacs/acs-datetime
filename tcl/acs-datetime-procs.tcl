@@ -548,7 +548,7 @@ ad_proc -private dt_trim_leading_zeros {
     string 
 } {
     Returns a string w/ leading zeros trimmed.
-    Used to get around TCL interpreter problems w/ thinking leading
+    Used to get around Tcl interpreter problems w/ thinking leading
     zeros are octal. We could just use validate_integer, but it runs
     one extra regexp that we don't need to run. 
 } {
