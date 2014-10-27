@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<%= [ad_header "ACS DateTime Examples"] %>
+<master>
 
 <h2>ACS DateTime Examples</h2>
 
@@ -17,4 +17,3 @@ part of the <a href="../">ACS DateTime</a> documentation
 
 </ul>
 
-<%= [ad_footer] %>

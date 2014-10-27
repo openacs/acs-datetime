@@ -7,18 +7,19 @@
     <initial-install-p>f</initial-install-p>
     <singleton-p>t</singleton-p>
     
-    <version name="5.4.3b1" url="http://openacs.org/apms/acs-datetime-5.4.3b1.apm">
+    <version name="5.8.1" url="http://openacs.org/apms/acs-datetime-5.8.1.apm">
         <owner url="http://openacs.org">OpenACS</owner>
         <summary>An API for date and time functions</summary>
-        <release-date>2006-02-18</release-date>
+        <release-date>2013-09-08</release-date>
         <vendor url="http://openacs.org">OpenACS</vendor>
         <description format="text/html">Note: this version of the package requires acs-event(s) for a helper function. This requirement may go away in the future. </description>
-        <maturity>0</maturity>
+        <maturity>2</maturity>
 
-        <provides url="acs-datetime" version="5.4.3b1"/>
+        <provides url="acs-datetime" version="5.8.1"/>
+	<requires url="acs-kernel" version="5.8.1"/>
         <requires url="acs-events" version="0.6d2"/>
-        <requires url="acs-kernel" version="5.5.0"/>
-        <requires url="acs-templating" version="5.5.0"/>
+        
+        <requires url="acs-templating" version="5.8.1"/>
 
         <callbacks>
         </callbacks>
