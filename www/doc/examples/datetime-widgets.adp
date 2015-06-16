@@ -22,10 +22,10 @@ widgets:</p>
 <form>
 <table width="95%">
 
-<tr bgcolor=#eeeeee> <th>Procedure</th> <th>Widget</th> </tr>
+<tr bgcolor="#eeeeee"> <th>Procedure</th> <th>Widget</th> </tr>
 
 <multiple name="dt_examples">
-    <tr align=left>
+    <tr align="left">
         <td><code>@dt_examples.procedure@</code></td>
         <td>@dt_examples.result;noquote@</td>
     </tr>

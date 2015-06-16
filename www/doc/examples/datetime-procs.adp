@@ -11,10 +11,10 @@ functions:</p>
 <blockquote>
 <table width="95%">
 
-<tr bgcolor=#eeeeee align=left> <th>Procedure</th> <th>Result</th> </tr>
+<tr bgcolor="#eeeeee" align="left"> <th>Procedure</th> <th>Result</th> </tr>
 
 <multiple name="dt_examples">
-    <tr align=left>
+    <tr align="left">
         <td><code>@dt_examples.procedure@</code></td>
         <td>@dt_examples.result@</td>
     </tr>
