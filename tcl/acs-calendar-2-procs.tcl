@@ -436,12 +436,17 @@ ad_proc -public dt_widget_list {
     set start_date_url [subst $url_template]
 
     # Create the header
-    append return_html "
-    <table class=\"table-display\" border=0 cellspacing=0 cellpadding=2>
-    <tr class=\"table-header\"><th>Day of Week</th><th><a href=\"$start_date_url\">Date</a></th><th>Start Time</th><th>End Time</th>"
+    append return_html [subst {
+    <table class="table-display" border="0" cellspacing="0" cellpadding="2">
+	<tr class="table-header">
+	<th>Day of Week</th>
+	<th><a href="[ns_quotehtml $start_date_url]">Date</a></th>
+	<th>Start Time</th>
+	<th>End Time</th>
+    }]
 
     if {$real_order_by ne "item_type"} {
-        append return_html "<th><a href=\"$item_type_url\">Type</a></th>"
+        append return_html [subst {<th><a href="[ns_quotehtml $item_type_url]">Type</a></th>}]
     }
 
 
@@ -475,7 +480,7 @@ ad_proc -public dt_widget_list {
             } else {
                 set item_type_for_title $item_type
             }
-            append return_html "<tr class=\"table-title\"><td colspan=5><b>$item_type_for_title</b></td></tr>\n"
+            append return_html [subst {<tr class="table-title"><td colspan="5"><b>$item_type_for_title</b></td></tr>}]
             set flip 0
         }
 
