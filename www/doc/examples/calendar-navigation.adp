@@ -2,8 +2,8 @@
 
 <master>
 
-<property name="doc(title)">@title@</property>
-<property name="context">@context@</property>
+<property name="doc(title)">@title;literal@</property>
+<property name="context">@context;literal@</property>
 
 <pre>dt_widget_calendar_navigation <i>base_url</i> <i>view</i> <i>date</i> <i>pass_in_vars</i> </pre>
 

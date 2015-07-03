@@ -2,8 +2,8 @@
 
 <master>
 
-<property name="doc(title)">@title@</property>
-<property name="context">@context@</property>
+<property name="doc(title)">@title;literal@</property>
+<property name="context">@context;literal@</property>
 
 <p>There is one main procedure to generate date and time widgets:
 
