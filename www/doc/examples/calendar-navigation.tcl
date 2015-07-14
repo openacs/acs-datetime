@@ -8,7 +8,7 @@ ad_page_contract {
     @creation-date 2000-12-08
     @cvs-id  $Id$
 } {
-    {view ""}
+    {view:word ""}
     {date ""}
 } -properties {
     title:onevalue
