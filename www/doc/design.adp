@@ -76,6 +76,6 @@ year</li>
 </ol><h3>XII. Future Improvements/Areas of Likely Change</h3><p>Many of the calendar widgets generate extensive HTML from within
 Tcl procedures. This will eventually be converted to a
 template-based system so that the display properties are more
-easily customized.</p><h3>XIII. Authors</h3><p>Implemented by Ron Henderson (<a href="mailto:ron@arsdigita.com">ron@arsdigita.com</a>), based on the
-previous work of <a href="mailto:gregh@arsdigita.com">gregh@arsdigita.com</a> and <a href="mailto:smeeks@arsdigita.com">smeeks@arsdigita.com</a>.</p><hr><a href="mailto:ron@arsdigita.com">ron@arsdigita.com</a>
+easily customized.</p><h3>XIII. Authors</h3><p>Implemented by Ron Henderson (<a href="mailto:ron\@arsdigita.com">ron\@arsdigita.com</a>), based on the
+previous work of <a href="mailto:gregh\@arsdigita.com">gregh\@arsdigita.com</a> and <a href="mailto:smeeks\@arsdigita.com">smeeks\@arsdigita.com</a>.</p><hr><a href="mailto:ron\@arsdigita.com">ron\@arsdigita.com</a>
 </body>

@@ -5,7 +5,7 @@
 
 <body>
 <h2>ACS DateTime Requirements</h2>
-by <a href="mailto:ron@arsdigita.com">Ron Henderson</a><h3>I. Introduction</h3><p>This document describes the requirements for the ACS DateTime
+by <a href="mailto:ron\@arsdigita.com">Ron Henderson</a><h3>I. Introduction</h3><p>This document describes the requirements for the ACS DateTime
 service package.</p><h3>II. Vision Statement</h3><p>ACS DateTime has the following primary functions:</p><ul>
 <li>Allows applications to use a common set of procedures for
 collecting date and time information from users.</li><li>Provides utilities to convert and format date and time
@@ -50,9 +50,6 @@ given any date within that calendar year</li><li>Generate a calendar navigation 
 day, week, month and year</li>
 </ol><h3>VII. Revision History</h3><pre>
 $Log$
-Revision 1.1.2.1  2014/09/17 18:23:11  gustafn
-- prettify documentation (use master templates)
-
 Revision 1.2  2002/09/18 21:04:01  jeffd
 cleanup from sloan
 
@@ -79,5 +76,5 @@ HTML-generating procedures now start with "dt_widget", for example.
 Revision 1.4  2000/12/10 01:54:47  ron
 minor cleanup to docs; still needs lots of work
 </pre><hr>
-ron@arsdigita.com
+ron\@arsdigita.com
 </body>
