@@ -48,33 +48,6 @@ an HTML table.</p><ol>
 given the starting month as a date</li><li>Generate a yearly calendar based on calendar year (Jan to Dec),
 given any date within that calendar year</li><li>Generate a calendar navigation widget with viewing options for
 day, week, month and year</li>
-</ol><h3>VII. Revision History</h3><pre>
-$Log$
-Revision 1.2  2002/09/18 21:04:01  jeffd
-cleanup from sloan
-
-Revision 1.1.1.1  2002/06/25 17:42:13  aegrumet
-OpenACS and dotLRN heads, 2002-06-13
-
-Revision 1.1.1.1  2001/04/20 20:51:09  donb
-
-Forgot to define binary files before importing, so .gifs were messed up.
-
-Revision 1.7  2001/01/07 13:19:16  jfinkler
-fixed a few typos and reworded a bit
-
-Revision 1.6  2001/01/07 13:18:09  jfinkler
-fixed a few types and reworded doc a bit
-
-Revision 1.5  2001/01/06 01:53:03  ron
-First complete pass at all of the documentation.  Added complete
-examples of all of the public API calls.
-
-Changed some of the API procedures for consistency.  All of the
-HTML-generating procedures now start with "dt_widget", for example.
-
-Revision 1.4  2000/12/10 01:54:47  ron
-minor cleanup to docs; still needs lots of work
-</pre><hr>
+</ol><hr>
 ron\@arsdigita.com
 </body>
