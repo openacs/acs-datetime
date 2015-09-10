@@ -974,3 +974,9 @@ ad_proc -private dt_get_info {
     ns_set free $dt_info_set
 }
 
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:

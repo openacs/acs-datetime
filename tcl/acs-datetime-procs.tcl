@@ -605,3 +605,9 @@ ad_proc -private dt_precision {
     return $precision
 }
 
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:

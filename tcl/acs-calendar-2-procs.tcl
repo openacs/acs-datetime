@@ -575,3 +575,9 @@ ad_proc dt_hour_diff {
         return [expr {$end_hour - $start_hour}]
     }
 }
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:
