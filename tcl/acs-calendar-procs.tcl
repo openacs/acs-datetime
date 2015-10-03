@@ -74,23 +74,23 @@ ad_proc dt_widget_month {
 
     if { $prev_next_links_in_title == 0 } {
         set title [subst {
-            <td colspan=7 align="center">
+            <td colspan="7" align="center">
             <span style="font-size:$header_text_size; color:$header_text_color; background:inherit; font-weight:bold">
             $month_heading
             </span>
             </td>\n}]
     } else {
         set title [subst {
-            <td class=\"no-border\" colspan=7>
-            <table width=100% cellpadding=0 cellspacing=0 border=0>
-            <tr class=\"table-header\">
-            <td align=left>$prev_month_url</td>
-            <td align=center>
+            <td class="no-border" colspan="7">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr class="table-header">
+            <td align="left">$prev_month_url</td>
+            <td align="center">
             <span style="font-size:$header_text_size; color:$header_text_color; background:inherit; font-weight:bold">
             $month_heading
             </span>
             </td>
-            <td align=right>$next_month_url</td>
+            <td align="right">$next_month_url</td>
             </tr>
             </table>
             </td>\n}]
@@ -99,13 +99,13 @@ ad_proc dt_widget_month {
     # Write out the header and the days of the week
 
     append output [subst {
-        <table class=\"table-display\" style="background:$master_bgcolor; color:inherit;" cellpadding=0 cellspacing=0 border=1 width=$calendar_width>
+        <table class="table-display" style="background:$master_bgcolor; color:inherit;" cellpadding="0" cellspacing="0" border="1" width="$calendar_width">
         <tr style="background:$header_bgcolor; color:inherit;"> $title </tr>
-        <tr style="background:$day_header_bgcolor; color:inherit;" class=\"table-header\">\n}]
+        <tr style="background:$day_header_bgcolor; color:inherit;" class="table-header">\n}]
 
     foreach day_of_week $days_of_week {
         append output [subst {
-            <td style="width:14%" align=center class=\"no-border\">
+            <td style="width:14%" align=center class="no-border">
             <span style="font-family: Verdana,Arial,Helvetica; font-size:$day_header_size; color:$day_text_color; background:inherit; font-weight:bold;">
             $day_of_week
             </span>
