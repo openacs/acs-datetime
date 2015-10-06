@@ -808,7 +808,7 @@ ad_proc dt_widget_calendar_navigation {
 	    } else {
 		append output [subst {
 		 <td align="right">
-		    <a href="[ns_quotehrml ${base_url}view=$view&date=[ns_urlencode $ansi_date]]">
+		    <a href="[ns_quotehtml ${base_url}view=$view&date=[ns_urlencode $ansi_date]]">
 		    <span style="color: blue">$day_number</span></a>
 		 </td>
 		}]
