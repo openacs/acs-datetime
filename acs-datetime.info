@@ -16,10 +16,10 @@
         <maturity>2</maturity>
 
         <provides url="acs-datetime" version="5.9.0b2"/>
-	<requires url="acs-kernel" version="5.9.0b2"/>
+	<requires url="acs-kernel" version="5.9.0"/>
         <requires url="acs-events" version="0.6d2"/>
         
-        <requires url="acs-templating" version="5.9.0b2"/>
+        <requires url="acs-templating" version="5.9.0"/>
 
         <callbacks>
         </callbacks>
