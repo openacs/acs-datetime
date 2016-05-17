@@ -13,6 +13,15 @@ ad_page_contract {
 } -properties {
     title:onevalue
     calendar_widget:onevalue
+} -validate {
+    date_valid -requires date {
+        #
+        # Check for the date formats accepted by lc_time_fmt
+        #
+        if {[catch {lc_time_fmt $date %B} errorMsg]} {
+            ad_complain "Invalid date"
+        }
+    }
 }
 
 set title "Calendar Navigation"
@@ -21,7 +30,6 @@ set context [list [list . "ACS DateTime Examples"] $title]
 set calendar_widget [dt_widget_calendar_navigation "" $view $date]
 
 ad_return_template
-
 
 
 # Local variables:
