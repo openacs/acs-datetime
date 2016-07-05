@@ -21,11 +21,12 @@ caller. Rather than standardize on a low-level representation of
 time (like seconds since 00:00:00 UTC, January 1 1970) all of these
 procedures accept general date specfications. For example, the
 default date for <code>dt_widget_datetime</code> can be specified
-as "2001-01-05", "2000-01-05 09:57 pm", "2000-01-05 21:57", etc.
-Internally these are parsed by the standard Tcl procedure
-<code>clock scan</code> for processing and then converted back to a
-formatted string for output. This makes it easy to pass dates
-between the Tcl layer and the database.</p>
+as "2001-01-05", "2000-01-05 09:57 pm",
+"2000-01-05 21:57", etc. Internally these are parsed by
+the standard Tcl procedure <code>clock scan</code> for processing
+and then converted back to a formatted string for output. This
+makes it easy to pass dates between the Tcl layer and the
+database.</p>
 <h3>III. Historical Considerations</h3>
 <p>This package was written largely to consolidate and improve the
 date, time, and calendar functionality existing in ACS 3.</p>
@@ -51,8 +52,8 @@ names</li><li>
 abbreviations</li><li>
 <code>dt_julian_to_ansi</code> converts Julian time to ANSI
 time (yyyy-mm-dd)</li><li>
-<code>dt_ansi_to_pretty</code> converts ANSI time to "pretty
-ANSI time" (yyyy-mm-dd to Month day, year)</li><li>
+<code>dt_ansi_to_pretty</code> converts ANSI time to
+"pretty ANSI time" (yyyy-mm-dd to Month day, year)</li><li>
 <code>dt_ansi_to_list</code> generates a Tcl list of date-time
 elements (year, month, day, hour, minute, second)</li><li>
 <code>dt_valid_time_p</code> checks the validity of a time

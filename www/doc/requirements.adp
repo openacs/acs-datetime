@@ -44,8 +44,8 @@ applications.</p>
 <ol>
 <li>Generate current system time (local or GMT)</li><li>Generate current system date</li><li>Format a calendar time (system-dependent representation of
 time) using the formatting codes supported by the standard Unix
-time functions</li><li>Generate a list of standard month names</li><li>Generate a list of standard month abbreviations</li><li>Convert Julian time to ANSI time (yyyy-mm-dd)</li><li>Convert ANSI time to "pretty ANSI time" (yyyy-mm-dd to Month
-day, year)</li><li>Generate a Tcl list of date-time elements (year, month, day,
+time functions</li><li>Generate a list of standard month names</li><li>Generate a list of standard month abbreviations</li><li>Convert Julian time to ANSI time (yyyy-mm-dd)</li><li>Convert ANSI time to "pretty ANSI time" (yyyy-mm-dd
+to Month day, year)</li><li>Generate a Tcl list of date-time elements (year, month, day,
 hour, minute, second)</li><li>Check the validity of a time interval by comparing start and
 end times and determining if they represent a positive, empty, or
 negative time range</li>
