@@ -832,7 +832,6 @@ ad_proc dt_widget_calendar_navigation {
     </td>
     </tr>
     </table>
-    </center>
     </td>
     </tr>
     <tr class=\"table-header\"><td align='center' colspan='5'>
@@ -851,15 +850,15 @@ ad_proc dt_widget_calendar_navigation {
     <tr><td align="center"><br>
 	<form method='get' action="[ns_quotehtml $base_url]">
 	<div>
-	<INPUT TYPE='text' name='date' size='10'>
-	<INPUT type='image' src="/resources/acs-subsite/go.gif" alt="Go" border="0"><br>
+	<input type="text" name="date" size="10">
+	<input type="image" src="/resources/acs-subsite/go.gif" alt="Go" border="0"><br>
 	<span style="font-size:smaller">Date as YYYYMMDD</span>
-	<INPUT TYPE='hidden' name='view' value='day'>
+	<input type="hidden" name="view" value="day">
         </div>
     }]
 
     foreach var $list_of_vars {
-        append output "<INPUT TYPE='hidden' name='[lindex $var 0]' value='[lindex $var 1]'>"
+        append output "<input type='hidden' name='[lindex $var 0]' value='[lindex $var 1]'>"
     }
     
     append output "

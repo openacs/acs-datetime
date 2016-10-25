@@ -9,7 +9,7 @@
 
 <p>
 <dl>
-<p><dt><strong>Parameters:</strong></dt><dd>
+<dt><strong>Parameters:</strong></dt><dd>
 <strong>base_url</strong> (optional)<br>
 <strong>view</strong> (defaults to <code>week</code>)<br>
 <strong>date</strong> (optional)<br>
@@ -33,13 +33,9 @@ in that url's environment: <code>view</code> and <code>date</code>.
 simply reads <code>view</code> and <code>date</code> as URL variables
 and uses them to initialize the display.
 
-<center>
-<form>
 
 @calendar_widget;noquote@
 
-</form>
-</center>
 
 <p>Click on any view, date, or other navigational element to change
 the display of this page.</p>
