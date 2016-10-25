@@ -153,7 +153,7 @@ ad_proc dt_widget_month {
             if { $fill_all_days == 0 } {
                 set skip_day 1
             } else {
-                append output "[subst $day_number_template]&nbsp;"
+                append output [subst $day_number_template] "&nbsp;"
             }
         } else {
             if {$julian_date == $today_julian_date} {
@@ -164,7 +164,7 @@ ad_proc dt_widget_month {
                 set the_class "cal-month-day"
             }
 
-            append output "<td class=\"$the_class\" style=\"background:$the_bgcolor; color:inherit;\" align=left valign=top>[subst $day_number_template]&nbsp;"
+            append output [subst {<td class="$the_class" style="background:$the_bgcolor; color:inherit;" align="left" valign="top">$day_number_template}] "&nbsp;"
         }
 
         if { (!$skip_day) && $large_calendar_p == 1 } {
@@ -174,11 +174,8 @@ ad_proc dt_widget_month {
         
             while { $calendar_day_index >= 0 } {
                 set calendar_day [ns_set value $calendar_details $calendar_day_index]
-
                 ns_set delete $calendar_details $calendar_day_index
-
                 append output "$calendar_day"
-
                 set calendar_day_index [ns_set find $calendar_details $julian_date]
             }
             append output "</div>"
@@ -231,7 +228,7 @@ ad_proc dt_widget_month_small {
     Returns a small calendar for a specific month. Defaults to this month.
 } {
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.short_days_of_week]"
+	set days_of_week [_ acs-datetime.short_days_of_week]
     }
     return [dt_widget_month \
 	    -calendar_details $calendar_details \
@@ -277,7 +274,7 @@ ad_proc dt_widget_month_centered {
 } {
 
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.short_days_of_week]" 
+	set days_of_week [_ acs-datetime.short_days_of_week]
     }
     set output ""
 
@@ -285,7 +282,7 @@ ad_proc dt_widget_month_centered {
 
     append output "
     <table>
-    <tr valign=top>
+    <tr valign='top'>
     <td>
 
     [dt_widget_month_small -calendar_details $calendar_details -date $prev_month -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]</td>
@@ -517,7 +514,7 @@ ad_proc -private dt_navbar_year {
     # Serve arrow link to prev year if it leads to legal date
     if {$prev_year_legal_p != 0} {
 	append result [subst {
-	    <a href="[ns_urlencode ${base_url}view=$view&date=[ns_urlencode $prev_year]]">
+	    <a href="[ns_quotehtml ${base_url}view=$view&date=[ns_urlencode $prev_year]]">
 	    <img alt="left arrow" src="[dt_left_arrow]"></a>
 	}]
     }
@@ -666,12 +663,12 @@ ad_proc dt_widget_calendar_navigation {
 
     if {$view eq "month"} {
 	# month view
-	append output "
+	append output [subst {
 	<tr>
-	<td class=\"no-borders\" colspan=5>
-	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
+	<td class="no-borders" colspan="5">
+	<table bgcolor="ffffff" cellspacing="3" cellpadding="1" border="0">
 	<tr>
-	"
+	}]
 
 	set months_list [dt_month_names]
 	set now         [clock scan $date]
@@ -714,7 +711,7 @@ ad_proc dt_widget_calendar_navigation {
 
 	append output "
 	<tr>
-	<td colspan=5>
+	<td colspan='5'>
 	<table bgcolor='ffffff' cellspacing='3' cellpadding='1' border='0'>
 	<tr>\n"
 
@@ -731,7 +728,7 @@ ad_proc dt_widget_calendar_navigation {
 		append output [subst {
 		<td>
 		    <a href="[ns_quotehtml ${base_url}view=year&date=[ns_urlencode $year-$monthday]]">
-		    <span style=\"font-size: smaller; color: blue;\">$year</span></a>
+		    <span style="font-size: smaller; color: blue;">$year</span></a>
 		</td>
 		}]
 	    }
