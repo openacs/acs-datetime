@@ -159,19 +159,11 @@ ad_proc -public dt_julian_to_ansi {
     }
     set day [expr {floor($calc - $calc3 - floor($calc4 * 30.6001))}]
 
-    set year [expr {int($year)}]
+    set year  [expr {int($year)}]
     set month [expr {int($month)}]
-    set day [expr {int($day)}]
+    set day   [expr {int($day)}]
 
-    if {$month < 10} {
-      set month 0$month
-    }
-
-    if {$day < 10} {
-      set day 0$day
-    }
-
-    return $year-$month-$day
+    return [format %.4d $year]-[format %.2d $month]-[format %.2d $day]
 }
 
 ad_proc -public dt_ansi_to_pretty {
