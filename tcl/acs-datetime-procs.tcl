@@ -103,6 +103,8 @@ ad_proc -public dt_ansi_to_julian {
         # 1582-10-04; 1582-10-15)
         set julian_date [dt_ansi_to_julian 1582 10 15 CE]
     } else {
+        set year [dt_trim_leading_zeros $year]
+
         if {$era eq "BCE"} {
             set year [expr {-$year + 1}]
         }
