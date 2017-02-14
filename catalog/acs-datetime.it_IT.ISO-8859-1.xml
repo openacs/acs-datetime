@@ -5,8 +5,7 @@
   <msg key="back_one_day">Un giorno indietro</msg>
   <msg key="Date">Data</msg>
   <msg key="Date_as">Formato Data</msg>
-  <msg key="Date_as_YYYYMMDD">&lt;b&gt;Formato Data&lt;/b&gt;: AAAA-MM-GG&lt;br&gt;
-(es. 2002-05-05)</msg>
+  <msg key="Date_as_YYYYMMDD">Data in formato AAAAMMGG</msg>
   <msg key="Day">Giorno</msg>
   <msg key="Day_of_Week">Giorno della Settimana</msg>
   <msg key="days_of_week">Domenica Lunedì Martedì Mercoledì Giovedì Venerdì Sabato</msg>
@@ -20,5 +19,10 @@
   <msg key="short_days_of_week">D L M M G V S</msg>
   <msg key="to">a</msg>
   <msg key="Today">Oggi</msg>
+  <msg key="view_calendar_day">Vista Calendario Giorno</msg>
+  <msg key="view_calendar_list">Vista Calendario Lista</msg>
+  <msg key="view_calendar_month">Vista Calendario Mese</msg>
+  <msg key="view_calendar_week">Vista Calendario Settimana</msg>
   <msg key="Week">Settimana</msg>
+  <msg key="Year">Anno</msg>
 </message_catalog>
