@@ -672,7 +672,7 @@ ad_proc dt_widget_calendar_navigation {
 
 	set months_list [dt_month_names]
 	set now         [clock scan $date]
-	set curr_month  [expr {[dt_trim_leading_zeros [clock format $now -format "%m"]] - 1}]
+	set curr_month  [expr {[util::trim_leading_zeros [clock format $now -format "%m"]] - 1}]
 
 	for {set i 0} {$i < 12} {incr i} {
 
@@ -914,9 +914,9 @@ ad_proc -private dt_get_info {
 
     # get year, month, day
     set date_list [dt_ansi_to_list $the_date]
-    set year [dt_trim_leading_zeros [lindex $date_list 0]]
-    set month [dt_trim_leading_zeros [lindex $date_list 1]]
-    set day [dt_trim_leading_zeros [lindex $date_list 2]]
+    set year [util::trim_leading_zeros [lindex $date_list 0]]
+    set month [util::trim_leading_zeros [lindex $date_list 1]]
+    set day [util::trim_leading_zeros [lindex $date_list 2]]
 
     # We put all the data into dt_info_set and return it later
     set dt_info_set [ns_set create]

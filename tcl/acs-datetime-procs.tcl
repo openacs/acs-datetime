@@ -74,9 +74,9 @@ ad_proc -public dt_ansi_to_julian_single_arg {
 } {
     set date_list [dt_ansi_to_list $ansi]
 
-    set year [dt_trim_leading_zeros [lindex $date_list 0]]
-    set month [dt_trim_leading_zeros [lindex $date_list 1]]
-    set day [dt_trim_leading_zeros [lindex $date_list 2]]
+    set year [util::trim_leading_zeros [lindex $date_list 0]]
+    set month [util::trim_leading_zeros [lindex $date_list 1]]
+    set day [util::trim_leading_zeros [lindex $date_list 2]]
     
     return [dt_ansi_to_julian $year $month $day $era]
 }
@@ -103,7 +103,7 @@ ad_proc -public dt_ansi_to_julian {
         # 1582-10-04; 1582-10-15)
         set julian_date [dt_ansi_to_julian 1582 10 15 CE]
     } else {
-        set year [dt_trim_leading_zeros $year]
+        set year [util::trim_leading_zeros $year]
 
         if {$era eq "BCE"} {
             set year [expr {-$year + 1}]
@@ -194,7 +194,7 @@ ad_proc -public dt_ansi_to_list {
     }
 
     foreach item [split [clock format [clock scan $ansi_date] -format "%Y %m %d %H %M %S"] " "] { 
-	lappend date_info [dt_trim_leading_zeros $item]
+	lappend date_info [util::trim_leading_zeros $item]
     }
     
     return $date_info
@@ -482,7 +482,7 @@ ad_proc -public dt_widget_numeric_range {
     }
 
     if {$default ne ""} {
-	set default [dt_trim_leading_zeros $default]
+	set default [util::trim_leading_zeros $default]
     }
 
     set input "<option value=_undef>--\n"
@@ -515,7 +515,7 @@ ad_proc -public dt_widget_maybe_range {
         if {$with_leading_zeros} {
             return [dt_export_value $name $hidden_value]
         } else {
-            return [dt_export_value $name [dt_trim_leading_zeros $hidden_value]]
+            return [dt_export_value $name [util::trim_leading_zeros $hidden_value]]
         }
     }
 
@@ -538,7 +538,7 @@ ad_proc -public dt_interval_check { start end } {
     return [expr {[clock scan $end] - [clock scan $start]}]
 }
 
-ad_proc -private dt_trim_leading_zeros { 
+ad_proc -private -deprecated dt_trim_leading_zeros { 
     string 
 } {
     Returns a string w/ leading zeros trimmed.
@@ -546,13 +546,7 @@ ad_proc -private dt_trim_leading_zeros {
     zeros are octal. We could just use validate_integer, but it runs
     one extra regexp that we don't need to run. 
 } {
-    set string [string trimleft $string 0]
-
-    if {$string eq ""} {
-        return "0"
-    }
-
-    return $string
+    return [util::trim_leading_zeros $string]
 }
 
 ad_proc -private dt_export_value { 
