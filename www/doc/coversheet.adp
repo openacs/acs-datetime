@@ -1,5 +1,5 @@
 
-<property name="context">{/doc/acs-datetime {Date and Time Utilities}} {ACS DateTime}</property>
+<property name="context">{/doc/acs-datetime {ACS Date and Time Utilities}} {ACS DateTime}</property>
 <property name="doc(title)">ACS DateTime</property>
 <master>
 <h2>ACS DateTime</h2>
