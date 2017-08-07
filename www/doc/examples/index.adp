@@ -1,6 +1,7 @@
 <!-- $Id$ -->
 
 <master>
+<property name="doc(title)">ACS DateTime Examples</property>
 
 <h2>ACS DateTime Examples</h2>
 

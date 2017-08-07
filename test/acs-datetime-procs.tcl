@@ -94,3 +94,9 @@ aa_register_case dt_num_days_in_month {
 
         }
 }
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:

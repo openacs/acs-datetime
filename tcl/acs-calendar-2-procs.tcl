@@ -66,25 +66,23 @@ ad_proc dt_widget_week {
     set return_html "<table CELLPADDING=0 CELLSPACING=0 BORDER=0 width=95%>\n"
     
     # Navigation Bar
-    append return_html "<tr><td>
-    <table cellpadding=3 cellspacing=0 border=0 width=90% class=\"table-display\">
-    <tr class=\"table-header\" bgcolor=lavender>
-    <td align=center>
+    append return_html [subst {<tr><td>
+    <table cellpadding="3" cellspacing="0" border="0" width="90%" class="table-display">
+    <tr class="table-header" bgcolor="lavender">
+    <td align="center">
     [subst $prev_week_template]
-    <span style=\"font-family:Arial,Helvetica; size: smaller\">
-    <B>
-    [util_AnsiDatetoPrettyDate $sunday_date] - [util_AnsiDatetoPrettyDate $saturday_date]
-    </B>
+    <span style="font-family:Arial,Helvetica; size: smaller">
+    <b>[util_AnsiDatetoPrettyDate $sunday_date] - [util_AnsiDatetoPrettyDate $saturday_date]</b>
     </span>
     [subst $next_week_template]
     </td>
     </tr>
     </table></td></tr>
-    "
+    }]
 
-    append return_html "<tr>
+    append return_html [subst {<tr>
     <td>
-    <table  class=\"table-display\" cellpadding=0 cellspacing=0 border=0 width=90%>"
+        <table class="table-display" cellpadding="0" cellspacing="0" border="0" width="90%">}]
 
     set days_of_week {Sunday Monday Tuesday Wednesday Thursday Friday Saturday}
     foreach day $days_of_week {
@@ -101,12 +99,11 @@ ad_proc dt_widget_week {
             set bgcolor $day_bgcolor
         }
 
-        append return_html "<tr><td class=\"cal-week\" bgcolor=\"$bgcolor\">$day_html &nbsp;
-        </td>
+        append return_html [subst {<tr><td class="cal-week" bgcolor="$bgcolor">$day_html &nbsp;</td>
         </tr>
         <tr>
-        <td class=\"cal-week-event\">
-        <table cellpadding=0 cellspacing=0 border=0 width=100%>"
+        <td class="cal-week-event">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">}]
 	    
         # Go through events
         while {1} {
@@ -115,15 +112,11 @@ ad_proc dt_widget_week {
                 break
             }
 
-            append return_html "
-            <tr>
-            <td class=\"cal-week-event\">
-            <span style=\"font-size: smaller\">
-            [ns_set value $calendar_details $index]		    
-	    </span>
-	    </td>      
-	    </tr>
-	    "
+            append return_html [subst {
+            <tr><td class="cal-week-event">
+            <span style="font-size: smaller">[ns_set value $calendar_details $index]</span>
+	    </td></tr>
+	    }]
 
             ns_set delete $calendar_details $index
         }
@@ -149,8 +142,8 @@ ad_proc dt_widget_day {
     {-start_hour 0}
     {-end_hour 23}
     {-show_nav 1}
-    {-prev_nav_template {<a href="?date=[ns_urlencode $yesterday]"><img border=0 src=\"[dt_left_arrow]\" alt=\"[_ acs-datetime.back_one_day]\"></a>}}
-    {-next_nav_template {<a href="?date=[ns_urlencode $tomorrow]"><img border=0 src=\"[dt_right_arrow]\" alt=\"[_ acs-datetime.forward_one_day]\"></a>}}
+    {-prev_nav_template {<a href="?date=[ns_urlencode $yesterday]"><img border="0" src="[dt_left_arrow]" alt="[_ acs-datetime.back_one_day]"></a>}}
+    {-next_nav_template {<a href="?date=[ns_urlencode $tomorrow]"><img border="0" src="[dt_right_arrow]" alt="[_ acs-datetime.forward_one_day]"></a>}}
     {-master_bgcolor "black"}
     {-header_bgcolor "black"}
     {-header_text_color "white"}
@@ -246,9 +239,10 @@ ad_proc dt_widget_day {
     set next_hour ""
     set start_time ""
     set odd_row_p 0
-    set display_hour "<img border=0 align=\"center\" src=\"/resources/acs-subsite/diamond.gif\" alt=\"[_ acs-datetime.All_day]\">"
-    append return_html "<tr class=\"odd\"><td class=\"center\" align=\"left\" width=\"60\" \"nowrap\"><span style=\"font-size: smaller\">[subst $hour_template]</span></td>"
-    append return_html "<td colspan=\"$max_n_events\"><span style=\"font-size: smaller\">"
+    set display_hour [subst {<img border="0" align="center" src="/resources/acs-subsite/diamond.gif" alt="[_ acs-datetime.All_day]">}]
+    append return_html [subst {
+        <tr class="odd"><td class="center" align="left" width="60" nowrap><span style="font-size: smaller;">[subst $hour_template]</span></td>
+        <td colspan="$max_n_events"><span style="font-size: smaller">}]
     
     # Go through events
     while {1} {
@@ -575,3 +569,9 @@ ad_proc dt_hour_diff {
         return [expr {$end_hour - $start_hour}]
     }
 }
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:

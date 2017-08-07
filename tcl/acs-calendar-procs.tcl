@@ -74,23 +74,23 @@ ad_proc dt_widget_month {
 
     if { $prev_next_links_in_title == 0 } {
         set title [subst {
-            <td colspan=7 align="center">
+            <td colspan="7" align="center">
             <span style="font-size:$header_text_size; color:$header_text_color; background:inherit; font-weight:bold">
             $month_heading
             </span>
             </td>\n}]
     } else {
         set title [subst {
-            <td class=\"no-border\" colspan=7>
-            <table width=100% cellpadding=0 cellspacing=0 border=0>
-            <tr class=\"table-header\">
-            <td align=left>$prev_month_url</td>
-            <td align=center>
+            <td class="no-border" colspan="7">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr class="table-header">
+            <td align="left">$prev_month_url</td>
+            <td align="center">
             <span style="font-size:$header_text_size; color:$header_text_color; background:inherit; font-weight:bold">
             $month_heading
             </span>
             </td>
-            <td align=right>$next_month_url</td>
+            <td align="right">$next_month_url</td>
             </tr>
             </table>
             </td>\n}]
@@ -99,13 +99,13 @@ ad_proc dt_widget_month {
     # Write out the header and the days of the week
 
     append output [subst {
-        <table class=\"table-display\" style="background:$master_bgcolor; color:inherit;" cellpadding=0 cellspacing=0 border=1 width=$calendar_width>
+        <table class="table-display" style="background:$master_bgcolor; color:inherit;" cellpadding="0" cellspacing="0" border="1" width="$calendar_width">
         <tr style="background:$header_bgcolor; color:inherit;"> $title </tr>
-        <tr style="background:$day_header_bgcolor; color:inherit;" class=\"table-header\">\n}]
+        <tr style="background:$day_header_bgcolor; color:inherit;" class="table-header">\n}]
 
     foreach day_of_week $days_of_week {
         append output [subst {
-            <td style="width:14%" align=center class=\"no-border\">
+            <td style="width:14%" align=center class="no-border">
             <span style="font-family: Verdana,Arial,Helvetica; font-size:$day_header_size; color:$day_text_color; background:inherit; font-weight:bold;">
             $day_of_week
             </span>
@@ -153,7 +153,7 @@ ad_proc dt_widget_month {
             if { $fill_all_days == 0 } {
                 set skip_day 1
             } else {
-                append output "[subst $day_number_template]&nbsp;"
+                append output [subst $day_number_template] "&nbsp;"
             }
         } else {
             if {$julian_date == $today_julian_date} {
@@ -164,7 +164,7 @@ ad_proc dt_widget_month {
                 set the_class "cal-month-day"
             }
 
-            append output "<td class=\"$the_class\" style=\"background:$the_bgcolor; color:inherit;\" align=left valign=top>[subst $day_number_template]&nbsp;"
+            append output [subst {<td class="$the_class" style="background:$the_bgcolor; color:inherit;" align="left" valign="top">$day_number_template}] "&nbsp;"
         }
 
         if { (!$skip_day) && $large_calendar_p == 1 } {
@@ -174,11 +174,8 @@ ad_proc dt_widget_month {
         
             while { $calendar_day_index >= 0 } {
                 set calendar_day [ns_set value $calendar_details $calendar_day_index]
-
                 ns_set delete $calendar_details $calendar_day_index
-
                 append output "$calendar_day"
-
                 set calendar_day_index [ns_set find $calendar_details $julian_date]
             }
             append output "</div>"
@@ -231,7 +228,7 @@ ad_proc dt_widget_month_small {
     Returns a small calendar for a specific month. Defaults to this month.
 } {
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.short_days_of_week]"
+	set days_of_week [_ acs-datetime.short_days_of_week]
     }
     return [dt_widget_month \
 	    -calendar_details $calendar_details \
@@ -277,7 +274,7 @@ ad_proc dt_widget_month_centered {
 } {
 
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.short_days_of_week]" 
+	set days_of_week [_ acs-datetime.short_days_of_week]
     }
     set output ""
 
@@ -285,7 +282,7 @@ ad_proc dt_widget_month_centered {
 
     append output "
     <table>
-    <tr valign=top>
+    <tr valign='top'>
     <td>
 
     [dt_widget_month_small -calendar_details $calendar_details -date $prev_month -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size -day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor  -next_month_template $next_month_template   -prev_month_template $prev_month_template ]</td>
@@ -517,7 +514,7 @@ ad_proc -private dt_navbar_year {
     # Serve arrow link to prev year if it leads to legal date
     if {$prev_year_legal_p != 0} {
 	append result [subst {
-	    <a href="[ns_urlencode ${base_url}view=$view&date=[ns_urlencode $prev_year]]">
+	    <a href="[ns_quotehtml ${base_url}view=$view&date=[ns_urlencode $prev_year]]">
 	    <img alt="left arrow" src="[dt_left_arrow]"></a>
 	}]
     }
@@ -666,16 +663,16 @@ ad_proc dt_widget_calendar_navigation {
 
     if {$view eq "month"} {
 	# month view
-	append output "
+	append output [subst {
 	<tr>
-	<td class=\"no-borders\" colspan=5>
-	<table bgcolor=ffffff cellspacing=3 cellpadding=1 border=0>
+	<td class="no-borders" colspan="5">
+	<table bgcolor="ffffff" cellspacing="3" cellpadding="1" border="0">
 	<tr>
-	"
+	}]
 
 	set months_list [dt_month_names]
 	set now         [clock scan $date]
-	set curr_month  [expr {[dt_trim_leading_zeros [clock format $now -format "%m"]] - 1}]
+	set curr_month  [expr {[util::trim_leading_zeros [clock format $now -format "%m"]] - 1}]
 
 	for {set i 0} {$i < 12} {incr i} {
 
@@ -714,7 +711,7 @@ ad_proc dt_widget_calendar_navigation {
 
 	append output "
 	<tr>
-	<td colspan=5>
+	<td colspan='5'>
 	<table bgcolor='ffffff' cellspacing='3' cellpadding='1' border='0'>
 	<tr>\n"
 
@@ -731,7 +728,7 @@ ad_proc dt_widget_calendar_navigation {
 		append output [subst {
 		<td>
 		    <a href="[ns_quotehtml ${base_url}view=year&date=[ns_urlencode $year-$monthday]]">
-		    <span style=\"font-size: smaller; color: blue;\">$year</span></a>
+		    <span style="font-size: smaller; color: blue;">$year</span></a>
 		</td>
 		}]
 	    }
@@ -808,7 +805,7 @@ ad_proc dt_widget_calendar_navigation {
 	    } else {
 		append output [subst {
 		 <td align="right">
-		    <a href="[ns_quotehrml ${base_url}view=$view&date=[ns_urlencode $ansi_date]]">
+		    <a href="[ns_quotehtml ${base_url}view=$view&date=[ns_urlencode $ansi_date]]">
 		    <span style="color: blue">$day_number</span></a>
 		 </td>
 		}]
@@ -835,7 +832,6 @@ ad_proc dt_widget_calendar_navigation {
     </td>
     </tr>
     </table>
-    </center>
     </td>
     </tr>
     <tr class=\"table-header\"><td align='center' colspan='5'>
@@ -854,15 +850,15 @@ ad_proc dt_widget_calendar_navigation {
     <tr><td align="center"><br>
 	<form method='get' action="[ns_quotehtml $base_url]">
 	<div>
-	<INPUT TYPE='text' name='date' size='10'>
-	<INPUT type='image' src="/resources/acs-subsite/go.gif" alt="Go" border="0"><br>
+	<input type="text" name="date" size="10">
+	<input type="image" src="/resources/acs-subsite/go.gif" alt="Go" border="0"><br>
 	<span style="font-size:smaller">Date as YYYYMMDD</span>
-	<INPUT TYPE='hidden' name='view' value='day'>
+	<input type="hidden" name="view" value="day">
         </div>
     }]
 
     foreach var $list_of_vars {
-        append output "<INPUT TYPE='hidden' name='[lindex $var 0]' value='[lindex $var 1]'>"
+        append output "<input type='hidden' name='[lindex $var 0]' value='[lindex $var 1]'>"
     }
     
     append output "
@@ -918,9 +914,9 @@ ad_proc -private dt_get_info {
 
     # get year, month, day
     set date_list [dt_ansi_to_list $the_date]
-    set year [dt_trim_leading_zeros [lindex $date_list 0]]
-    set month [dt_trim_leading_zeros [lindex $date_list 1]]
-    set day [dt_trim_leading_zeros [lindex $date_list 2]]
+    set year [util::trim_leading_zeros [lindex $date_list 0]]
+    set month [util::trim_leading_zeros [lindex $date_list 1]]
+    set day [util::trim_leading_zeros [lindex $date_list 2]]
 
     # We put all the data into dt_info_set and return it later
     set dt_info_set [ns_set create]
@@ -974,3 +970,9 @@ ad_proc -private dt_get_info {
     ns_set free $dt_info_set
 }
 
+
+# Local variables:
+#    mode: tcl
+#    tcl-indent-level: 4
+#    indent-tabs-mode: nil
+# End:
