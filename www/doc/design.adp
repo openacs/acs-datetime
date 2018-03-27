@@ -19,7 +19,7 @@ conversions.</p>
 date/time information as input and return date/time strings to the
 caller. Rather than standardize on a low-level representation of
 time (like seconds since 00:00:00 UTC, January 1 1970) all of these
-procedures accept general date specfications. For example, the
+procedures accept general date specifications. For example, the
 default date for <code>dt_widget_datetime</code> can be specified
 as "2001-01-05", "2000-01-05 09:57 pm",
 "2000-01-05 21:57", etc. Internally these are parsed by
