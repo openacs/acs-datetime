@@ -4,7 +4,7 @@
 <master>
 <h1>ACS DateTime Documentation</h1>
 <a href="mailto:ron\@arsdigita.com">ron\@arsdigita.com</a>
-<p>This packages provides a set of utilities for dealing with dates
+<p>This package provides a set of utilities for dealing with dates
 and times, including:</p>
 <ul>
 <li>widgets for date and time entry</li><li>widgets for calendar display</li><li>utilities for date and time formatting</li><li>utilities for date and time conversions</li>
