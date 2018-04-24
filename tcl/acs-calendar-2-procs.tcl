@@ -10,7 +10,7 @@ ad_library {
     @cvs-id  $Id$
 }
 
-ad_proc dt_widget_week { 
+ad_proc dt_widget_week {
     {-calendar_details ""}
     {-date ""}
     {-large_calendar_p 1}
@@ -32,12 +32,12 @@ ad_proc dt_widget_week {
     {-fill_all_days 0}
 } {
     Returns a calendar for a specific week, with details supplied by
-    Julian date. Defaults to this week. 
+    Julian date. Defaults to this week.
 
     To specify details for the individual days (if large_calendar_p is
     set) put data in an ns_set calendar_details.  The key is the
     Julian date of the day, and the value is a string (possibly with
-    HTML formatting) that represents the details. 
+    HTML formatting) that represents the details.
 
     The variables in the templates are:
     - day_template: julian,day,date,pretty_date
@@ -55,16 +55,16 @@ ad_proc dt_widget_week {
 
     # Get information for the week
     db_1row select_week_info {}
-    
+
     # Initialize the ns_set
     if {$calendar_details eq ""} {
-	set calendar_details [ns_set create calendar_details]
+        set calendar_details [ns_set create calendar_details]
     }
 
     # Loop through the days of the week
     set julian $sunday_julian
     set return_html "<table CELLPADDING=0 CELLSPACING=0 BORDER=0 width=95%>\n"
-    
+
     # Navigation Bar
     append return_html [subst {<tr><td>
     <table cellpadding="3" cellspacing="0" border="0" width="90%" class="table-display">
@@ -104,7 +104,7 @@ ad_proc dt_widget_week {
         <tr>
         <td class="cal-week-event">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">}]
-	    
+
         # Go through events
         while {1} {
             set index [ns_set find $calendar_details $julian]
@@ -113,10 +113,10 @@ ad_proc dt_widget_week {
             }
 
             append return_html [subst {
-            <tr><td class="cal-week-event">
-            <span style="font-size: smaller">[ns_set value $calendar_details $index]</span>
-	    </td></tr>
-	    }]
+                <tr><td class="cal-week-event">
+                <span style="font-size: smaller">[ns_set value $calendar_details $index]</span>
+                </td></tr>
+            }]
 
             ns_set delete $calendar_details $index
         }
@@ -129,13 +129,13 @@ ad_proc dt_widget_week {
     }
 
     append return_html "</table></td></tr></table>"
-    
+
     return $return_html
 }
 
 
 
-ad_proc dt_widget_day { 
+ad_proc dt_widget_day {
     {-calendar_details ""}
     {-date ""}
     {-hour_template {$display_hour}}
@@ -168,7 +168,7 @@ ad_proc dt_widget_day {
 
     # Initialize the ns_set
     if {$calendar_details eq ""} {
-	set calendar_details [ns_set create calendar_details]
+        set calendar_details [ns_set create calendar_details]
     }
 
     # Collect some statistics about the events (for overlap)
@@ -176,7 +176,7 @@ ad_proc dt_widget_day {
         set n_events($hour) 0
         set n_starting_events($hour) 0
     }
-        
+
     set calendar_details_2 [ns_set copy $calendar_details]
 
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
@@ -192,13 +192,13 @@ ad_proc dt_widget_day {
             if {$index == -1} {
                 break
             }
-            
+
             set item_val [ns_set value $calendar_details_2 $index]
             ns_set delete $calendar_details_2 $index
             # Count the num of events starting at this hour
             set n_starting_events($hour) [expr {$n_starting_events($hour) + 1}]
 
-            # Diff the hours 
+            # Diff the hours
             set hours_diff [dt_hour_diff -start_time [lindex $item_val 0] -end_time [lindex $item_val 1]]
 
             # Count the num of events at the hours of operations
@@ -217,7 +217,7 @@ ad_proc dt_widget_day {
             ns_log debug "BMA-DEBUG-CAL: Setting max_n_events to $max_n_events"
         }
     }
-    
+
     # Select some basic stuff, sets day_of_the_week, yesterday, tomorrow vars
     db_1row select_day_info {}
 
@@ -243,28 +243,28 @@ ad_proc dt_widget_day {
     append return_html [subst {
         <tr class="odd"><td class="center" align="left" width="60" nowrap><span style="font-size: smaller;">[subst $hour_template]</span></td>
         <td colspan="$max_n_events"><span style="font-size: smaller">}]
-    
+
     # Go through events
     while {1} {
         set index [ns_set find $calendar_details "X"]
         if {$index == -1} {
             break
         }
-        
+
         if {$overlap_p} {
             append return_html "[lindex [ns_set value $calendar_details $index] 2]<br>"
         } else {
             append return_html "[ns_set value $calendar_details $index]<br>\n"
         }
-        
+
         ns_set delete $calendar_details $index
     }
 
     append return_html "</span>
     </td></tr>"
-    
+
     for {set hour $start_hour} {$hour <= $end_hour} {incr hour} {
-        
+
         set next_hour [expr {$hour + 1}]
 
         if {$hour < 10} {
@@ -300,19 +300,19 @@ ad_proc dt_widget_day {
             append display_hour "am"
         }
 
-	if { $odd_row_p } {
-	    set class "odd"
-	    set odd_row_p 0
-	} else {
-	    set class "even"
-	    set odd_row_p 1
-	}
+        if { $odd_row_p } {
+            set class "odd"
+            set odd_row_p 0
+        } else {
+            set class "even"
+            set odd_row_p 1
+        }
 
         set display_hour [subst $hour_template]
         append return_html "<tr class=\"$class\"><td class=\"center\" align=left width=\"60\" \"nowrap\"><nobr><span style=\"font-size: smaller\">$display_hour</span></nobr></td>\n"
-        
+
         set n_processed_events 0
-        
+
         # A flag to force completion of the row
         set must_complete_p 0
 
@@ -327,7 +327,7 @@ ad_proc dt_widget_day {
 
             if {$overlap_p} {
                 set one_item_val [ns_set value $calendar_details $index]
-                
+
                 set hour_diff [dt_hour_diff -start_time [lindex $one_item_val 0] -end_time [lindex $one_item_val 1]]
 
                 set start_time $hour
@@ -347,7 +347,7 @@ ad_proc dt_widget_day {
                 } {
                     # Just make it one
                     set colspan 1
-                } 
+                }
 
                 append return_html "<td valign=top rowspan=[expr {$hour_diff + 1}] colspan=$colspan><span style=\"font-size: smaller\">[lindex $one_item_val 2]</span></td>"
             } else {
@@ -359,14 +359,12 @@ ad_proc dt_widget_day {
 
         if {$n_processed_events == 0 || ($n_events($hour) < $max_n_events && $must_complete_p)} {
             if {$n_events($hour) == 0 || $n_events($hour) == $n_processed_events} {
-		append return_html "<td colspan=\"[expr {$max_n_events - $n_events($hour)}]\" class=\"$class\">&nbsp;</td>"
-	    } else {
-		for {set i 0} {$i < $max_n_events - $n_events($hour)} {incr i} {
-		    append return_html "<td colspan=\"1\" class=$class>&nbsp;</td>"
-		}
-	    }
-	    
-
+                append return_html "<td colspan=\"[expr {$max_n_events - $n_events($hour)}]\" class=\"$class\">&nbsp;</td>"
+            } else {
+                for {set i 0} {$i < $max_n_events - $n_events($hour)} {incr i} {
+                    append return_html "<td colspan=\"1\" class=$class>&nbsp;</td>"
+                }
+            }
         }
 
         append return_html "</tr>\n"
@@ -375,7 +373,7 @@ ad_proc dt_widget_day {
     append return_html "</table>
 </td></tr>
 </table>"
-    
+
     return $return_html
 }
 
@@ -403,12 +401,12 @@ ad_proc -public dt_widget_list {
 
     # The title
     if {$start_date eq "" && $end_date eq ""} {
-	#This used to be All Items but that was just taking up space and not adding value so now we assume All Items and only give a title if its something else. - Caroline@meekshome.com
+        #This used to be All Items but that was just taking up space and not adding value so now we assume All Items and only give a title if its something else. - Caroline@meekshome.com
         set title ""
     }
 
     if {$start_date eq "" && $end_date ne ""} {
-	set $pretty_end_date [lc_time_fmt $end_date "%x"]
+        set $pretty_end_date [lc_time_fmt $end_date "%x"]
         set title "[_ acs-datetime.Items_until]"
     }
 
@@ -431,12 +429,12 @@ ad_proc -public dt_widget_list {
 
     # Create the header
     append return_html [subst {
-    <table class="table-display" border="0" cellspacing="0" cellpadding="2">
-	<tr class="table-header">
-	<th>Day of Week</th>
-	<th><a href="[ns_quotehtml $start_date_url]">Date</a></th>
-	<th>Start Time</th>
-	<th>End Time</th>
+        <table class="table-display" border="0" cellspacing="0" cellpadding="2">
+        <tr class="table-header">
+        <th>Day of Week</th>
+        <th><a href="[ns_quotehtml $start_date_url]">Date</a></th>
+        <th>Start Time</th>
+        <th>End Time</th>
     }]
 
     if {$real_order_by ne "item_type"} {
@@ -454,12 +452,7 @@ ad_proc -public dt_widget_list {
     # Loop through the events, and add them
     for {set i 0} {$i < [ns_set size $calendar_details]} {incr i} {
         set item [ns_set value $calendar_details $i]
-        set date [lindex $item 0]
-        set start_time [lindex $item 1]
-        set end_time [lindex $item 2]
-        set weekday [lindex $item 3]
-        set item_type [lindex $item 4]
-        set item_details [lindex $item 5]
+        lassign $item date start_time end_time weekday item_type item_details
 
         # Adjust the display of no-time items
         if {[dt_no_time_p -start_time $start_time -end_time $end_time]} {
@@ -485,10 +478,10 @@ ad_proc -public dt_widget_list {
         } else {
             set z_class even
         }
-        
+
         append return_html "
         <tr class=$z_class><td>$weekday</td><td>$date</td><td>$start_time</td><td>$end_time</td>"
-        
+
         if {$real_order_by ne "item_type"} {
             append return_html "<td>$item_type</td>"
         }
@@ -502,8 +495,8 @@ ad_proc -public dt_widget_list {
 
     return $return_html
 }
-    
-        
+
+
 #
 # Additional Utility Procs
 #
@@ -516,21 +509,21 @@ ad_proc dt_midnight_p {
     if {$time eq "00:00" || $time eq ""} {
         return 1
     }
-    
+
     if {[regexp {00:00 *[aA][mM]} $time the_match]} {
         return 1
     }
-    
+
     if {[regexp {12:00 *[aA][mM]} $time the_match]} {
         return 1
     }
-    
+
     if {[regexp {[0-9]+-[0-9]+[0-9]+ (0?)0:0(0?)} $time the_match]} {
-	return 1
+        return 1
     }
 
     if {[regexp {[0-9]+-[0-9]+ (0?)0:0(0?)} $time the_match]} {
-	return 1
+        return 1
     }
     return 0
 }
