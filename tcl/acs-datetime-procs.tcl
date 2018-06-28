@@ -13,17 +13,16 @@ ad_proc -public dt_systime {
     {-format "%Y-%m-%d %H:%M:%S"}
     {-gmt f}
 } {
-    Returns current server time in the standard format "yyyy-mm-dd
-    hh:mi:ss".  With the optional -gmt flag it returns the time in
-    GMT. 
+    @param gmt returns the time in GMT.
+    @return current server time in the standard format "yyyy-mm-dd hh:mi:ss".
 } {
     return [clock format [clock seconds] -format $format -gmt $gmt]
 }
-    
+
 ad_proc -public dt_sysdate {
     {-format "%Y-%m-%d"}
 } {
-    Returns current server date in the standard format "yyyy-mm-dd"
+    @return current server date in the standard format "yyyy-mm-dd"
 } {
     return [clock format [clock seconds] -format $format]
 }
@@ -31,7 +30,7 @@ ad_proc -public dt_sysdate {
 ad_proc -public dt_valid_time_p { 
     time 
 } {
-    Returns 1 if "time" is a valid time specification, 0 otherwise.
+    @return 1 if "time" is a valid time specification, 0 otherwise.
 } {
     if {[catch { clock scan $time }]} {
 	return 0
@@ -53,7 +52,7 @@ ad_proc -deprecated dt_format {
 }
 
 ad_proc -public dt_month_names {} {
-    Returns the calendar month names as a Tcl list (January, February, ...)
+    @return the calendar month names as a Tcl list (January, February, ...)
 
     @see lc_get
 } {
@@ -61,7 +60,7 @@ ad_proc -public dt_month_names {} {
 }
 
 ad_proc -public dt_month_abbrev {} {
-    Returns the calendar month names as a Tcl list (Jan, Feb, ...)
+    @return the calendar month names as a Tcl list (Jan, Feb, ...)
 
     @see lc_get
 } {
@@ -72,12 +71,19 @@ ad_proc -public dt_ansi_to_julian_single_arg {
     ansi
     {era ""}
 } {
+    Splits the ANSI date into year, month and day, and calls dt_ansi_to_julian
+    to transform it to Julian.
+
+    @return the ANSI date as Julian
+
+    @see dt_ansi_to_julian
+} {
     set date_list [dt_ansi_to_list $ansi]
 
     set year [util::trim_leading_zeros [lindex $date_list 0]]
     set month [util::trim_leading_zeros [lindex $date_list 1]]
     set day [util::trim_leading_zeros [lindex $date_list 2]]
-    
+
     return [dt_ansi_to_julian $year $month $day $era]
 }
 
@@ -87,9 +93,9 @@ ad_proc -public dt_ansi_to_julian {
     day
     {era ""}
 } {
-    Returns the ANSI date as Julian or -1 in the case
-    of an invalid ANSI date argument (year less than
-    4713 BCE, greater than 9999 CE, or equal to 0)
+    @return the ANSI date as Julian or -1 in the case
+            of an invalid ANSI date argument (year less than
+            4713 BCE, greater than 9999 CE, or equal to 0)
 } {
     if {$era eq ""} {
         set era CE
@@ -132,7 +138,7 @@ ad_proc -public dt_ansi_to_julian {
 ad_proc -public dt_julian_to_ansi {
     julian_date
 } {
-    Returns julian_date formatted as "yyyy-mm-dd"
+    @return julian_date formatted as "yyyy-mm-dd"
 } {
     # Gregorian calendar correction
     set gregorian 2299161
@@ -204,7 +210,7 @@ ad_proc -public dt_num_days_in_month {
     year
     month
 } {
-    Returns the numbers of days for the given month/year
+    @return the numbers of days for the given month/year
 } {
     if {$month == 0} {
       set month 01
@@ -225,7 +231,7 @@ ad_proc -public dt_first_day_of_month {
     year
     month
 } {
-    Returns the weekday number of the first day for the given month/year
+    @return the weekday number of the first day for the given month/year
 } {
     # calendar widgets are expecting integers 1-7, so we must adjust
     return [expr {[clock format [clock scan $year-$month-01] -format %w] + 1}]
@@ -235,7 +241,7 @@ ad_proc -public dt_next_month {
     year
     month
 } {
-    Returns the ANSI date for the next month
+    @return the ANSI date for the next month
 } {
     if {$month == 12} {
       set year [expr {$year + 1}]
@@ -256,7 +262,7 @@ ad_proc -public dt_prev_month {
     year
     month
 } {
-    Returns the ANSI date for the previous month
+    @return the ANSI date for the previous month
 } {
     if {$month == 1} {
       set year [expr {$year - 1}]
@@ -278,7 +284,7 @@ ad_proc -public dt_next_month_name {
     year
     month
 } {
-    Returns the ANSI date for the next month
+    @return the ANSI date for the next month
 } {
     if {$month == 12} {
       set year [expr {$year + 1}]
@@ -301,7 +307,7 @@ ad_proc -public dt_prev_month_name {
     year
     month
 } {
-    Returns the ANSI date for the previous month
+    @return the ANSI date for the previous month
 } {
     if {$month == 1} {
       set year [expr {$year - 1}]
@@ -329,7 +335,7 @@ ad_proc -public dt_widget_datetime {
     {granularity days}
 } {
 
-    Returns an HTML form fragment for collecting date-time
+    @return an HTML form fragment for collecting date-time
     information with names "$name.year", "$name.month", "$name.day",
     "$name.hours", "$name.minutes", "$name.seconds", and "$name.ampm".
     These will be numeric ("ampm" is 0 for am, 1 for pm) 
@@ -450,7 +456,7 @@ ad_proc -public dt_widget_month_names {
     name 
     {selected_month 0}
 } {
-    Returns a select widget for months of the year. 
+    @return a select widget for months of the year. 
 } {
     if {$selected_month eq ""} {set selected_month 0}
     if {![string is integer $selected_month]} {error "selected_month must be integer"}
@@ -473,7 +479,7 @@ ad_proc -public dt_widget_numeric_range {
     {interval 1} 
     {with_leading_zeros 0}
 } {
-    Returns an HTML select widget for a numeric range
+    @return an HTML select widget for a numeric range
 } {
     if {$with_leading_zeros} {
 	set format "%02d"
@@ -508,7 +514,7 @@ ad_proc -public dt_widget_maybe_range {
     {with_leading_zeros 0} 
     {hidden_value "00"}
 } {
-    Returns form numeric range, or hidden_value if ask_for_value is false.
+    @return form numeric range, or hidden_value if ask_for_value is false.
 } {
     if {!$ask_for_value} {
         # Note that this flattens to hidden_value for hidden fields
@@ -541,7 +547,8 @@ ad_proc -public dt_interval_check { start end } {
 ad_proc -private -deprecated dt_trim_leading_zeros { 
     string 
 } {
-    Returns a string w/ leading zeros trimmed.
+    @return a string w/ leading zeros trimmed.
+
     Used to get around Tcl interpreter problems w/ thinking leading
     zeros are octal. We could just use validate_integer, but it runs
     one extra regexp that we don't need to run. 
@@ -575,8 +582,7 @@ ad_proc -private dt_round_to_precision {
 ad_proc -private dt_precision {
     granularity
 } {
-    Returns the precision in minutes corresponding to a named
-    granularity 
+    @return the precision in minutes corresponding to a named granularity.
 } {
     switch -exact $granularity {
 	months   { set precision 40000}
