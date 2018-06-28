@@ -27,15 +27,15 @@ ad_proc -public dt_sysdate {
     return [clock format [clock seconds] -format $format]
 }
 
-ad_proc -public dt_valid_time_p { 
-    time 
+ad_proc -public dt_valid_time_p {
+    time
 } {
     @return 1 if "time" is a valid time specification, 0 otherwise.
 } {
     if {[catch { clock scan $time }]} {
-	return 0
+        return 0
     } else {
-	return 1
+        return 1
     }
 }
 
@@ -45,9 +45,9 @@ ad_proc -deprecated dt_format {
     time
 } {
     This proc should not be used, because it does not take internationalization into account. Use lc_time_fmt instead.
-    
+
     @see lc_time_fmt
-} { 
+} {
     return [clock format [clock scan $time] -format $format -gmt $gmt]
 }
 
@@ -182,7 +182,7 @@ ad_proc -public dt_ansi_to_pretty {
     date and date-time strings.
 } {
     if {$ansi_date eq ""} {
-	set ansi_date [dt_sysdate]
+        set ansi_date [dt_sysdate]
     }
 
     return [lc_time_fmt $ansi_date "%x"]
@@ -193,16 +193,16 @@ ad_proc -public dt_ansi_to_list {
 } {
     Parses the given ansi_date string into a list of year, month, day,
     hour, minute, and second. Works for any date than can be parsed
-    by clock scan. 
+    by clock scan.
 } {
     if {$ansi_date eq ""} {
-	set ansi_date [dt_systime]
+        set ansi_date [dt_systime]
     }
 
-    foreach item [split [clock format [clock scan $ansi_date] -format "%Y %m %d %H %M %S"] " "] { 
-	lappend date_info [util::trim_leading_zeros $item]
+    foreach item [split [clock format [clock scan $ansi_date] -format "%Y %m %d %H %M %S"] " "] {
+        lappend date_info [util::trim_leading_zeros $item]
     }
-    
+
     return $date_info
 }
 
@@ -253,7 +253,7 @@ ad_proc -public dt_next_month {
     # jarkko: added this check to avoid calendars bombing when prev month goes
     # beyond borders
     if {[catch {set next_month [clock format [clock scan $year-$month-01] -format %Y-%m-%d]} err]} {
-	return ""
+        return ""
     }
     return $next_month
 }
@@ -274,7 +274,7 @@ ad_proc -public dt_prev_month {
     # jarkko: added this check to avoid calendars bombing when prev month goes
     # beyond borders
     if {[catch {set prev_month [clock format [clock scan $year-$month-01] -format %Y-%m-%d]} err]} {
-	return ""
+        return ""
     }
 
     return $prev_month
@@ -296,7 +296,7 @@ ad_proc -public dt_next_month_name {
     # jarkko: added this check to avoid calendars bombing when next month goes
     # beyond borders
     if {[catch {set next_name [clock format [clock scan $year-$month-01] -format %B]} err]} {
-	return ""
+        return ""
     }
 
     return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
@@ -320,16 +320,16 @@ ad_proc -public dt_prev_month_name {
     # beyond borders
 
     if {[catch {set prev_name [clock format [clock scan $year-$month-01] -format %B]} err]} {
-	return ""
+        return ""
     }
 
     return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
 }
 
-ad_proc -public dt_widget_datetime { 
+ad_proc -public dt_widget_datetime {
     {-show_date 1}
     {-date_time_sep "&nbsp;"}
-    {-use_am_pm 0} 
+    {-use_am_pm 0}
     {-default none}
     name
     {granularity days}
@@ -338,7 +338,7 @@ ad_proc -public dt_widget_datetime {
     @return an HTML form fragment for collecting date-time
     information with names "$name.year", "$name.month", "$name.day",
     "$name.hours", "$name.minutes", "$name.seconds", and "$name.ampm".
-    These will be numeric ("ampm" is 0 for am, 1 for pm) 
+    These will be numeric ("ampm" is 0 for am, 1 for pm)
 
     Default specifies what should be set as the current time in the
     form. Valid defaults are "none", "now", or any valid date string
@@ -351,7 +351,7 @@ ad_proc -public dt_widget_datetime {
 
     All HTML widgets will be output *unless* show_date is 0; they will
     be hidden if not needed to satisfy the current granularity
-    level. Values default to 1 for MM/DD and 0 for HH/MI/SS/AM if not 
+    level. Values default to 1 for MM/DD and 0 for HH/MI/SS/AM if not
     found in the input string or if below the granularity threshold.
 } {
     set to_precision [dt_precision $granularity]
@@ -361,14 +361,14 @@ ad_proc -public dt_widget_datetime {
     set show_minutes [expr {$to_precision < 60}]
     set show_seconds [expr {$to_precision < 1}]
 
-    if {$to_precision == 0} { 
-	set to_precision 1 
+    if {$to_precision == 0} {
+        set to_precision 1
     }
 
     switch $default {
-	none    { set value [dt_systime] }
-	now     { set value [dt_systime] }
-	default { set value [lc_time_fmt $default "%Y-%m-%d %H:%M:%S"] }
+        none    { set value [dt_systime] }
+        now     { set value [dt_systime] }
+        default { set value [lc_time_fmt $default "%Y-%m-%d %H:%M:%S"] }
     }
 
     set parsed_date [dt_ansi_to_list $value]
@@ -404,32 +404,32 @@ ad_proc -public dt_widget_datetime {
     if {$use_am_pm} {
         if { $hours > 12 } {
             append input [dt_widget_maybe_range \
-		    $show_hours "$name.hours" 1 12 [expr {$hours - 12}] 1 0]
+                $show_hours "$name.hours" 1 12 [expr {$hours - 12}] 1 0]
         } elseif {$hours == 0} {
             append input [dt_widget_maybe_range \
-		    $show_hours "$name.hours" 1 12 12 1 0]
+                $show_hours "$name.hours" 1 12 12 1 0]
         } else {
             append input [dt_widget_maybe_range \
-		    $show_hours "$name.hours" 1 12 $hours 1 0]
+                $show_hours "$name.hours" 1 12 $hours 1 0]
         }
     } else {
         append input [dt_widget_maybe_range \
-		$show_hours "$name.hours" 0 23 $hours 1 0]
+            $show_hours "$name.hours" 0 23 $hours 1 0]
     }
 
-    if {$show_minutes} { 
-	append input ":" 
-    }
-
-    append input [dt_widget_maybe_range \
-	    $show_minutes "$name.minutes" 0 59 $minutes $to_precision 1]
-
-    if {$show_seconds} { 
-	append input ":" 
+    if {$show_minutes} {
+        append input ":"
     }
 
     append input [dt_widget_maybe_range \
-	    $show_seconds "$name.seconds" 0 59 $seconds 1 1]
+            $show_minutes "$name.minutes" 0 59 $minutes $to_precision 1]
+
+    if {$show_seconds} {
+        append input ":"
+    }
+
+    append input [dt_widget_maybe_range \
+            $show_seconds "$name.seconds" 0 59 $seconds 1 1]
 
     if {$use_am_pm} {
         if {$hours < 12 || ! $show_hours} {
@@ -452,11 +452,11 @@ ad_proc -public dt_widget_datetime {
     return $input
 }
 
-ad_proc -public dt_widget_month_names { 
-    name 
+ad_proc -public dt_widget_month_names {
+    name
     {selected_month 0}
 } {
-    @return a select widget for months of the year. 
+    @return a select widget for months of the year.
 } {
     if {$selected_month eq ""} {set selected_month 0}
     if {![string is integer $selected_month]} {error "selected_month must be integer"}
@@ -465,36 +465,36 @@ ad_proc -public dt_widget_month_names {
     incr selected_month -1
 
     for {set i 0} {$i < 12} {incr i} {
-	append input "<option [expr {$i == $selected_month ? "selected" : ""}] value=[expr {$i+1}]>[lindex $month_names $i]\n"
+        append input "<option [expr {$i == $selected_month ? "selected" : ""}] value=[expr {$i+1}]>[lindex $month_names $i]\n"
     }
-    
+
     return "<select name=\"$name\">\n $input \n </select>\n"
 }
 
-ad_proc -public dt_widget_numeric_range { 
-    name 
-    begin 
-    end 
-    {default ""} 
-    {interval 1} 
+ad_proc -public dt_widget_numeric_range {
+    name
+    begin
+    end
+    {default ""}
+    {interval 1}
     {with_leading_zeros 0}
 } {
     @return an HTML select widget for a numeric range
 } {
     if {$with_leading_zeros} {
-	set format "%02d"
+        set format "%02d"
     } else {
-	set format "%d"
+        set format "%d"
     }
 
     if {$default ne ""} {
-	set default [util::trim_leading_zeros $default]
+        set default [util::trim_leading_zeros $default]
     }
 
     set input "<option value=_undef>--\n"
 
     for { set i $begin } { $i <= $end } { incr i $interval} {
-	append input "[expr {$i == $default ? "<option selected>" : "<option>"}][format $format $i]\n"
+        append input "[expr {$i == $default ? "<option selected>" : "<option>"}][format $format $i]\n"
     }
 
     return "<select name=\"$name\">\n$input</select>"
@@ -505,13 +505,13 @@ ad_proc -public dt_widget_maybe_range {
     {-hidden_value "00"}
     {-default ""}
     {-format "%02d"}
-    ask_for_value 
-    name 
+    ask_for_value
+    name
     start
     end
-    default_value 
-    {interval 1 } 
-    {with_leading_zeros 0} 
+    default_value
+    {interval 1 }
+    {with_leading_zeros 0}
     {hidden_value "00"}
 } {
     @return form numeric range, or hidden_value if ask_for_value is false.
@@ -526,7 +526,7 @@ ad_proc -public dt_widget_maybe_range {
     }
 
     return [dt_widget_numeric_range \
-	    "$name" $start $end $default_value $interval $with_leading_zeros]
+        "$name" $start $end $default_value $interval $with_leading_zeros]
 }
 
 ad_proc -public dt_interval_check { start end } {
@@ -544,30 +544,30 @@ ad_proc -public dt_interval_check { start end } {
     return [expr {[clock scan $end] - [clock scan $start]}]
 }
 
-ad_proc -private -deprecated dt_trim_leading_zeros { 
-    string 
+ad_proc -private -deprecated dt_trim_leading_zeros {
+    string
 } {
     @return a string w/ leading zeros trimmed.
 
     Used to get around Tcl interpreter problems w/ thinking leading
     zeros are octal. We could just use validate_integer, but it runs
-    one extra regexp that we don't need to run. 
+    one extra regexp that we don't need to run.
 } {
     return [util::trim_leading_zeros $string]
 }
 
-ad_proc -private dt_export_value { 
-    name 
-    value 
+ad_proc -private dt_export_value {
+    name
+    value
 } {
     Makes a hidden form item w/ given name and value
 } {
     return "<input name=\"$name\" type=hidden value=\"$value\">"
 }
 
-ad_proc -private dt_round_to_precision { 
-    number 
-    precision 
+ad_proc -private dt_round_to_precision {
+    number
+    precision
 } {
 
     Rounds the given number to the given precision,
@@ -585,15 +585,15 @@ ad_proc -private dt_precision {
     @return the precision in minutes corresponding to a named granularity.
 } {
     switch -exact $granularity {
-	months   { set precision 40000}
-	days     { set precision 1440}
-	hours    { set precision 60}
-	halves   { set precision 30}
-	quarters { set precision 15}
-	fives    { set precision 5}
-	minutes  { set precision 1}
-	seconds  { set precision 0}
-	default  { set precision 15}
+        months   { set precision 40000}
+        days     { set precision 1440}
+        hours    { set precision 60}
+        halves   { set precision 30}
+        quarters { set precision 15}
+        fives    { set precision 5}
+        minutes  { set precision 1}
+        seconds  { set precision 0}
+        default  { set precision 15}
     }
 
     return $precision
