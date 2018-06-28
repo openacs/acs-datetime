@@ -9,7 +9,7 @@ ad_library {
     @cvs-id  $Id$
 }
 
-ad_proc dt_widget_month { 
+ad_proc dt_widget_month {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -33,20 +33,20 @@ ad_proc dt_widget_month {
     {-show_calendar_name_p 1}
 } {
     @return a calendar for a specific month, with details supplied by
-            Julian date. Defaults to this month. 
+            Julian date. Defaults to this month.
 
     To specify details for the individual days (if large_calendar_p is
     set) put data in an ns_set calendar_details.  The key is the
     Julian date of the day, and the value is a string (possibly with
-    HTML formatting) that represents the details. 
+    HTML formatting) that represents the details.
 } {
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.days_of_week]" 
+	set days_of_week "[_ acs-datetime.days_of_week]"
     }
 
     dt_get_info $date
 
-    set today_date [dt_sysdate]    
+    set today_date [dt_sysdate]
 
     if {$calendar_details eq ""} {
 	set calendar_details [ns_set create calendar_details]
@@ -171,7 +171,7 @@ ad_proc dt_widget_month {
             append output "<div align=left>"
 
             set calendar_day_index [ns_set find $calendar_details $julian_date]
-        
+
             while { $calendar_day_index >= 0 } {
                 set calendar_day [ns_set value $calendar_details $calendar_day_index]
                 ns_set delete $calendar_details $calendar_day_index
@@ -194,7 +194,7 @@ ad_proc dt_widget_month {
     }
 
     # There are two ways to display previous and next month link -
-    # this is the default 
+    # this is the default
 
     if { $prev_next_links_in_title == 0 } {
         append output [subst {
@@ -206,7 +206,7 @@ ad_proc dt_widget_month {
     return [concat $output "</table>\n"]
 }
 
-ad_proc dt_widget_month_small { 
+ad_proc dt_widget_month_small {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -250,7 +250,7 @@ ad_proc dt_widget_month_small {
 	    -prev_month_template $prev_month_template ]
 }
 
-ad_proc dt_widget_month_centered { 
+ad_proc dt_widget_month_centered {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -300,7 +300,7 @@ ad_proc dt_widget_month_centered {
     return $output
 }
 
-ad_proc dt_widget_year { 
+ad_proc dt_widget_year {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -323,13 +323,13 @@ ad_proc dt_widget_year {
     @return a year of small calendars given the starting month as a
             date.  Defaults to this month.  Data in calendar_details will be
             ignored.
-} { 
+} {
     if { $width < 1 || $width > 12 } {
 	return "[_ acs-datetime.lt_Width_must_be_]"
     }
 
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.short_days_of_week]" 
+	set days_of_week "[_ acs-datetime.short_days_of_week]"
     }
 
     set output "<table><tr valign=top>\n"
@@ -337,7 +337,7 @@ ad_proc dt_widget_year {
 
     for { set n 1 } { $n <= 12 } { incr n } {
 	dt_get_info $date
-	
+
 	append output "
 	<td>
 	[dt_widget_month_small -calendar_details $calendar_details -date $date -days_of_week $days_of_week -large_calendar_p $large_calendar_p -master_bgcolor $master_bgcolor -header_bgcolor $header_bgcolor -header_text_color $header_text_color -header_text_size $header_text_size	-day_number_template $day_number_template -day_header_size $day_header_size -day_header_bgcolor $day_header_bgcolor -calendar_width $calendar_width -day_bgcolor $day_bgcolor -day_text_color $day_text_color -empty_bgcolor $empty_bgcolor -next_month_template $next_month_template -prev_month_template $prev_month_template ]
@@ -356,7 +356,7 @@ ad_proc dt_widget_year {
     return [concat $output "</tr></table>\n"]
 }
 
-ad_proc dt_widget_calendar_year { 
+ad_proc dt_widget_calendar_year {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -377,10 +377,10 @@ ad_proc dt_widget_calendar_year {
     {-width 2}
 } {
     @return a calendar year of small calendars for the year of the
-            passed in date.  Defaults to this year. 
+            passed in date.  Defaults to this year.
 } {
     if {$days_of_week eq ""} {
-	set days_of_week "[_ acs-datetime.short_days_of_week]" 
+	set days_of_week "[_ acs-datetime.short_days_of_week]"
     }
 
     dt_get_info $date
@@ -408,7 +408,7 @@ ad_proc dt_widget_calendar_year {
 
 # A couple of helper procs to return the location of navigation icons.
 # These will eventually be replaced with parameters or pushed into a
-# template. 
+# template.
 
 ad_proc -private dt_left_arrow {} {
     @return the image location for a left navigation arrow
@@ -436,7 +436,7 @@ ad_proc -private dt_navbar_view {
 
     append result "
     <tr align=center class=\"table-header\">"
-    
+
     # ben: taking out year for now, since it doesn't work
     foreach {viewname viewlink viewdesc} [list "list" [_ acs-datetime.List] [_ acs-datetime.view_calendar_day] "day" [_ acs-datetime.Day] [_ acs-datetime.view_calendar_list] "week" [_ acs-datetime.Week] [_ acs-datetime.view_calendar_week] "month" [_ acs-datetime.Month] [_ acs-datetime.view_calendar_month]] {
         set text [string toupper $viewlink 0]
@@ -469,7 +469,7 @@ ad_proc -private dt_navbar_year {
 } {
     If this is a month or year view, returns the current year with
     links to previous and next.  Otherwise it just returns the empty
-    string. 
+    string.
 } {
     # Return immediately of the current view isn't month or year
     if {$view ni [list month year]} {
@@ -521,7 +521,7 @@ ad_proc -private dt_navbar_year {
 
     append result "
     <b>$curr_year</b>"
-    
+
     # Serve arrow to next year if it leads to a legal date
     if {$next_year_legal_p != 0} {
 	append result [subst {
@@ -584,7 +584,7 @@ ad_proc -private dt_navbar_month {
 	    <img alt="left arrow" src="[dt_left_arrow]"></a>
 	}]
     }
-    
+
     append results "
     <span style=\"font-size: smaller; font-weight: bold\">$curr_month</span>"
 
@@ -595,20 +595,20 @@ ad_proc -private dt_navbar_month {
 	    <img border="0" src="[dt_right_arrow]"></a>
 	}]
     }
-    
+
     append results "
     </td>
     </tr>\n"
-	
+
     return $results
 }
 
 
-ad_proc dt_widget_calendar_navigation { 
-    {base_url ""} 
-    {view "week"} 
-    {date ""} 
-    {pass_in_vars ""} 
+ad_proc dt_widget_calendar_navigation {
+    {base_url ""}
+    {view "week"}
+    {date ""}
+    {pass_in_vars ""}
 } {
     This proc creates a mini calendar useful for navigating various
     calendar views.  It takes a base url, which is the url to which
@@ -617,11 +617,11 @@ ad_proc dt_widget_calendar_navigation {
     format returned by export_url_vars This proc will set 2 variables
     in that url's environment: the view and the date.
 
-    Valid views are list, day, week, month, and year.  
+    Valid views are list, day, week, month, and year.
     (ben) for now I am disabling year, which doesn't work.
 
     The date must be formatted YYYY-MM-DD.
-} { 
+} {
 
     # valid views are "list" "day" "week" "month" "year"
 
@@ -683,7 +683,7 @@ ad_proc dt_widget_calendar_navigation {
 	    if {$i != 0 && $i % 3 == 0} {
 		append output "</tr><tr>"
 	    }
-	    
+
 	    if {$i == $curr_month} {
 		append output "
 		<td>
@@ -702,9 +702,9 @@ ad_proc dt_widget_calendar_navigation {
 		}]
 	    }
 	}
-	
-	append output "</tr>"	    
-	
+
+	append output "</tr>"
+
     } elseif {$view eq "year"} {
 
 	# year view
@@ -733,7 +733,7 @@ ad_proc dt_widget_calendar_navigation {
 		}]
 	    }
 	}
-	    
+
 	append output "</tr>"
 
     } else {
@@ -777,7 +777,7 @@ ad_proc dt_widget_calendar_navigation {
 	    }
 
 	    set ansi_date [dt_julian_to_ansi $julian_date]
-	    
+
 	    if {$julian_date == $first_julian_date_of_month} {
 		set day_number 1
 	    } elseif {$julian_date > $last_julian_date} {
@@ -814,7 +814,7 @@ ad_proc dt_widget_calendar_navigation {
 	    incr day_of_week
 	    incr julian_date
 	    incr day_number
-	    
+
 	    if { $day_of_week > 7 } {
 		set day_of_week 1
 		append output "</tr>\n"
@@ -844,7 +844,7 @@ ad_proc dt_widget_calendar_navigation {
     } else {
         append output [subst {<a href="[ns_quotehtml $today_url]"><strong>Today</strong></a> }]
     }
-    
+
     append output [subst {
     is [dt_ansi_to_pretty]</span></td></tr>
     <tr><td align="center"><br>
@@ -860,7 +860,7 @@ ad_proc dt_widget_calendar_navigation {
     foreach var $list_of_vars {
         append output "<input type='hidden' name='[lindex $var 0]' value='[lindex $var 1]'>"
     }
-    
+
     append output "
     </form>
     </td>
@@ -936,7 +936,7 @@ ad_proc -private dt_get_info {
     ns_set put $dt_info_set last_day \
         [dt_num_days_in_month $year $month]
     ns_set put $dt_info_set next_month \
-        [dt_next_month $year $month] 
+        [dt_next_month $year $month]
     ns_set put $dt_info_set prev_month \
         [dt_prev_month $year $month]
     ns_set put $dt_info_set beginning_of_year \
