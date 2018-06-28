@@ -32,8 +32,8 @@ ad_proc dt_widget_month {
     {-fill_all_days 0}
     {-show_calendar_name_p 1}
 } {
-    Returns a calendar for a specific month, with details supplied by
-    Julian date. Defaults to this month. 
+    @return a calendar for a specific month, with details supplied by
+            Julian date. Defaults to this month. 
 
     To specify details for the individual days (if large_calendar_p is
     set) put data in an ns_set calendar_details.  The key is the
@@ -225,7 +225,7 @@ ad_proc dt_widget_month_small {
     {-next_month_template ""}
     {-prev_month_template ""}
 } {
-    Returns a small calendar for a specific month. Defaults to this month.
+    @return a small calendar for a specific month. Defaults to this month.
 } {
     if {$days_of_week eq ""} {
 	set days_of_week [_ acs-datetime.short_days_of_week]
@@ -269,8 +269,8 @@ ad_proc dt_widget_month_centered {
     {-next_month_template ""}
     {-prev_month_template ""}
 } {
-    Returns a calendar for a specific month, with details supplied by
-    Julian date. Defaults to this month.
+    @return a calendar for a specific month, with details supplied by
+            Julian date. Defaults to this month.
 } {
 
     if {$days_of_week eq ""} {
@@ -320,9 +320,9 @@ ad_proc dt_widget_year {
     {-prev_month_template ""}
     {-width 2}
 } {
-    Returns a year of small calendars given the starting month as a
-    date.  Defaults to this month.  Data in calendar_details will be
-    ignored.
+    @return a year of small calendars given the starting month as a
+            date.  Defaults to this month.  Data in calendar_details will be
+            ignored.
 } { 
     if { $width < 1 || $width > 12 } {
 	return "[_ acs-datetime.lt_Width_must_be_]"
@@ -376,8 +376,8 @@ ad_proc dt_widget_calendar_year {
     {-prev_month_template ""}
     {-width 2}
 } {
-    Returns a calendar year of small calendars for the year of the
-    passed in date.  Defaults to this year. 
+    @return a calendar year of small calendars for the year of the
+            passed in date.  Defaults to this year. 
 } {
     if {$days_of_week eq ""} {
 	set days_of_week "[_ acs-datetime.short_days_of_week]" 
@@ -411,13 +411,13 @@ ad_proc dt_widget_calendar_year {
 # template. 
 
 ad_proc -private dt_left_arrow {} {
-    Returns the image location for a left navigation arrow
+    @return the image location for a left navigation arrow
 } {
     return "/resources/acs-subsite/left.gif"
 }
 
 ad_proc -private dt_right_arrow {} {
-    Returns the image location for a right navigation arrow
+    @return the image location for a right navigation arrow
 } {
     return "/resources/acs-subsite/right.gif"
 }
@@ -427,7 +427,7 @@ ad_proc -private dt_navbar_view {
     base_url
     date
 } {
-    Returns a navbar for the mini_calendar_widget
+    @return a navbar for the mini_calendar_widget
 } {
     set date [ns_urlencode $date]
 
@@ -545,7 +545,7 @@ ad_proc -private dt_navbar_month {
     base_url
     date
 } {
-    Returns the monthly navbar
+    @return the monthly navbar
 } {
     set now        [clock scan $date]
     set curr_month [clock format $now -format "%B"]
