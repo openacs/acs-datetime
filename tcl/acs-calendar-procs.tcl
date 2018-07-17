@@ -167,7 +167,7 @@ ad_proc dt_widget_month {
             append output [subst {<td class="$the_class" style="background:$the_bgcolor; color:inherit;" align="left" valign="top">$day_number_template}] "&nbsp;"
         }
 
-        if { (!$skip_day) && $large_calendar_p == 1 } {
+        if { !$skip_day && $large_calendar_p == 1 } {
             append output "<div align=left>"
 
             set calendar_day_index [ns_set find $calendar_details $julian_date]
