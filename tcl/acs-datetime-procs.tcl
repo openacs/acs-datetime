@@ -144,10 +144,10 @@ ad_proc -public dt_julian_to_ansi {
     set gregorian 2299161
 
     if {$julian_date >= $gregorian} {
-      set calc [expr {floor((($julian_date - 1867216) - 0.25) / 36524.25)}]
-      set calc [expr {$julian_date + 1 + $calc - floor(0.25 * $calc)}]
+        set calc [expr {floor((($julian_date - 1867216) - 0.25) / 36524.25)}]
+        set calc [expr {$julian_date + 1 + $calc - floor(0.25 * $calc)}]
     } else {
-      set calc $julian_date
+        set calc $julian_date
     }
 
     # get initial calculations to set year, month, day
@@ -160,10 +160,10 @@ ad_proc -public dt_julian_to_ansi {
     set year [expr {floor($calc2 - 4715)}]
     set month [expr {floor($calc4 - 1)}]
     if {$month > 12} {
-      set month [expr {$month - 12}]
+        set month [expr {$month - 12}]
     }
     if {$month > 2 || $year <= 0} {
-      set year [expr {$year - 1}]
+        set year [expr {$year - 1}]
     }
     set day [expr {floor($calc - $calc3 - floor($calc4 * 30.6001))}]
 
@@ -216,7 +216,7 @@ ad_proc -public dt_num_days_in_month {
         set month 01
     } elseif {$month == 12} {
         incr year
-      set month 01
+        set month 01
     } elseif {$month == 13} {
         incr year
         set month 02
@@ -265,10 +265,10 @@ ad_proc -public dt_prev_month {
     @return the ANSI date for the previous month
 } {
     if {$month == 1} {
-      set year [expr {$year - 1}]
-      set month 12
+        set year [expr {$year - 1}]
+        set month 12
     } else {
-      set month [expr {$month - 1}]
+        set month [expr {$month - 1}]
     }
 
     # jarkko: added this check to avoid calendars bombing when prev month goes
@@ -310,10 +310,10 @@ ad_proc -public dt_prev_month_name {
     @return the ANSI date for the previous month
 } {
     if {$month == 1} {
-      set year [expr {$year - 1}]
-      set month 12
+        set year [expr {$year - 1}]
+        set month 12
     } else {
-      set month [expr {$month - 1}]
+        set month [expr {$month - 1}]
     }
 
     # jarkko: added this check to avoid calendars bombing when prev month goes
@@ -598,7 +598,6 @@ ad_proc -private dt_precision {
 
     return $precision
 }
-
 
 # Local variables:
 #    mode: tcl
