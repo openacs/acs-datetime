@@ -151,7 +151,7 @@ ad_proc -public dt_julian_to_ansi {
     }
 
     # get initial calculations to set year, month, day
-    set calc [expr {$calc + 1524}]
+    incr calc 1524
     set calc2 [expr {floor(6680 + (($calc - 2439870) - 122.1) / 365.25)}]
     set calc3 [expr {floor($calc2 * 365.25)}]
     set calc4 [expr {floor(($calc - $calc3) / 30.6001)}]
@@ -213,15 +213,15 @@ ad_proc -public dt_num_days_in_month {
     @return the numbers of days for the given month/year
 } {
     if {$month == 0} {
-      set month 01
+        set month 01
     } elseif {$month == 12} {
-      set year [expr {$year + 1}]
+        incr year
       set month 01
     } elseif {$month == 13} {
-      set year [expr {$year + 1}]
-      set month 02
+        incr year
+        set month 02
     } else {
-      set month [expr {$month + 1}]
+        incr month
     }
 
     return [clock format [clock scan "last day" -base [clock scan $year-$month-01]] -format %d]
@@ -244,10 +244,10 @@ ad_proc -public dt_next_month {
     @return the ANSI date for the next month
 } {
     if {$month == 12} {
-      set year [expr {$year + 1}]
-      set month 01
+        incr year
+        set month 01
     } else {
-      set month [expr {$month + 1}]
+        incr month
     }
 
     # jarkko: added this check to avoid calendars bombing when prev month goes
@@ -287,10 +287,10 @@ ad_proc -public dt_next_month_name {
     @return the ANSI date for the next month
 } {
     if {$month == 12} {
-      set year [expr {$year + 1}]
-      set month 01
+        incr year
+        set month 01
     } else {
-      set month [expr {$month + 1}]
+        incr month
     }
 
     # jarkko: added this check to avoid calendars bombing when next month goes
