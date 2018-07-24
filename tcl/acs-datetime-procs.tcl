@@ -151,7 +151,7 @@ ad_proc -public dt_julian_to_ansi {
     }
 
     # get initial calculations to set year, month, day
-    incr calc 1524
+    set calc [expr {$calc + 1524}]
     set calc2 [expr {floor(6680 + (($calc - 2439870) - 122.1) / 365.25)}]
     set calc3 [expr {floor($calc2 * 365.25)}]
     set calc4 [expr {floor(($calc - $calc3) / 30.6001)}]
