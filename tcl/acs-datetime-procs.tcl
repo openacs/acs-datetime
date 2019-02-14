@@ -552,6 +552,8 @@ ad_proc -private -deprecated dt_trim_leading_zeros {
     Used to get around Tcl interpreter problems w/ thinking leading
     zeros are octal. We could just use validate_integer, but it runs
     one extra regexp that we don't need to run.
+
+    @see util::trim_leading_zeros
 } {
     return [util::trim_leading_zeros $string]
 }
