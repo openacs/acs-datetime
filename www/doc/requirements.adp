@@ -64,7 +64,7 @@ details in an <code>ns_set</code> keyed on Julian date, and return
 an HTML table.</p>
 <ol>
 <li>Generate a basic monthly calendar</li><li>Generate a small monthly calendar</li><li>Generate small monthly calendars centered in a given month
-(previous, current, next)</li><li>Generate a yearly calendar (composed of small montly calendars)
+(previous, current, next)</li><li>Generate a yearly calendar (composed of small monthly calendars)
 given the starting month as a date</li><li>Generate a yearly calendar based on calendar year (Jan to Dec),
 given any date within that calendar year</li><li>Generate a calendar navigation widget with viewing options for
 day, week, month and year</li>

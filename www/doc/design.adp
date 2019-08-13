@@ -88,7 +88,7 @@ calendar</li><li>
 <code>dt_widget_centered</code> generates small monthly
 calendars centered in a given month (previous, current, next)</li><li>
 <code>dt_widget_year</code> generates a yearly calendar
-(composed of small montly calendars) given the starting month as a
+(composed of small monthly calendars) given the starting month as a
 date</li><li>
 <code>dt_widget_calendar_year</code> generates a yearly
 calendar based on calendar year (Jan to Dec), given any date within
