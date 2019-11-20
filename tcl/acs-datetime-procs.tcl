@@ -299,7 +299,7 @@ ad_proc -public dt_next_month_name {
         return ""
     }
 
-    return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
+    return [lc_time_fmt [lc_clock_to_ansi [clock scan $year-$month-01]] "%B"]
 
 }
 
@@ -323,7 +323,7 @@ ad_proc -public dt_prev_month_name {
         return ""
     }
 
-    return [lc_time_fmt [clock_to_ansi [clock scan $year-$month-01]] "%B"]
+    return [lc_time_fmt [lc_clock_to_ansi [clock scan $year-$month-01]] "%B"]
 }
 
 ad_proc -public dt_widget_datetime {
