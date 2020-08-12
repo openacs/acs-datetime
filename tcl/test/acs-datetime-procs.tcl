@@ -10,7 +10,7 @@ aa_register_case \
     -procs {dt_valid_time_p} \
     dt_valid_time_p {
     Test dt_valid_time_p proc.
-} {    
+} {
 
     aa_run_with_teardown \
         -rollback \
@@ -28,7 +28,7 @@ aa_register_case \
     -procs {dt_ansi_to_julian_single_arg} \
     dt_ansi_to_julian_single_arg {
     Test dt_ansi_to_julian_single_arg proc.
-} {    
+} {
 
     aa_run_with_teardown \
         -rollback \
@@ -44,7 +44,7 @@ aa_register_case \
     -procs {dt_ansi_to_julian} \
     dt_ansi_to_julian {
     Test dt_ansi_to_julian proc.
-} {    
+} {
 
     aa_run_with_teardown \
         -rollback \
@@ -60,7 +60,7 @@ aa_register_case \
     -procs {dt_julian_to_ansi} \
     dt_julian_to_ansi {
     Test dt_julian_to_ansi proc.
-} {    
+} {
 
     aa_run_with_teardown \
         -rollback \
@@ -76,7 +76,7 @@ aa_register_case \
     -procs {dt_ansi_to_list} \
     dt_ansi_to_list {
     Test dt_ansi_to_list proc.
-} {    
+} {
 
     aa_run_with_teardown \
         -rollback \
@@ -92,7 +92,7 @@ aa_register_case \
     -procs {dt_num_days_in_month} \
     dt_num_days_in_month {
     Test dt_num_days_in_month proc.
-} {    
+} {
 
     aa_run_with_teardown \
         -rollback \
