@@ -8,103 +8,88 @@ ad_library {
 
 aa_register_case \
     -procs {dt_valid_time_p} \
+    -cats {api production_safe} \
     dt_valid_time_p {
     Test dt_valid_time_p proc.
 } {
-
-    aa_run_with_teardown \
-        -rollback \
-        -test_code {
-
-            set valid_time_p [dt_valid_time_p "13:00"]
-            aa_true "Time is valid" $valid_time_p
-
-            set valid_time_p [dt_valid_time_p ":"]
-            aa_true "Time is not valid" !$valid_time_p
-        }
+    #
+    # Valid time
+    #
+    set valid_time_p [dt_valid_time_p "13:00"]
+    aa_true "Time is valid" $valid_time_p
+    #
+    # Invalid time
+    #
+    set valid_time_p [dt_valid_time_p ":"]
+    aa_false "Time is valid" $valid_time_p
 }
 
 aa_register_case \
     -procs {dt_ansi_to_julian_single_arg} \
+    -cats {api production_safe} \
     dt_ansi_to_julian_single_arg {
     Test dt_ansi_to_julian_single_arg proc.
 } {
-
-    aa_run_with_teardown \
-        -rollback \
-        -test_code {
-
-            set date [dt_ansi_to_julian_single_arg "2003-01-01 01:01:01"]
-            aa_equals "Returns correct julian date" $date "2452641"
-
-        }
+    #
+    # Valid julian date
+    #
+    set date [dt_ansi_to_julian_single_arg "2003-01-01 01:01:01"]
+    aa_equals "Returns correct julian date" $date "2452641"
 }
 
 aa_register_case \
     -procs {dt_ansi_to_julian} \
+    -cats {api production_safe} \
     dt_ansi_to_julian {
     Test dt_ansi_to_julian proc.
 } {
-
-    aa_run_with_teardown \
-        -rollback \
-        -test_code {
-
-            set date [dt_ansi_to_julian "2003" "01" "01"]
-            aa_equals "Returns correct julian date" $date "2452641"
-
-        }
+    #
+    # Valid julian date
+    #
+    set date [dt_ansi_to_julian "2003" "01" "01"]
+    aa_equals "Returns correct julian date" $date "2452641"
 }
 
 aa_register_case \
     -procs {dt_julian_to_ansi} \
+    -cats {api production_safe} \
     dt_julian_to_ansi {
     Test dt_julian_to_ansi proc.
 } {
-
-    aa_run_with_teardown \
-        -rollback \
-        -test_code {
-
-            set date [dt_julian_to_ansi "2452641"]
-            aa_equals "Returns correct ansi date" $date "2003-01-01"
-
-        }
+    #
+    # Valid ansi date
+    #
+    set date [dt_julian_to_ansi "2452641"]
+    aa_equals "Returns correct ansi date" $date "2003-01-01"
 }
 
 aa_register_case \
     -procs {dt_ansi_to_list} \
+    -cats {api production_safe} \
     dt_ansi_to_list {
     Test dt_ansi_to_list proc.
 } {
-
-    aa_run_with_teardown \
-        -rollback \
-        -test_code {
-
-            set list [dt_ansi_to_list "2003-01-01 01:01:01"]
-            aa_equals "Returns correct ansi date" $list {2003 1 1 1 1 1}
-
-        }
+    #
+    # Valid ansi date
+    #
+    set list [dt_ansi_to_list "2003-01-01 01:01:01"]
+    aa_equals "Returns correct ansi date" $list {2003 1 1 1 1 1}
 }
 
 aa_register_case \
     -procs {dt_num_days_in_month} \
+    -cats {api production_safe} \
     dt_num_days_in_month {
     Test dt_num_days_in_month proc.
 } {
-
-    aa_run_with_teardown \
-        -rollback \
-        -test_code {
-
-            set num_days [dt_num_days_in_month 2003 2]
-            aa_equals "Number of days in February is 28" $num_days 28
-
-            set num_days [dt_num_days_in_month 2003 12]
-            aa_equals "Number of days in November is 30" $num_days 31
-
-        }
+    #
+    # Test all months of 2003
+    #
+    set year 2003
+    set month_days {1 31 2 28 3 31 4 30 5 31 6 30 7 31 8 31 9 30 10 31 11 30 12 31}
+    dict for {month days} $month_days {
+        aa_equals "Number of days in month $month is $days" "[dt_num_days_in_month $year $month]" "$days"
+    }
 }
 
 # Local variables:
