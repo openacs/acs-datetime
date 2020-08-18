@@ -2,6 +2,7 @@ ad_library {
     Automated tests.
 
     @author Simon Carstensen
+    @author Héctor Romojaro <hector.romojaro@gmail.com>
     @creation-date 16 Nov 2003
     @cvs-id $Id$
 }
@@ -92,6 +93,57 @@ aa_register_case \
     }
 }
 
+aa_register_case -procs {
+        dt_sysdate
+        dt_systime
+    } -cats {
+        api
+        production_safe
+    } dt_sysdate_systime {
+        Test dt_sysdate and dt_systime procs.
+} {
+    #
+    # Test if the format is correct
+    #
+    aa_true "Current system date looks like a valid date" [dt_valid_time_p [dt_sysdate]]
+    aa_true "Current system time looks like a valid time" [dt_valid_time_p [dt_systime]]
+    aa_true "Current system time (GMT) looks like a valid time" [dt_valid_time_p [dt_systime -gmt true]]
+}
+
+aa_register_case -procs {
+        dt_prev_month
+        dt_next_month
+    } -cats {
+        api
+        production_safe
+    } dt_prev_next_month {
+        Test dt_next_month and dt_prev_month procs.
+} {
+    set month 8
+    set year 2020
+    #
+    # Ansi date for previous month
+    #
+    set month_prev {01 12 02 01 03 02 04 03 05 04 06 05 07 06 08 07 09 08 10 09 11 10 12 11}
+    dict for {month prev} $month_prev {
+        if {$month == 01} {
+            aa_equals "Previous month to $month" "[dt_prev_month $year $month]" "[expr {$year -1}]-$prev-01"
+        } else {
+            aa_equals "Previous month to $month" "[dt_prev_month $year $month]" "$year-$prev-01"
+        }
+    }
+    #
+    # Ansi date for next month
+    #
+    set month_next {01 02 02 03 03 04 04 05 05 06 06 07 07 08 08 09 09 10 10 11 11 12 12 01}
+    dict for {month next} $month_next {
+        if {$month == 12} {
+            aa_equals "Next month to $month" "[dt_next_month $year $month]" "[expr {$year + 1}]-$next-01"
+        } else {
+            aa_equals "Next month to $month" "[dt_next_month $year $month]" "$year-$next-01"
+        }
+    }
+}
 # Local variables:
 #    mode: tcl
 #    tcl-indent-level: 4
