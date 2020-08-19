@@ -171,6 +171,24 @@ aa_register_case -procs {
     aa_equals "Start = End" "[dt_interval_check $start $end]" "0"
 }
 
+aa_register_case -procs {
+        dt_first_day_of_month
+    } -cats {
+        api
+        production_safe
+    } dt_first_day_of_month {
+        Test dt_first_day_of_month proc.
+} {
+    set year 2020
+    #
+    # First day of month, week starting on Sunday
+    #
+    set month_day {01 4 02 7 03 1 04 4 05 6 06 2 07 4 08 7 09 3 10 5 11 1 12 3}
+    dict for {month day} $month_day {
+        aa_equals "First day of $year-$month" "[dt_first_day_of_month $year $month]" "$day"
+    }
+}
+
 # Local variables:
 #    mode: tcl
 #    tcl-indent-level: 4
