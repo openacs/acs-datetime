@@ -144,6 +144,33 @@ aa_register_case -procs {
         }
     }
 }
+
+aa_register_case -procs {
+        dt_interval_check
+    } -cats {
+        api
+        production_safe
+    } dt_interval_check {
+        Test dt_interval_check proc.
+} {
+    #
+    # Start of the interval is after the end
+    #
+    set start "2020-08-20"
+    set end "2020-08-19"
+    aa_true "Start > End"   "[expr {[dt_interval_check $start $end] < 0}]"
+    #
+    # Start of the interval is before the end
+    #
+    set end "2020-08-21"
+    aa_true "Start < End"   "[expr {[dt_interval_check $start $end] > 0}]"
+    #
+    # Start and end of the interval are equal
+    #
+    set end "2020-08-20"
+    aa_equals "Start = End" "[dt_interval_check $start $end]" "0"
+}
+
 # Local variables:
 #    mode: tcl
 #    tcl-indent-level: 4
