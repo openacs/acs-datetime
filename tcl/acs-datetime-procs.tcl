@@ -177,9 +177,14 @@ ad_proc -public dt_julian_to_ansi {
 ad_proc -public dt_ansi_to_pretty {
     {ansi_date ""}
 } {
-    Converts 1998-09-05 to September 5, 1998.  With no argument it
-    returns the current date based on server time.  Works for both
-    date and date-time strings.
+    Converts an ANSI date into a localzed one.
+
+    With no argument, it returns the current date based on server time.
+
+    Works for both date and date-time strings.
+
+    @param ansi_date    Date in ANSI format (for example, 1998-09-05)
+    @return             Localized date (for example, on 'en_US', 05/09/98)
 } {
     if {$ansi_date eq ""} {
         set ansi_date [dt_sysdate]
@@ -286,7 +291,7 @@ ad_proc -public dt_next_month_name {
     year
     month
 } {
-    @return the ANSI date for the next month
+    @return Localized name of the next month
 } {
     if {$month == 12} {
         incr year
@@ -309,7 +314,7 @@ ad_proc -public dt_prev_month_name {
     year
     month
 } {
-    @return the ANSI date for the previous month
+    @return Localized name of the previous month
 } {
     if {$month == 1} {
         set year [expr {$year - 1}]
