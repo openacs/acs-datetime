@@ -119,10 +119,9 @@ aa_register_case -procs {
     } dt_prev_next_month {
         Test dt_next_month and dt_prev_month procs.
 } {
-    set month 8
     set year 2020
     #
-    # Ansi date for previous month
+    # ANSI date for previous month
     #
     set month_prev {01 12 02 01 03 02 04 03 05 04 06 05 07 06 08 07 09 08 10 09 11 10 12 11}
     dict for {month prev} $month_prev {
@@ -133,7 +132,7 @@ aa_register_case -procs {
         }
     }
     #
-    # Ansi date for next month
+    # ANSI date for next month
     #
     set month_next {01 02 02 03 03 04 04 05 05 06 06 07 07 08 08 09 09 10 10 11 11 12 12 01}
     dict for {month next} $month_next {
@@ -186,6 +185,60 @@ aa_register_case -procs {
     set month_day {01 4 02 7 03 1 04 4 05 6 06 2 07 4 08 7 09 3 10 5 11 1 12 3}
     dict for {month day} $month_day {
         aa_equals "First day of $year-$month" "[dt_first_day_of_month $year $month]" "$day"
+    }
+}
+
+aa_register_case -procs {
+        dt_month_names
+        dt_month_abbrev
+        dt_ansi_to_pretty
+        dt_prev_month_name
+        dt_next_month_name
+    } -cats {
+        api
+    } dt_localized_procs {
+        Test procs with localized date/time strings.
+} {
+    aa_run_with_teardown -rollback -test_code {
+        #
+        # Force the system locale to en_US. The value is
+        # automatically reset to the previous value, since we are
+        # running in a transaction.
+        #
+        lang::system::set_locale en_US
+        set locale [lang::system::locale]
+        set lang [string range $locale 0 1]
+        ad_conn -set locale $locale
+        aa_log "System locale set to $locale"
+        #
+        # Localized month names
+        #
+        set months {{January} {February} {March} {April} {May} {June} {July} {August} {September} {October} {November} {December}}
+        aa_equals "dt_month_names: Months list" "[dt_month_names]" "$months"
+        #
+        # Localized month names (abbreviated)
+        #
+        set months_abbrev {{Jan} {Feb} {Mar} {Apr} {May} {Jun} {Jul} {Aug} {Sep} {Oct} {Nov} {Dec}}
+        aa_equals "dt_month_abbrev: Months list (abbreviated)" "[dt_month_abbrev]" "$months_abbrev"
+        #
+        # ANSI date to localized date
+        #
+        aa_equals "dt_ansi_to_pretty: 2003-01-01 01:01:01" "[dt_ansi_to_pretty "2003-01-01 01:01:01"]" "01/01/03"
+        aa_equals "dt_ansi_to_pretty: 2003-01-01 " "[dt_ansi_to_pretty "2003-01-01"]" "01/01/03"
+        #
+        # Localized name of the previous month
+        #
+        set month_prev {01 December 02 January 03 February 04 March 05 April 06 May 07 June 08 July 09 August 10 September 11 October 12 November}
+        dict for {month prev} $month_prev {
+            aa_equals "dt_prev_month_name: Previous month to $month" "[dt_prev_month_name 2020 $month]" "$prev"
+        }
+        #
+        # Localized name of the next month
+        #
+        set month_next {01 February 02 March 03 April 04 May 05 June 06 July 07 August 08 September 09 October 10 November 11 December 12 January}
+        dict for {month next} $month_next {
+            aa_equals "dt_next_month_name: Next month to $month" "[dt_next_month_name 2020 $month]" "$next"
+        }
     }
 }
 
