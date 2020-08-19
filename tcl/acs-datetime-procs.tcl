@@ -297,6 +297,7 @@ ad_proc -public dt_next_month_name {
         incr year
         set month 01
     } else {
+        scan $month %d month
         incr month
     }
 
@@ -320,6 +321,7 @@ ad_proc -public dt_prev_month_name {
         set year [expr {$year - 1}]
         set month 12
     } else {
+        scan $month %d month
         set month [expr {$month - 1}]
     }
 
