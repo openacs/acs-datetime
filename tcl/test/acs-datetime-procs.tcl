@@ -94,13 +94,14 @@ aa_register_case \
 }
 
 aa_register_case -procs {
-        dt_sysdate
-        dt_systime
-    } -cats {
-        api
-        production_safe
-    } dt_sysdate_systime {
-        Test dt_sysdate and dt_systime procs.
+    dt_sysdate
+    dt_systime
+    dt_valid_time_p
+} -cats {
+    api
+    production_safe
+} dt_sysdate_systime {
+    Test dt_sysdate and dt_systime procs.
 } {
     #
     # Test if the format is correct
@@ -189,15 +190,17 @@ aa_register_case -procs {
 }
 
 aa_register_case -procs {
-        dt_month_names
-        dt_month_abbrev
-        dt_ansi_to_pretty
-        dt_prev_month_name
-        dt_next_month_name
-    } -cats {
-        api
-    } dt_localized_procs {
-        Test procs with localized date/time strings.
+    dt_month_names
+    dt_month_abbrev
+    dt_ansi_to_pretty
+    dt_prev_month_name
+    dt_next_month_name
+    lang::system::locale
+    lang::system::set_locale
+} -cats {
+    api
+} dt_localized_procs {
+    Test procs with localized date/time strings.
 } {
     aa_run_with_teardown -rollback -test_code {
         #
