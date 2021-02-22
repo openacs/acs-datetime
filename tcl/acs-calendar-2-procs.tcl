@@ -529,16 +529,15 @@ ad_proc -deprecated dt_widget_list {
 # Additional Utility Procs
 #
 
-ad_proc -deprecated dt_midnight_p {
+ad_proc -public dt_midnight_p {
     time
 } {
-    check if a time is midnight
+    Check if a time is midnight.
 
-    DEPRECATED: this is really something one should do leveraging
-    existing tcl capabilities. Plain clock idioms can do the same in a
-    more generic and reliable way.
+    This might be replaced by clock idioms in the future, but is
+    currently the way we decide e.g. if an event is an all-day event.
 
-    @see clock
+    @see dt_no_time_p
 } {
     if {$time eq "00:00" || $time eq ""} {
         return 1
@@ -562,17 +561,12 @@ ad_proc -deprecated dt_midnight_p {
     return 0
 }
 
-ad_proc -deprecated dt_no_time_p {
+ad_proc -public dt_no_time_p {
     {-start_time:required}
     {-end_time:required}
 } {
-    This decides whether an item is without a time
-
-    DEPRECATED: in upstream code, this proc is used only in
-    dt_widget_list, also deprecated. It is also so specific, that
-    chances it can be useful in general are really slim.
-
-    @see dt_widget_list
+    This decides whether an item is without a time, which is also our
+    definition of an all-day event.
 } {
     # Compare times and make sure it's midnight on both
     if {[dt_midnight_p $start_time] && [dt_midnight_p $end_time]} {
