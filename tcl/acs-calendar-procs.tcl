@@ -642,12 +642,8 @@ ad_proc dt_widget_calendar_navigation {
     set list_of_vars [list]
 
     # Ben: some annoying stuff to do here since we are passing in things in GET format already
-    if {$pass_in_vars ne ""} {
-        set vars [split $pass_in_vars "&"]
-        foreach var $vars {
-            set things [split $var "="]
-            lappend list_of_vars $things
-        }
+    foreach {key value} [ns_set array [ns_parsequery $pass_in_vars]] {
+        lappend list_of_vars [list $key $value]
     }
 
     # Get the current month, day, and the first day of the month
