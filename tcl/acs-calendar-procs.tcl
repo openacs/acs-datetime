@@ -869,7 +869,7 @@ ad_proc dt_widget_calendar_navigation {
     return $output
 }
 
-ad_proc -private dt_get_info {
+ad_proc -public dt_get_info {
     {the_date ""}
 } {
     Calculates various dates required by the dt_widget_month
