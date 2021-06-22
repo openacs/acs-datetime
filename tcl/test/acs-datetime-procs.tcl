@@ -190,6 +190,48 @@ aa_register_case -procs {
 }
 
 aa_register_case -procs {
+        dt_midnight_p
+    } -cats {
+        api
+        production_safe
+        smoke
+    } dt_midnight_p {
+        Test dt_midnight_p proc.
+} {
+    #
+    # Midnight dates
+    #
+    set dates {
+        00:00
+        "00:00 AM"
+        "00:00 am"
+        "12:00 AM"
+        "12:00 am"
+        "2021-06-22 00:00"
+        "06-22 00:00"
+    }
+    foreach date $dates {
+        aa_true "$date is midnight" [dt_midnight_p $date]
+    }
+    #
+    # Not midnight dates
+    #
+    set dates {
+        00:01
+        "00:10 AM"
+        "00:00 PM"
+        "01:00 am"
+        "11:00 AM"
+        "11:59 am"
+        "2021-06-22 20:00"
+        "06-22 00:41"
+    }
+    foreach date $dates {
+        aa_false "$date is midnight" [dt_midnight_p $date]
+    }
+}
+
+aa_register_case -procs {
     dt_month_names
     dt_month_abbrev
     dt_ansi_to_pretty
