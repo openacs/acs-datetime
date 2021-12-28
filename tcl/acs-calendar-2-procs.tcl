@@ -478,8 +478,7 @@ ad_proc -deprecated dt_widget_list {
     set flip 0
 
     # Loop through the events, and add them
-    for {set i 0} {$i < [ns_set size $calendar_details]} {incr i} {
-        set item [ns_set value $calendar_details $i]
+    foreach item [ns_set values $calendar_details] {
         lassign $item date start_time end_time weekday item_type item_details
 
         # Adjust the display of no-time items
