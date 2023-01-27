@@ -93,46 +93,23 @@ ad_proc -public dt_ansi_to_julian {
     day
     {era ""}
 } {
+    @param era this argument is obsolete and passing it to the proc
+               will generate a warning.
+
     @return the ANSI date as Julian or -1 in the case
             of an invalid ANSI date argument (year less than
             4713 BCE, greater than 9999 CE, or equal to 0)
 } {
-    if {$era eq ""} {
-        set era CE
+    if {$era ne ""} {
+        ad_log warning "'era' argument is obsolete"
     }
 
-    if {$year == 0} {
-        set julian_date -1
-    } elseif {$year == 1582 && $month == 10 && $day > 4 && $day < 15} {
-        # mimic the functionality of Oracle for these non-existent
-        # gregorian dates (returns the julian date of the day following
-        # 1582-10-04; 1582-10-15)
-        set julian_date [dt_ansi_to_julian 1582 10 15 CE]
-    } else {
-        set year [util::trim_leading_zeros $year]
-
-        if {$era eq "BCE"} {
-            set year [expr {-$year + 1}]
-        }
-
-        if {$month > 2} {
-            set year_n $year
-            set month_n [expr {$month + 1}]
-        } else {
-            set year_n  [expr {$year - 1}]
-            set month_n [expr {$month + 13}]
-        }
-
-        set julian_date [expr {floor(floor(365.25 * $year_n) + floor(30.6001 * $month_n) + ($day + 1720995))}]
-
-        # check for change to the Gregorian Calendar
-        set gregorian [expr {15 + 31 * (10 + 12 * 1582)}]
-        if {$day + 31 * ($month + 12 * $year) >= $gregorian} {
-            set julian_date [expr {$julian_date + (2 - floor(0.01 * $year_n) + floor(0.25 * floor(0.01 * $year_n)))}]
-        }
+    try {
+        return [clock format [clock scan ${year}-${month}-${day} -format %Y-%m-%d] -format %J]
+    } on error {errmsg} {
+        ad_log warning "Cannot convert ${year}-${month}-${day} to Julian date: $errmsg"
+        return -1
     }
-
-    return [expr {int($julian_date)}]
 }
 
 ad_proc -public dt_julian_to_ansi {
@@ -140,38 +117,7 @@ ad_proc -public dt_julian_to_ansi {
 } {
     @return julian_date formatted as "yyyy-mm-dd"
 } {
-    # Gregorian calendar correction
-    set gregorian 2299161
-
-    if {$julian_date >= $gregorian} {
-        set calc [expr {floor((($julian_date - 1867216) - 0.25) / 36524.25)}]
-        set calc [expr {$julian_date + 1 + $calc - floor(0.25 * $calc)}]
-    } else {
-        set calc $julian_date
-    }
-
-    # get initial calculations to set year, month, day
-    set calc [expr {$calc + 1524}]
-    set calc2 [expr {floor(6680 + (($calc - 2439870) - 122.1) / 365.25)}]
-    set calc3 [expr {floor($calc2 * 365.25)}]
-    set calc4 [expr {floor(($calc - $calc3) / 30.6001)}]
-
-    # set year, month, day
-    set year [expr {floor($calc2 - 4715)}]
-    set month [expr {floor($calc4 - 1)}]
-    if {$month > 12} {
-        set month [expr {$month - 12}]
-    }
-    if {$month > 2 || $year <= 0} {
-        set year [expr {$year - 1}]
-    }
-    set day [expr {floor($calc - $calc3 - floor($calc4 * 30.6001))}]
-
-    set year  [expr {int($year)}]
-    set month [expr {int($month)}]
-    set day   [expr {int($day)}]
-
-    return [format %.4d $year]-[format %.2d $month]-[format %.2d $day]
+    return [clock format [clock scan $julian_date -format %J] -format %Y-%m-%d]
 }
 
 ad_proc -public dt_ansi_to_pretty {
