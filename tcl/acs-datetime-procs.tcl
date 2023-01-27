@@ -194,20 +194,12 @@ ad_proc -public dt_next_month {
 } {
     @return the ANSI date for the next month
 } {
-    if {$month == 12} {
-        incr year
-        set month 01
-    } else {
-        scan $month %d month
-        incr month
-    }
-
-    # jarkko: added this check to avoid calendars bombing when prev month goes
-    # beyond borders
-    if {[catch {set next_month [clock format [clock scan $year-$month-01] -format %Y-%m-%d]} err]} {
+    try {
+        return [clock format [clock add [clock scan $year-$month-01] 1 month] -format %Y-%m-%d]
+    } on error {errmsg} {
+        ad_log warning "Cannot get next month date for $year-$month"
         return ""
     }
-    return $next_month
 }
 
 ad_proc -public dt_prev_month {
@@ -216,21 +208,12 @@ ad_proc -public dt_prev_month {
 } {
     @return the ANSI date for the previous month
 } {
-    if {$month == 1} {
-        set year [expr {$year - 1}]
-        set month 12
-    } else {
-        scan $month %d month
-        set month [expr {$month - 1}]
-    }
-
-    # jarkko: added this check to avoid calendars bombing when prev month goes
-    # beyond borders
-    if {[catch {set prev_month [clock format [clock scan $year-$month-01] -format %Y-%m-%d]} err]} {
+    try {
+        return [clock format [clock add [clock scan $year-$month-01] -1 month] -format %Y-%m-%d]
+    } on error {errmsg} {
+        ad_log warning "Cannot get previous month date for $year-$month"
         return ""
     }
-
-    return $prev_month
 }
 
 ad_proc -public dt_next_month_name {
@@ -239,22 +222,12 @@ ad_proc -public dt_next_month_name {
 } {
     @return Localized name of the next month
 } {
-    if {$month == 12} {
-        incr year
-        set month 01
-    } else {
-        scan $month %d month
-        incr month
-    }
-
-    # jarkko: added this check to avoid calendars bombing when next month goes
-    # beyond borders
-    if {[catch {set next_name [clock format [clock scan $year-$month-01] -format %B]} err]} {
+    try {
+        return [lc_time_fmt [lc_clock_to_ansi [clock add [clock scan $year-$month-01] 1 month]] "%B"]
+    } on error {errmsg} {
+        ad_log warning "Cannot get name of previous month for $year-$month"
         return ""
     }
-
-    return [lc_time_fmt [lc_clock_to_ansi [clock scan $year-$month-01]] "%B"]
-
 }
 
 ad_proc -public dt_prev_month_name {
@@ -263,22 +236,12 @@ ad_proc -public dt_prev_month_name {
 } {
     @return Localized name of the previous month
 } {
-    if {$month == 1} {
-        set year [expr {$year - 1}]
-        set month 12
-    } else {
-        scan $month %d month
-        set month [expr {$month - 1}]
-    }
-
-    # jarkko: added this check to avoid calendars bombing when prev month goes
-    # beyond borders
-
-    if {[catch {set prev_name [clock format [clock scan $year-$month-01] -format %B]} err]} {
+    try {
+        return [lc_time_fmt [lc_clock_to_ansi [clock add [clock scan $year-$month-01] -1 month]] "%B"]
+    } on error {errmsg} {
+        ad_log warning "Cannot get name of previous month for $year-$month"
         return ""
     }
-
-    return [lc_time_fmt [lc_clock_to_ansi [clock scan $year-$month-01]] "%B"]
 }
 
 ad_proc -public dt_widget_datetime {
