@@ -318,7 +318,7 @@ ad_proc -deprecated dt_widget_month_centered {
     return $output
 }
 
-ad_proc dt_widget_year {
+ad_proc -deprecated dt_widget_year {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
