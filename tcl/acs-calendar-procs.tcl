@@ -889,18 +889,16 @@ ad_proc -public dt_get_info {
     first_day                   26
     first_day_of_month          6
     last_day                    31
-    next_month                  2001-01-08
-    prev_month                  2000-11-08
+    next_month                  2001-01-01
+    prev_month                  2000-11-01
     beginning_of_year           2000-01-01
     days_in_last_month          30
     next_month_name             January
     prev_month_name             November
 
-    Input:
-
-    the_day      ANSI formatted date string (yyyy-mm-dd).  If not
-                 specified this procedure will default to today's
-                 date.
+    @param the_day ANSI formatted date string (yyyy-mm-dd).  If not
+                   specified this procedure will default to today's
+                   date.
 } {
     # If no date was passed in, let's set it to today
 

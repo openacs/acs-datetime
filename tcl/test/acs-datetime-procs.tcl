@@ -8,6 +8,38 @@ ad_library {
 }
 
 aa_register_case \
+    -procs {dt_get_info} \
+    -cats {api production_safe} \
+    dt_get_info {
+    Test dt_get_info proc.
+} {
+    set date_info [dt_get_info 2000-12-08]
+
+    foreach {key expected} {
+        julian_date_today 2451887
+        month December
+        year 2000
+        first_julian_date 2451875
+        first_julian_date_of_month 2451880
+        num_days_in_month 31
+        last_julian_date_in_month 2451910
+        last_julian_date 2451916
+        first_day 26
+        first_day_of_month 6
+        last_day 31
+        next_month 2001-01-01
+        prev_month 2000-11-01
+        beginning_of_year 2000-01-01
+        days_in_last_month 30
+        next_month_name January
+        prev_month_name November
+    } {
+        aa_equals "Date '2000-12-08': $key is expected" \
+            [set $key] $expected
+    }
+}
+
+aa_register_case \
     -procs {dt_valid_time_p} \
     -cats {api production_safe} \
     dt_valid_time_p {
