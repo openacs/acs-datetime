@@ -604,7 +604,7 @@ ad_proc -private dt_navbar_month {
 }
 
 
-ad_proc dt_widget_calendar_navigation {
+ad_proc -deprecated dt_widget_calendar_navigation {
     {base_url ""}
     {view "week"}
     {date ""}
@@ -621,6 +621,11 @@ ad_proc dt_widget_calendar_navigation {
     (ben) for now I am disabling year, which doesn't work.
 
     The date must be formatted YYYY-MM-DD.
+
+    DEPRECATED: this api is never used in upstream code. One
+    historical usage was in the calendar package, that has its own
+    caldar UI since many years. Having such widgets in the api makes
+    it also difficult to style them.
 } {
 
     # valid views are "list" "day" "week" "month" "year"
