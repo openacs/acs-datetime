@@ -9,7 +9,7 @@ ad_library {
     @cvs-id  $Id$
 }
 
-ad_proc dt_widget_month {
+ad_proc -deprecated dt_widget_month {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -39,6 +39,12 @@ ad_proc dt_widget_month {
     set) put data in an ns_set calendar_details.  The key is the
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details.
+
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
 } {
     if {$days_of_week eq ""} {
         set days_of_week "[_ acs-datetime.days_of_week]"
@@ -206,7 +212,7 @@ ad_proc dt_widget_month {
     return [concat $output "</table>\n"]
 }
 
-ad_proc dt_widget_month_small {
+ad_proc -deprecated dt_widget_month_small {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -225,6 +231,12 @@ ad_proc dt_widget_month_small {
     {-next_month_template ""}
     {-prev_month_template ""}
 } {
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
+
     @return a small calendar for a specific month. Defaults to this month.
 } {
     if {$days_of_week eq ""} {
@@ -250,7 +262,7 @@ ad_proc dt_widget_month_small {
                 -prev_month_template $prev_month_template ]
 }
 
-ad_proc dt_widget_month_centered {
+ad_proc -deprecated dt_widget_month_centered {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -269,6 +281,12 @@ ad_proc dt_widget_month_centered {
     {-next_month_template ""}
     {-prev_month_template ""}
 } {
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
+
     @return a calendar for a specific month, with details supplied by
             Julian date. Defaults to this month.
 } {

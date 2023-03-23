@@ -19,10 +19,7 @@ conversions.</p>
 date/time information as input and return date/time strings to the
 caller. Rather than standardize on a low-level representation of
 time (like seconds since 00:00:00 UTC, January 1 1970) all of these
-procedures accept general date specifications. For example, the
-default date for <code>dt_widget_datetime</code> can be specified
-as "2001-01-05", "2000-01-05 09:57 pm",
-"2000-01-05 21:57", etc. Internally these are parsed by
+procedures accept general date specifications. Internally dates are parsed by
 the standard Tcl procedure <code>clock scan</code> for processing
 and then converted back to a formatted string for output. This
 makes it easy to pass dates between the Tcl layer and the
@@ -61,35 +58,6 @@ specification</li><li>
 <code>dt_interval_check</code> checks the validity of a time
 interval by comparing start and end times and determining if they
 represent a positive, empty, or negative time range</li>
-</ol>
-<h4>Date and Time widgets</h4>
-<p>See <a href="examples/datetime-widgets">examples</a>.</p>
-<ol>
-<li>
-<code>dt_widget_datetime</code> generate HTML select widgets of
-varying granularity for collecting date and time information from
-users.</li><li>
-<code>dt_widget_month</code> generates an HTML select widget
-for months of the year</li><li>
-<code>dt_widget_numeric_range</code> generates an HTML select
-widget for general numeric ranges</li>
-</ol>
-<h4>Calendar widgets</h4>
-<p>See <a href="examples/calendar-widgets">examples</a>.</p>
-<p>Each of the following allow the programmer to supply calendar
-details in an <code>ns_set</code> keyed on Julian date and returns
-an HTML table.</p>
-<ol>
-<li>
-<code>dt_widget_month</code> generates a basic monthly
-calendar</li><li>
-<code>dt_widget_month_small</code> generates a small monthly
-calendar</li><li>
-<code>dt_widget_centered</code> generates small monthly
-calendars centered in a given month (previous, current, next)</li><li>
-<code>dt_widget_year</code> generates a yearly calendar
-(composed of small monthly calendars) given the starting month as a
-date</li>
 </ol>
 <h3>XII. Future Improvements/Areas of Likely Change</h3>
 <p>Many of the calendar widgets generate extensive HTML from within

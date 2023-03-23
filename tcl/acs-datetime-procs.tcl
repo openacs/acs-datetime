@@ -244,7 +244,7 @@ ad_proc -public dt_prev_month_name {
     }
 }
 
-ad_proc -public dt_widget_datetime {
+ad_proc -deprecated dt_widget_datetime {
     {-show_date 1}
     {-date_time_sep "&nbsp;"}
     {-use_am_pm 0}
@@ -271,6 +271,12 @@ ad_proc -public dt_widget_datetime {
     be hidden if not needed to satisfy the current granularity
     level. Values default to 1 for MM/DD and 0 for HH/MI/SS/AM if not
     found in the input string or if below the granularity threshold.
+
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
 } {
     set to_precision [dt_precision $granularity]
 
@@ -370,10 +376,16 @@ ad_proc -public dt_widget_datetime {
     return $input
 }
 
-ad_proc -public dt_widget_month_names {
+ad_proc -deprecated dt_widget_month_names {
     name
     {selected_month 0}
 } {
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
+
     @return a select widget for months of the year.
 } {
     if {$selected_month eq ""} {set selected_month 0}
@@ -389,7 +401,7 @@ ad_proc -public dt_widget_month_names {
     return "<select name=\"$name\">\n $input \n </select>\n"
 }
 
-ad_proc -public dt_widget_numeric_range {
+ad_proc -deprecated dt_widget_numeric_range {
     name
     begin
     end
@@ -397,6 +409,14 @@ ad_proc -public dt_widget_numeric_range {
     {interval 1}
     {with_leading_zeros 0}
 } {
+    DEPRECATED: this widget would be difficult to style and is
+    actually simpler to inline such an idiom in one's tcl or adp
+    code. The templating system also provides select widgets that take
+    care of validating the selection.
+
+    @see template::widget::select
+    @see template::widget::multiselect
+
     @return an HTML select widget for a numeric range
 } {
     if {$with_leading_zeros} {
@@ -418,7 +438,7 @@ ad_proc -public dt_widget_numeric_range {
     return "<select name=\"$name\">\n$input</select>"
 }
 
-ad_proc -public dt_widget_maybe_range {
+ad_proc -deprecated dt_widget_maybe_range {
     {-hide t}
     {-hidden_value "00"}
     {-default ""}
@@ -432,6 +452,11 @@ ad_proc -public dt_widget_maybe_range {
     {with_leading_zeros 0}
     {hidden_value "00"}
 } {
+    DEPRECATED: this proc was only used inside of now deprecated
+    dt_widget_datetime.
+
+    @see dt_widget_datetime
+
     @return form numeric range, or hidden_value if ask_for_value is false.
 } {
     if {!$ask_for_value} {
