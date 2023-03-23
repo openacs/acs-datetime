@@ -896,6 +896,8 @@ ad_proc -deprecated dt_widget_calendar_navigation {
 }
 
 ad_proc -public dt_get_info {
+    -element
+    -dict:boolean
     {the_date ""}
 } {
     Calculates various dates required by the dt_widget_month
@@ -925,6 +927,14 @@ ad_proc -public dt_get_info {
     @param the_day ANSI formatted date string (yyyy-mm-dd).  If not
                    specified this procedure will default to today's
                    date.
+
+    @param element when set, the proc will return this date property
+                   only and will not set any variable in the caller
+                   scope. Trying to fetch a non-existing property will
+                   throw an error.
+    @param dict when set, the proc will return all properties as a
+                dict and will not set any variable in the caller
+                scope.
 } {
     # If no date was passed in, let's set it to today
 
@@ -997,10 +1007,24 @@ ad_proc -public dt_get_info {
     lappend dt_info last_julian_date \
         [expr {$first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month}]
 
-    # Now, set the variables in the caller's environment
-    foreach {key value} $dt_info {
-        upvar $key var
-        set var $value
+    if {[info exists element]} {
+        #
+        # Return the single property.
+        #
+        return [dict get $dt_info_element]
+    } elseif {$dict_p} {
+        #
+        # Return the entire dict.
+        #
+        return $dt_info
+    } else {
+        #
+        # Set the variables in the caller's environment.
+        #
+        foreach {key value} $dt_info {
+            upvar $key var
+            set var $value
+        }
     }
 }
 
