@@ -89,10 +89,7 @@ calendar</li><li>
 calendars centered in a given month (previous, current, next)</li><li>
 <code>dt_widget_year</code> generates a yearly calendar
 (composed of small monthly calendars) given the starting month as a
-date</li><li>
-<code>dt_widget_calendar_year</code> generates a yearly
-calendar based on calendar year (Jan to Dec), given any date within
-that calendar year</li>
+date</li>
 </ol>
 <h3>XII. Future Improvements/Areas of Likely Change</h3>
 <p>Many of the calendar widgets generate extensive HTML from within

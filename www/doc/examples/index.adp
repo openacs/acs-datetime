@@ -14,7 +14,6 @@ part of the <a href="../">ACS DateTime</a> documentation
 <li><a href="datetime-procs">Date and time functions</a>
 <li><a href="datetime-widgets">Date and time widgets</a>
 <li><a href="calendar-widgets">Calendar widgets</a>
-<li><a href="calendar-navigation">Calendar navigation widget</a>
 
 </ul>
 

@@ -19,7 +19,6 @@ set example_list {
     "dt_widget_month_centered"
     "dt_widget_month"
     "dt_widget_year -width 4"
-    "dt_widget_calendar_year -width 4"
 }
 
 # Generate a multirow datasource to transmit the examples to the

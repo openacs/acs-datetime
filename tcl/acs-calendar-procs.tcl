@@ -356,7 +356,7 @@ ad_proc dt_widget_year {
     return [concat $output "</tr></table>\n"]
 }
 
-ad_proc dt_widget_calendar_year {
+ad_proc -deprecated dt_widget_calendar_year {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -376,6 +376,9 @@ ad_proc dt_widget_calendar_year {
     {-prev_month_template ""}
     {-width 2}
 } {
+    DEPRECATED: this api is never used in upstream code. Having such
+    widgets in the api makes it also difficult to style them.
+
     @return a calendar year of small calendars for the year of the
             passed in date.  Defaults to this year.
 } {
