@@ -907,61 +907,75 @@ ad_proc -public dt_get_info {
     }
 
     # get year, month, day
-    set date_list [dt_ansi_to_list $the_date]
-    set year [util::trim_leading_zeros [lindex $date_list 0]]
-    set month [util::trim_leading_zeros [lindex $date_list 1]]
-    set day [util::trim_leading_zeros [lindex $date_list 2]]
+    lassign [dt_ansi_to_list $the_date] year month day
 
-    # We put all the data into dt_info_set and return it later
-    set dt_info_set [ns_set create]
+    # We put all the data into a list and set it in the caller scope
+    # later.
+    set dt_info [list]
 
-    ns_set put $dt_info_set julian_date_today \
+    lappend dt_info julian_date_today \
         [dt_ansi_to_julian $year $month $day]
-    ns_set put $dt_info_set month \
+
+    lappend dt_info month \
         [lc_time_fmt $the_date "%B"]
-    ns_set put $dt_info_set year \
+
+    lappend dt_info year \
         [clock format [clock scan $the_date] -format %Y]
-    ns_set put $dt_info_set first_julian_date_of_month \
-        [dt_ansi_to_julian $year $month 1]
-    ns_set put $dt_info_set num_days_in_month \
+
+    set first_julian_date_of_month [dt_ansi_to_julian $year $month 1]
+    lappend dt_info first_julian_date_of_month \
+        $first_julian_date_of_month
+
+    set num_days_in_month [dt_num_days_in_month $year $month]
+    lappend dt_info num_days_in_month \
+        $num_days_in_month
+
+    set first_day_of_month [dt_first_day_of_month $year $month]
+    lappend dt_info first_day_of_month \
+        $first_day_of_month
+
+    lappend dt_info last_day \
         [dt_num_days_in_month $year $month]
-    ns_set put $dt_info_set first_day_of_month \
-        [dt_first_day_of_month $year $month]
-    ns_set put $dt_info_set last_day \
-        [dt_num_days_in_month $year $month]
-    ns_set put $dt_info_set next_month \
+
+    lappend dt_info next_month \
         [dt_next_month $year $month]
-    ns_set put $dt_info_set prev_month \
+
+    lappend dt_info prev_month \
         [dt_prev_month $year $month]
-    ns_set put $dt_info_set beginning_of_year \
+
+    lappend dt_info beginning_of_year \
         $year-01-01
-    ns_set put $dt_info_set days_in_last_month \
-        [dt_num_days_in_month $year [expr {$month - 1}]]
-    ns_set put $dt_info_set next_month_name \
+
+    set days_in_last_month [dt_num_days_in_month $year [expr {$month - 1}]]
+    lappend dt_info days_in_last_month \
+        $days_in_last_month
+
+    lappend dt_info next_month_name \
         [dt_next_month_name $year $month]
-    ns_set put $dt_info_set prev_month_name \
+
+    lappend dt_info prev_month_name \
         [dt_prev_month_name $year $month]
 
-    # We need the variables from the ns_set
-    ad_ns_set_to_tcl_vars $dt_info_set
-
-    ns_set put $dt_info_set first_julian_date \
+    lappend dt_info first_julian_date \
         [expr {$first_julian_date_of_month + 1 - $first_day_of_month}]
-    ns_set put $dt_info_set first_day \
+
+    lappend dt_info first_day \
         [expr {$days_in_last_month + 2 - $first_day_of_month}]
-    ns_set put $dt_info_set last_julian_date_in_month \
+
+    lappend dt_info last_julian_date_in_month \
         [expr {$first_julian_date_of_month + $num_days_in_month - 1}]
 
     set days_in_next_month \
         [expr {(7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7}]
 
-    ns_set put $dt_info_set last_julian_date \
+    lappend dt_info last_julian_date \
         [expr {$first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month}]
 
     # Now, set the variables in the caller's environment
-
-    ad_ns_set_to_tcl_vars -level 2 $dt_info_set
-    ns_set free $dt_info_set
+    foreach {key value} $dt_info {
+        upvar $key var
+        set var $value
+    }
 }
 
 
