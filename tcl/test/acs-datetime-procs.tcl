@@ -222,18 +222,20 @@ aa_register_case -procs {
 }
 
 aa_register_case -procs {
-        dt_midnight_p
-    } -cats {
-        api
-        production_safe
-        smoke
-    } dt_midnight_p {
-        Test dt_midnight_p proc.
+    dt_midnight_p
+    dt_no_time_p
+} -cats {
+    api
+    production_safe
+    smoke
+} dt_midnight_p {
+    Test dt_midnight_p proc and dt_no_time_p, which havily depends
+    on the concept of "midnight".
 } {
     #
     # Midnight dates
     #
-    set dates {
+    set midnight_dates {
         00:00
         "00:00 AM"
         "00:00 am"
@@ -242,13 +244,13 @@ aa_register_case -procs {
         "2021-06-22 00:00"
         "06-22 00:00"
     }
-    foreach date $dates {
+    foreach date $midnight_dates {
         aa_true "$date is midnight" [dt_midnight_p $date]
     }
     #
     # Not midnight dates
     #
-    set dates {
+    set no_midnight_dates {
         00:01
         "00:10 AM"
         "00:00 PM"
@@ -258,8 +260,30 @@ aa_register_case -procs {
         "2021-06-22 20:00"
         "06-22 00:41"
     }
-    foreach date $dates {
+    foreach date $no_midnight_dates {
         aa_false "$date is midnight" [dt_midnight_p $date]
+    }
+
+    foreach start_time $midnight_dates {
+        foreach end_time $midnight_dates {
+            aa_true "dt_no_time_p -start_time $start_time -end_time $end_time is true" \
+                [dt_no_time_p -start_time $start_time -end_time $end_time]
+        }
+        foreach end_time $no_midnight_dates {
+            aa_false "dt_no_time_p -start_time $start_time -end_time $end_time is false" \
+                [dt_no_time_p -start_time $start_time -end_time $end_time]
+        }
+    }
+
+    foreach start_time $no_midnight_dates {
+        foreach end_time $midnight_dates {
+            aa_false "dt_no_time_p -start_time $start_time -end_time $end_time is false" \
+                [dt_no_time_p -start_time $start_time -end_time $end_time]
+        }
+        foreach end_time $no_midnight_dates {
+            aa_false "dt_no_time_p -start_time $start_time -end_time $end_time is false" \
+                [dt_no_time_p -start_time $start_time -end_time $end_time]
+        }
     }
 }
 
