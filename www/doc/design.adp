@@ -19,11 +19,11 @@ conversions.</p>
 date/time information as input and return date/time strings to the
 caller. Rather than standardize on a low-level representation of
 time (like seconds since 00:00:00 UTC, January 1 1970) all of these
-procedures accept general date specifications. Internally dates are parsed by
-the standard Tcl procedure <code>clock scan</code> for processing
-and then converted back to a formatted string for output. This
-makes it easy to pass dates between the Tcl layer and the
-database.</p>
+procedures accept general date specifications. Internally dates are
+parsed by the standard Tcl procedure <code>clock scan</code> for
+processing and then converted back to a formatted string for
+output. This makes it easy to pass dates between the Tcl layer and
+the database.</p>
 <h3>III. Historical Considerations</h3>
 <p>This package was written largely to consolidate and improve the
 date, time, and calendar functionality existing in ACS 3.</p>
