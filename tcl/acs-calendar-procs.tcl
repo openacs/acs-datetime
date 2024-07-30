@@ -924,9 +924,9 @@ ad_proc -public dt_get_info {
     next_month_name             January
     prev_month_name             November
 
-    @param the_day ANSI formatted date string (yyyy-mm-dd).  If not
-                   specified this procedure will default to today's
-                   date.
+    @param the_date ANSI formatted date string (yyyy-mm-dd).  If not
+                    specified this procedure will default to today's
+                    date.
 
     @param element when set, the proc will return this date property
                    only and will not set any variable in the caller
