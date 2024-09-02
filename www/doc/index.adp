@@ -2,6 +2,10 @@
 <property name="context">{/doc/acs-datetime/ {ACS Date and Time Utilities}} {ACS DateTime Documentation}</property>
 <property name="doc(title)">ACS DateTime Documentation</property>
 <master>
+<style>
+div.sect2 > div.itemizedlist > ul.itemizedlist > li.listitem {margin-top: 16px;}
+div.sect3 > div.itemizedlist > ul.itemizedlist > li.listitem {margin-top: 6px;}
+</style>              
 <h1>ACS DateTime Documentation</h1>
 <a href="mailto:ron\@arsdigita.com">ron\@arsdigita.com</a>
 <p>This package provides a set of utilities for dealing with dates

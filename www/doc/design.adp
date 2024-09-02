@@ -2,6 +2,10 @@
 <property name="context">{/doc/acs-datetime/ {ACS Date and Time Utilities}} {ACS DateTime}</property>
 <property name="doc(title)">ACS DateTime</property>
 <master>
+<style>
+div.sect2 > div.itemizedlist > ul.itemizedlist > li.listitem {margin-top: 16px;}
+div.sect3 > div.itemizedlist > ul.itemizedlist > li.listitem {margin-top: 6px;}
+</style>              
 <h2>ACS DateTime</h2>
 
 by Ron Henderson
