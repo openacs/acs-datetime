@@ -9,7 +9,7 @@ ad_library {
     @cvs-id  $Id$
 }
 
-ad_proc dt_widget_month {
+ad_proc -deprecated dt_widget_month {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -39,6 +39,12 @@ ad_proc dt_widget_month {
     set) put data in an ns_set calendar_details.  The key is the
     Julian date of the day, and the value is a string (possibly with
     HTML formatting) that represents the details.
+
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
 } {
     if {$days_of_week eq ""} {
         set days_of_week "[_ acs-datetime.days_of_week]"
@@ -206,7 +212,7 @@ ad_proc dt_widget_month {
     return [concat $output "</table>\n"]
 }
 
-ad_proc dt_widget_month_small {
+ad_proc -deprecated dt_widget_month_small {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -225,6 +231,12 @@ ad_proc dt_widget_month_small {
     {-next_month_template ""}
     {-prev_month_template ""}
 } {
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
+
     @return a small calendar for a specific month. Defaults to this month.
 } {
     if {$days_of_week eq ""} {
@@ -250,7 +262,7 @@ ad_proc dt_widget_month_small {
                 -prev_month_template $prev_month_template ]
 }
 
-ad_proc dt_widget_month_centered {
+ad_proc -deprecated dt_widget_month_centered {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -269,6 +281,12 @@ ad_proc dt_widget_month_centered {
     {-next_month_template ""}
     {-prev_month_template ""}
 } {
+    DEPRECATED: modern HTML5 feature make this widget less
+    relevant. It is also cumbersome to style and localize.
+
+    @see template::widget::h5time
+    @see template::widget::h5date
+
     @return a calendar for a specific month, with details supplied by
             Julian date. Defaults to this month.
 } {
@@ -300,7 +318,7 @@ ad_proc dt_widget_month_centered {
     return $output
 }
 
-ad_proc dt_widget_year {
+ad_proc -deprecated dt_widget_year {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -356,7 +374,7 @@ ad_proc dt_widget_year {
     return [concat $output "</tr></table>\n"]
 }
 
-ad_proc dt_widget_calendar_year {
+ad_proc -deprecated dt_widget_calendar_year {
     {-calendar_details ""}
     {-date ""}
     {-days_of_week ""}
@@ -376,6 +394,9 @@ ad_proc dt_widget_calendar_year {
     {-prev_month_template ""}
     {-width 2}
 } {
+    DEPRECATED: this api is never used in upstream code. Having such
+    widgets in the api makes it also difficult to style them.
+
     @return a calendar year of small calendars for the year of the
             passed in date.  Defaults to this year.
 } {
@@ -604,7 +625,7 @@ ad_proc -private dt_navbar_month {
 }
 
 
-ad_proc dt_widget_calendar_navigation {
+ad_proc -deprecated dt_widget_calendar_navigation {
     {base_url ""}
     {view "week"}
     {date ""}
@@ -621,6 +642,11 @@ ad_proc dt_widget_calendar_navigation {
     (ben) for now I am disabling year, which doesn't work.
 
     The date must be formatted YYYY-MM-DD.
+
+    DEPRECATED: this api is never used in upstream code. One
+    historical usage was in the calendar package, that has its own
+    caldar UI since many years. Having such widgets in the api makes
+    it also difficult to style them.
 } {
 
     # valid views are "list" "day" "week" "month" "year"
@@ -642,12 +668,8 @@ ad_proc dt_widget_calendar_navigation {
     set list_of_vars [list]
 
     # Ben: some annoying stuff to do here since we are passing in things in GET format already
-    if {$pass_in_vars ne ""} {
-        set vars [split $pass_in_vars "&"]
-        foreach var $vars {
-            set things [split $var "="]
-            lappend list_of_vars $things
-        }
+    foreach {key value} [ns_set array [ns_parsequery $pass_in_vars]] {
+        lappend list_of_vars [list $key $value]
     }
 
     # Get the current month, day, and the first day of the month
@@ -873,7 +895,9 @@ ad_proc dt_widget_calendar_navigation {
     return $output
 }
 
-ad_proc -private dt_get_info {
+ad_proc -public dt_get_info {
+    -element
+    -dict:boolean
     {the_date ""}
 } {
     Calculates various dates required by the dt_widget_month
@@ -893,18 +917,24 @@ ad_proc -private dt_get_info {
     first_day                   26
     first_day_of_month          6
     last_day                    31
-    next_month                  2001-01-08
-    prev_month                  2000-11-08
+    next_month                  2001-01-01
+    prev_month                  2000-11-01
     beginning_of_year           2000-01-01
     days_in_last_month          30
     next_month_name             January
     prev_month_name             November
 
-    Input:
+    @param the_date ANSI formatted date string (yyyy-mm-dd).  If not
+                    specified this procedure will default to today's
+                    date.
 
-    the_day      ANSI formatted date string (yyyy-mm-dd).  If not
-                 specified this procedure will default to today's
-                 date.
+    @param element when set, the proc will return this date property
+                   only and will not set any variable in the caller
+                   scope. Trying to fetch a non-existing property will
+                   throw an error.
+    @param dict when set, the proc will return all properties as a
+                dict and will not set any variable in the caller
+                scope.
 } {
     # If no date was passed in, let's set it to today
 
@@ -913,61 +943,89 @@ ad_proc -private dt_get_info {
     }
 
     # get year, month, day
-    set date_list [dt_ansi_to_list $the_date]
-    set year [util::trim_leading_zeros [lindex $date_list 0]]
-    set month [util::trim_leading_zeros [lindex $date_list 1]]
-    set day [util::trim_leading_zeros [lindex $date_list 2]]
+    lassign [dt_ansi_to_list $the_date] year month day
 
-    # We put all the data into dt_info_set and return it later
-    set dt_info_set [ns_set create]
+    # We put all the data into a list and set it in the caller scope
+    # later.
+    set dt_info [list]
 
-    ns_set put $dt_info_set julian_date_today \
+    lappend dt_info julian_date_today \
         [dt_ansi_to_julian $year $month $day]
-    ns_set put $dt_info_set month \
+
+    lappend dt_info month \
         [lc_time_fmt $the_date "%B"]
-    ns_set put $dt_info_set year \
+
+    lappend dt_info year \
         [clock format [clock scan $the_date] -format %Y]
-    ns_set put $dt_info_set first_julian_date_of_month \
-        [dt_ansi_to_julian $year $month 1]
-    ns_set put $dt_info_set num_days_in_month \
+
+    set first_julian_date_of_month [dt_ansi_to_julian $year $month 1]
+    lappend dt_info first_julian_date_of_month \
+        $first_julian_date_of_month
+
+    set num_days_in_month [dt_num_days_in_month $year $month]
+    lappend dt_info num_days_in_month \
+        $num_days_in_month
+
+    set first_day_of_month [dt_first_day_of_month $year $month]
+    lappend dt_info first_day_of_month \
+        $first_day_of_month
+
+    lappend dt_info last_day \
         [dt_num_days_in_month $year $month]
-    ns_set put $dt_info_set first_day_of_month \
-        [dt_first_day_of_month $year $month]
-    ns_set put $dt_info_set last_day \
-        [dt_num_days_in_month $year $month]
-    ns_set put $dt_info_set next_month \
+
+    lappend dt_info next_month \
         [dt_next_month $year $month]
-    ns_set put $dt_info_set prev_month \
+
+    lappend dt_info prev_month \
         [dt_prev_month $year $month]
-    ns_set put $dt_info_set beginning_of_year \
+
+    lappend dt_info beginning_of_year \
         $year-01-01
-    ns_set put $dt_info_set days_in_last_month \
-        [dt_num_days_in_month $year [expr {$month - 1}]]
-    ns_set put $dt_info_set next_month_name \
+
+    set days_in_last_month [dt_num_days_in_month $year [expr {$month - 1}]]
+    lappend dt_info days_in_last_month \
+        $days_in_last_month
+
+    lappend dt_info next_month_name \
         [dt_next_month_name $year $month]
-    ns_set put $dt_info_set prev_month_name \
+
+    lappend dt_info prev_month_name \
         [dt_prev_month_name $year $month]
 
-    # We need the variables from the ns_set
-    ad_ns_set_to_tcl_vars $dt_info_set
-
-    ns_set put $dt_info_set first_julian_date \
+    lappend dt_info first_julian_date \
         [expr {$first_julian_date_of_month + 1 - $first_day_of_month}]
-    ns_set put $dt_info_set first_day \
+
+    lappend dt_info first_day \
         [expr {$days_in_last_month + 2 - $first_day_of_month}]
-    ns_set put $dt_info_set last_julian_date_in_month \
+
+    lappend dt_info last_julian_date_in_month \
         [expr {$first_julian_date_of_month + $num_days_in_month - 1}]
 
     set days_in_next_month \
         [expr {(7-(($num_days_in_month + $first_day_of_month - 1) % 7)) % 7}]
 
-    ns_set put $dt_info_set last_julian_date \
+    lappend dt_info last_julian_date \
         [expr {$first_julian_date_of_month + $num_days_in_month - 1 + $days_in_next_month}]
 
-    # Now, set the variables in the caller's environment
-
-    ad_ns_set_to_tcl_vars -level 2 $dt_info_set
-    ns_set free $dt_info_set
+    if {[info exists element]} {
+        #
+        # Return the single property.
+        #
+        return [dict get $dt_info_element]
+    } elseif {$dict_p} {
+        #
+        # Return the entire dict.
+        #
+        return $dt_info
+    } else {
+        #
+        # Set the variables in the caller's environment.
+        #
+        foreach {key value} $dt_info {
+            upvar $key var
+            set var $value
+        }
+    }
 }
 
 

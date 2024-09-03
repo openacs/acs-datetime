@@ -10,7 +10,7 @@ ad_library {
     @cvs-id  $Id$
 }
 
-ad_proc dt_widget_week {
+ad_proc -deprecated dt_widget_week {
     {-calendar_details ""}
     {-date ""}
     {-large_calendar_p 1}
@@ -43,6 +43,17 @@ ad_proc dt_widget_week {
     - day_template: julian,day,date,pretty_date
     - next_week_template:
     - prev_week_template:
+
+    DEPRECATED: this proc uses hardcoded markup and is therefore
+    difficult to style. It is also not localized. Many of the date
+    operations happening here have now good tcl support through the
+    clock api, which would make this code probably faster and
+    certainly portable (Oracle query is missing). Future
+    reimplementations should leverage the templating system more.
+
+    @see /doc/acs-templating/
+    @see /doc/acs-lang/
+    @see clock
 } {
 
     set today_date [dt_sysdate]
@@ -135,7 +146,7 @@ ad_proc dt_widget_week {
 
 
 
-ad_proc dt_widget_day {
+ad_proc -deprecated dt_widget_day {
     {-calendar_details ""}
     {-date ""}
     {-hour_template {$display_hour}}
@@ -158,6 +169,15 @@ ad_proc dt_widget_day {
     Returns a calendar for a specific day, with details supplied by
     hour. Defaults to today.
 
+    DEPRECATED: this proc uses hardcoded markup and is therefore
+    difficult to style. It is also not localized. Many of the date
+    operations happening here have now good tcl support through the
+    clock api, which would make this code probably faster. Future
+    reimplementations should leverage the templating system more.
+
+    @see /doc/acs-templating/
+    @see /doc/acs-lang/
+    @see clock
 } {
 
     if {$date eq ""} {
@@ -379,7 +399,7 @@ ad_proc dt_widget_day {
 
 
 
-ad_proc -public dt_widget_list {
+ad_proc -deprecated dt_widget_list {
     {-calendar_details:required}
     {-item_template {$item}}
     {-start_date ""}
@@ -393,6 +413,14 @@ ad_proc -public dt_widget_list {
     Right now this is a big hack to make the schedule look a lot like the SloanSpace v1.0
     display. Once we have thought this through a bit more, I will generalize this proc. I promise.
     Please forgive me.
+
+    DEPRECATED: time is up Ben. This proc uses hardcoded markup and is
+    therefore difficult to style. It is also not fully
+    localized. Future reimplementations should leverage the templating
+    system more.
+
+    @see /doc/acs-templating/
+    @see /doc/acs-lang/
 } {
     # Check for zero size
     if {[ns_set size $calendar_details] == 0} {
@@ -450,8 +478,7 @@ ad_proc -public dt_widget_list {
     set flip 0
 
     # Loop through the events, and add them
-    for {set i 0} {$i < [ns_set size $calendar_details]} {incr i} {
-        set item [ns_set value $calendar_details $i]
+    foreach item [ns_set values $calendar_details] {
         lassign $item date start_time end_time weekday item_type item_details
 
         # Adjust the display of no-time items
@@ -501,10 +528,15 @@ ad_proc -public dt_widget_list {
 # Additional Utility Procs
 #
 
-ad_proc dt_midnight_p {
+ad_proc -public dt_midnight_p {
     time
 } {
-    check if a time is midnight
+    Check if a time is midnight.
+
+    This might be replaced by clock idioms in the future, but is
+    currently the way we decide e.g. if an event is an all-day event.
+
+    @see dt_no_time_p
 } {
     if {$time eq "00:00" || $time eq ""} {
         return 1
@@ -528,11 +560,12 @@ ad_proc dt_midnight_p {
     return 0
 }
 
-ad_proc dt_no_time_p {
+ad_proc -public dt_no_time_p {
     {-start_time:required}
     {-end_time:required}
 } {
-    This decides whether an item is without a time
+    This decides whether an item is without a time, which is also our
+    definition of an all-day event.
 } {
     # Compare times and make sure it's midnight on both
     if {[dt_midnight_p $start_time] && [dt_midnight_p $end_time]} {
@@ -542,7 +575,7 @@ ad_proc dt_no_time_p {
     }
 }
 
-ad_proc dt_hour_diff {
+ad_proc -deprecated dt_hour_diff {
     {-start_time:required}
     {-end_time:required}
 } {
@@ -550,6 +583,12 @@ ad_proc dt_hour_diff {
     This gives us the num of hours of difference,
     taking into account that if something goes until 5:01, it is one
     more hour long than if it goes until 5:00
+
+    DEPRECATED: this is really something one should do leveraging
+    existing tcl capabilities. Plain clock idioms can do the same in a
+    more generic and reliable way.
+
+    @see clock
 } {
     set start_hour [string trimleft [string range $start_time 0 1] 0]
     set end_hour [string trimleft [string range $end_time 0 1] 0]

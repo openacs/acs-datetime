@@ -1,7 +1,11 @@
 
-<property name="context">{/doc/acs-datetime {ACS Date and Time Utilities}} {ACS DateTime}</property>
+<property name="context">{/doc/acs-datetime/ {ACS Date and Time Utilities}} {ACS DateTime}</property>
 <property name="doc(title)">ACS DateTime</property>
 <master>
+<style>
+div.sect2 > div.itemizedlist > ul.itemizedlist > li.listitem {margin-top: 16px;}
+div.sect3 > div.itemizedlist > ul.itemizedlist > li.listitem {margin-top: 6px;}
+</style>              
 <h2>ACS DateTime Requirements</h2>
 
 by <a href="mailto:ron\@arsdigita.com">Ron Henderson</a>
@@ -64,8 +68,8 @@ details in an <code>ns_set</code> keyed on Julian date, and return
 an HTML table.</p>
 <ol>
 <li>Generate a basic monthly calendar</li><li>Generate a small monthly calendar</li><li>Generate small monthly calendars centered in a given month
-(previous, current, next)</li><li>Generate a yearly calendar (composed of small montly calendars)
-given the starting month as a date</li><li>Generate a yearly calendar based on calendar year (Jan to Dec),
+(previous, current, next)</li><li>Generate a yearly calendar (composed of small monthly
+calendars) given the starting month as a date</li><li>Generate a yearly calendar based on calendar year (Jan to Dec),
 given any date within that calendar year</li><li>Generate a calendar navigation widget with viewing options for
 day, week, month and year</li>
 </ol>
