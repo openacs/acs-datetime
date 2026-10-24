@@ -944,6 +944,9 @@ ad_proc -public dt_get_info {
 
     # get year, month, day
     lassign [dt_ansi_to_list $the_date] year month day
+    # Keep a literal early year distinct from legacy one-/two-digit input when
+    # passing the parsed components to the date helpers.
+    set year [format %04d $year]
 
     # We put all the data into a list and set it in the caller scope
     # later.
@@ -956,7 +959,7 @@ ad_proc -public dt_get_info {
         [lc_time_fmt $the_date "%B"]
 
     lappend dt_info year \
-        [clock format [clock scan $the_date] -format %Y]
+        $year
 
     set first_julian_date_of_month [dt_ansi_to_julian $year $month 1]
     lappend dt_info first_julian_date_of_month \
@@ -980,7 +983,7 @@ ad_proc -public dt_get_info {
         [dt_prev_month $year $month]
 
     lappend dt_info beginning_of_year \
-        $year-01-01
+        [dt_make_ansi_date $year 1 1]
 
     set days_in_last_month [dt_num_days_in_month $year [expr {$month - 1}]]
     lappend dt_info days_in_last_month \

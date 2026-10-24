@@ -84,7 +84,28 @@ ad_proc -public dt_ansi_to_julian_single_arg {
     set month [util::trim_leading_zeros [lindex $date_list 1]]
     set day [util::trim_leading_zeros [lindex $date_list 2]]
 
-    return [dt_ansi_to_julian $year $month $day $era]
+    return [dt_ansi_to_julian [format %04d $year] $month $day $era]
+}
+
+ad_proc -private dt_make_ansi_date {year month day} {
+    Construct an ISO date from decimal components without interpreting leading
+    zeros as octal. Leave calendar rollover to clock scan rather than imposing
+    stricter civil-date validation here. One- and two-digit years retain Tcl's
+    legacy century interpretation; four-digit years are literal.
+} {
+    set year_text [string trim $year]
+    foreach component {year month day} {
+        set value [string trim [set $component]]
+        if {![regexp {^[+-]?[0-9]+$} $value]} {
+            error "Invalid decimal date component: $value"
+        }
+        scan $value %d $component
+    }
+    if {[regexp {^[0-9]{1,2}$} $year_text]} {
+        set year [clock format [clock scan "$year_text-01-01"] -format %Y]
+        scan $year %d year
+    }
+    return [format %04d-%02d-%02d $year $month $day]
 }
 
 ad_proc -public dt_ansi_to_julian {
@@ -105,7 +126,14 @@ ad_proc -public dt_ansi_to_julian {
     }
 
     try {
-        return [clock format [clock scan ${year}-${month}-${day} -format %Y-%m-%d] -format %J]
+        set date [dt_make_ansi_date $year $month $day]
+        # This procedure historically uses an explicit %Y format, which rejects
+        # short years instead of applying the free-form century interpretation.
+        if {[string length [string trim $year]] < 3
+            || ([string length [string trim $year]] < 4 && [scan $year %d] == 0)} {
+            set date "$year-$month-$day"
+        }
+        return [clock format [clock scan $date -format %Y-%m-%d] -format %J]
     } on error {errmsg} {
         ad_log warning "Cannot convert ${year}-${month}-${day} to Julian date: $errmsg"
         return -1
@@ -150,7 +178,16 @@ ad_proc -public dt_ansi_to_list {
         set ansi_date [dt_systime]
     }
 
-    foreach item [split [clock format [clock scan $ansi_date] -format "%Y %m %d %H %M %S"] " "] {
+    # Explicit formats preserve the century of four-digit ISO years, including
+    # 0001..0099. Retain free-form parsing for other historically accepted inputs.
+    if {[regexp {^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$} $ansi_date]} {
+        set seconds [clock scan $ansi_date -format %Y-%m-%d]
+    } elseif {[regexp {^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$} $ansi_date]} {
+        set seconds [clock scan $ansi_date -format {%Y-%m-%d %H:%M:%S}]
+    } else {
+        set seconds [clock scan $ansi_date]
+    }
+    foreach item [split [clock format $seconds -format "%Y %m %d %H %M %S"] " "] {
         lappend date_info [util::trim_leading_zeros $item]
     }
 
@@ -163,6 +200,10 @@ ad_proc -public dt_num_days_in_month {
 } {
     @return the numbers of days for the given month/year
 } {
+    # Normalize before arithmetic as well as before constructing the date.
+    set date [dt_make_ansi_date $year $month 1]
+    scan $date %d year
+    scan $month %d month
     if {$month == 0} {
         set month 01
     } elseif {$month == 12} {
@@ -175,7 +216,7 @@ ad_proc -public dt_num_days_in_month {
         incr month
     }
 
-    return [clock format [clock scan "last day" -base [clock scan $year-$month-01]] -format %d]
+    return [clock format [clock scan "last day" -base [clock scan [dt_make_ansi_date $year $month 1] -format %Y-%m-%d]] -format %d]
 }
 
 ad_proc -public dt_first_day_of_month {
@@ -185,7 +226,7 @@ ad_proc -public dt_first_day_of_month {
     @return the weekday number of the first day for the given month/year
 } {
     # calendar widgets are expecting integers 1-7, so we must adjust
-    return [expr {[clock format [clock scan $year-$month-01] -format %w] + 1}]
+    return [expr {[clock format [clock scan [dt_make_ansi_date $year $month 1] -format %Y-%m-%d] -format %w] + 1}]
 }
 
 ad_proc -public dt_next_month {
@@ -195,7 +236,7 @@ ad_proc -public dt_next_month {
     @return the ANSI date for the next month
 } {
     try {
-        return [clock format [clock add [clock scan $year-$month-01] 1 month] -format %Y-%m-%d]
+        return [clock format [clock add [clock scan [dt_make_ansi_date $year $month 1] -format %Y-%m-%d] 1 month] -format %Y-%m-%d]
     } on error {errmsg} {
         ad_log warning "Cannot get next month date for $year-$month"
         return ""
@@ -209,7 +250,7 @@ ad_proc -public dt_prev_month {
     @return the ANSI date for the previous month
 } {
     try {
-        return [clock format [clock add [clock scan $year-$month-01] -1 month] -format %Y-%m-%d]
+        return [clock format [clock add [clock scan [dt_make_ansi_date $year $month 1] -format %Y-%m-%d] -1 month] -format %Y-%m-%d]
     } on error {errmsg} {
         ad_log warning "Cannot get previous month date for $year-$month"
         return ""
@@ -223,7 +264,7 @@ ad_proc -public dt_next_month_name {
     @return Localized name of the next month
 } {
     try {
-        return [lc_time_fmt [lc_clock_to_ansi [clock add [clock scan $year-$month-01] 1 month]] "%B"]
+        return [lc_time_fmt [lc_clock_to_ansi [clock add [clock scan [dt_make_ansi_date $year $month 1] -format %Y-%m-%d] 1 month]] "%B"]
     } on error {errmsg} {
         ad_log warning "Cannot get name of previous month for $year-$month"
         return ""
@@ -237,7 +278,7 @@ ad_proc -public dt_prev_month_name {
     @return Localized name of the previous month
 } {
     try {
-        return [lc_time_fmt [lc_clock_to_ansi [clock add [clock scan $year-$month-01] -1 month]] "%B"]
+        return [lc_time_fmt [lc_clock_to_ansi [clock add [clock scan [dt_make_ansi_date $year $month 1] -format %Y-%m-%d] -1 month]] "%B"]
     } on error {errmsg} {
         ad_log warning "Cannot get name of previous month for $year-$month"
         return ""
